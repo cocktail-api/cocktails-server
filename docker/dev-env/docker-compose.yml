@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+  receipt_db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: Topsecret123
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: verysecure
+      MYSQL_DATABASE: cocktails
+    ports:
+      - "3336:3306"
+    restart: always
