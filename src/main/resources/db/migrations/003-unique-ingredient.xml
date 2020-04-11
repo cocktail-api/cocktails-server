@@ -5,9 +5,11 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <include file="migrations/001-changelog-ingredients.xml" relativeToChangelogFile="true"/>
-    <include file="migrations/002-ingredient-tag-jointable.xml" relativeToChangelogFile="true"/>
-    <include file="migrations/003-unique-ingredient.xml" relativeToChangelogFile="true"/>
-    <include file="migrations/004-ingredient-name-join.xml" relativeToChangelogFile="true"/>
-    <include file="migrations/005-unique-locale-ingredient.xml" relativeToChangelogFile="true"/>
+    <changeSet id="3" author="Simon Levermann">
+        <addUniqueConstraint tableName="ingredient_name" columnNames="name, locale"
+                             constraintName="unique_name_locale_constraint"/>
+        <createIndex tableName="ingredient_name" indexName="ingredient_name_idx">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

@@ -11,7 +11,7 @@ import java.util.List;
 public class IngredientTag {
 
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 

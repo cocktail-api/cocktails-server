@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Locale;
 
 @Data
 @Entity
@@ -14,7 +13,7 @@ import java.util.Locale;
 public class IngredientName {
 
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
@@ -22,10 +21,10 @@ public class IngredientName {
     private String name;
 
     @Column(name = "locale")
-    private Locale locale;
+    private String locale;
 
     @EqualsAndHashCode.Exclude
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "ingredient_id")
     @JsonManagedReference
     @ManyToOne
     @ToString.Exclude

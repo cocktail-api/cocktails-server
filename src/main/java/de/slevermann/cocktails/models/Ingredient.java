@@ -12,17 +12,17 @@ public class Ingredient {
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "ingredient")
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     private List<IngredientName> names;
 
     @Column(name = "type")
     @Enumerated(value = EnumType.STRING)
     private IngredientType type;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "ingredient_ingredient_tag",
             joinColumns = @JoinColumn(name = "ingredient_id"),
