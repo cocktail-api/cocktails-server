@@ -32,3 +32,4 @@ build/
 
 # Top level application.properties is ignored, application.properties.example file is used instead
 /application.properties
+/no-docker-tests.properties

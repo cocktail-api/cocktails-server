@@ -10,4 +10,6 @@
     <include file="migrations/003-unique-ingredient.xml" relativeToChangelogFile="true"/>
     <include file="migrations/004-ingredient-name-join.xml" relativeToChangelogFile="true"/>
     <include file="migrations/005-unique-locale-ingredient.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/006-ingredient-id-cascade.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/007-ingredient-description.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

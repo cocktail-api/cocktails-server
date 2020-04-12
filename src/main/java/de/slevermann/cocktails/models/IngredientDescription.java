@@ -6,13 +6,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-public class IngredientName {
+public class IngredientDescription {
 
     private Long id;
 
-    private String name;
-
     private String locale;
+
+    private String description;
 
     @EqualsAndHashCode.Exclude
     @JsonManagedReference

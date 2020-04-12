@@ -1,0 +1,8 @@
+# Copy this file to no-docker-tests.properties and adjust the values to reflect your test database
+# if you don't want to run the tests with docker
+embedded.postgresql.enabled=false
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost:54321/cocktails-test
+spring.datasource.username=dev
+spring.datasource.password=verysecure
+
