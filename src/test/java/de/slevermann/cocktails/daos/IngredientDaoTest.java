@@ -2,14 +2,13 @@ package de.slevermann.cocktails.daos;
 
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("dbtest")
-@Transactional
 public class IngredientDaoTest {
 
     @Autowired
@@ -29,7 +26,9 @@ public class IngredientDaoTest {
 
     @BeforeEach
     public void beforeEach() {
-        jdbi.open().createUpdate("TRUNCATE ingredient CASCADE").execute();
+        try (Handle h = jdbi.open()) {
+            h.createUpdate("TRUNCATE ingredient CASCADE").execute();
+        }
     }
 
     @AfterEach
