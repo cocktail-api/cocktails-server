@@ -33,4 +33,4 @@ jobs:
       - name: Compile
         run: ./mvnw --batch-mode clean compile
       - name: Test
-        run: ./mvnw --batch-mode -Pgithub-actions test
+        run: ./mvnw --batch-mode -P github-actions test
