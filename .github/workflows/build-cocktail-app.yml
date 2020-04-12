@@ -2,7 +2,7 @@ on: [push, pull_request]
 name: "Build cocktail app"
 
 jobs:
-  container-job:
+  build-and-test:
     runs-on: ubuntu-latest
     container: openjdk:8
 
