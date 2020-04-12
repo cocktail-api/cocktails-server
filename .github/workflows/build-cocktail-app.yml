@@ -20,10 +20,10 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-  steps:
-    - name: "Checkout code"
-      uses: actions/checkout@v2
-    - name: "Compile"
-      run: ./mvnw clean compile
-    - name: "Test"
-      run: ./mvnw -Pgithub-actions test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Compile
+        run: ./mvnw clean compile
+      - name: Test
+        run: ./mvnw -Pgithub-actions test
