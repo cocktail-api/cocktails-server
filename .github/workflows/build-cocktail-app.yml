@@ -1,0 +1,29 @@
+on: [push, pull_request]
+name: "Build cocktail app"
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: openjdk:8
+
+    services:
+      postgres:
+        image: postgres:12.2-alpine
+        env:
+          POSTGRES_PASSWORD: verysecure
+          POSTGRES_USER: dev
+          POSTGRES_DB: cocktails
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@vs
+    - name: Compile
+      run: ./mvnw clean compile
+    - name: Test
+      run: ./mvnw -Pgithub-actions test
