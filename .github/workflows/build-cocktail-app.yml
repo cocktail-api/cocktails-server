@@ -21,9 +21,9 @@ jobs:
         ports:
           - 5432:5432
   steps:
-    - name: Checkout code
+    - name: "Checkout code"
       uses: actions/checkout@v2
-    - name: Compile
+    - name: "Compile"
       run: ./mvnw clean compile
-    - name: Test
+    - name: "Test"
       run: ./mvnw -Pgithub-actions test
