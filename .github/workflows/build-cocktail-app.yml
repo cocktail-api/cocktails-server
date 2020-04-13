@@ -3,9 +3,11 @@ name: "Build cocktail app"
 
 jobs:
   build-and-test:
+    env:
+      MAVEN_REPO_PATH: ".m2/repository"
+      MAVEN_OPTS: "-Dmaven.repo.local=${MAVEN_REPO_PATH}"
     runs-on: ubuntu-latest
     container: openjdk:8
-
     services:
       postgres:
         image: postgres:12.2-alpine
@@ -26,7 +28,7 @@ jobs:
       - name: Caching
         uses: actions/cache@v1
         with:
-          path: ~/.m2/repository
+          path: "${MAVEN_REPO_PATH}"
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
