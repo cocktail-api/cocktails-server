@@ -1,7 +1,12 @@
 package de.slevermann.cocktails.services;
 
+import de.slevermann.cocktails.daos.IngredientDao;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +23,21 @@ public class IngredientServiceTest {
 
     @Autowired
     private IngredientService ingredientService;
+
+    @Autowired
+    private Jdbi jdbi;
+
+    @BeforeEach
+    public void beforeEach() {
+        try (Handle h = jdbi.open()) {
+            h.createUpdate("TRUNCATE ingredient CASCADE");
+        }
+    }
+
+    @AfterEach
+    public void afterEach() {
+        beforeEach();
+    }
 
     @Test
     public void testCreate() {
