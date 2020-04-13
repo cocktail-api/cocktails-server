@@ -113,34 +113,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>io.swagger.codegen.v3</groupId>
-                <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.13</version>
-                <executions>
-                    <execution>
-                        <id>generate-server</id>
-                        <configuration>
-                            <inputSpec>${project.basedir}/cocktails-api/cocktails.yml</inputSpec>
-                            <language>spring</language>
-                            <output>${project.basedir}</output>
-                            <addCompileSourceRoot>false</addCompileSourceRoot>
-                            <generateApiTests>false</generateApiTests>
-                            <generateApiDocumentation>false</generateApiDocumentation>
-                            <generateModelTests>false</generateModelTests>
-                            <generateModelDocumentation>false</generateModelDocumentation>
-                            <modelPackage>de.slevermann.cocktails.models</modelPackage>
-                            <apiPackage>de.slevermann.cocktails.api</apiPackage>
-                            <configOptions>
-                                <java8>true</java8>
-                                <defaultInterfaces>false</defaultInterfaces>
-                                <interfaceOnly>true</interfaceOnly>
-                            </configOptions>
-                            <generateSupportingFiles>false</generateSupportingFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 

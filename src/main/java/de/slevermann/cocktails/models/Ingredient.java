@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
  * Ingredient
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T15:21:08.556+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T17:00:55.672+02:00[Europe/Berlin]")
 public class Ingredient   {
   @JsonProperty("id")
   private Long id = null;
@@ -29,11 +29,11 @@ public class Ingredient   {
 
   @JsonProperty("names")
   @Valid
-  private List<IngredientName> names = null;
+  private List<IngredientName> names = new ArrayList<>();
 
   @JsonProperty("descriptions")
   @Valid
-  private List<IngredientDescription> descriptions = null;
+  private List<IngredientDescription> descriptions = new ArrayList<>();
 
   @JsonProperty("tags")
   @Valid
@@ -85,9 +85,6 @@ public class Ingredient   {
   }
 
   public Ingredient addNamesItem(IngredientName namesItem) {
-    if (this.names == null) {
-      this.names = new ArrayList<>();
-    }
     this.names.add(namesItem);
     return this;
   }
@@ -96,9 +93,10 @@ public class Ingredient   {
    * Get names
    * @return names
   **/
-  @ApiModelProperty(value = "")
-      @Valid
-    public List<IngredientName> getNames() {
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+    @Valid
+  @Size(min=1)   public List<IngredientName> getNames() {
     return names;
   }
 
@@ -112,9 +110,6 @@ public class Ingredient   {
   }
 
   public Ingredient addDescriptionsItem(IngredientDescription descriptionsItem) {
-    if (this.descriptions == null) {
-      this.descriptions = new ArrayList<>();
-    }
     this.descriptions.add(descriptionsItem);
     return this;
   }
@@ -123,9 +118,10 @@ public class Ingredient   {
    * Get descriptions
    * @return descriptions
   **/
-  @ApiModelProperty(value = "")
-      @Valid
-    public List<IngredientDescription> getDescriptions() {
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+    @Valid
+  @Size(min=1)   public List<IngredientDescription> getDescriptions() {
     return descriptions;
   }
 
