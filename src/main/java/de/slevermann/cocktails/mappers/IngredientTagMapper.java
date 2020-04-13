@@ -11,9 +11,6 @@ import java.sql.SQLException;
 public class IngredientTagMapper implements RowMapper<IngredientTag> {
     @Override
     public IngredientTag map(ResultSet rs, StatementContext ctx) throws SQLException {
-        IngredientTag tag = new IngredientTag();
-        tag.setId(rs.getLong("id"));
-        tag.setTag(rs.getString("tag"));
-        return tag;
+        return new IngredientTag().id(rs.getLong("id"));
     }
 }

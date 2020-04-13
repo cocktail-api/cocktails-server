@@ -3,6 +3,7 @@ package de.slevermann.cocktails.models;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import de.slevermann.cocktails.models.LocalizedString;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -13,15 +14,15 @@ import javax.validation.constraints.*;
  * SearchResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T17:00:55.672+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T19:47:25.563+02:00[Europe/Berlin]")
 public class SearchResult   {
   @JsonProperty("name")
-  private String name = null;
+  private LocalizedString name = null;
 
   @JsonProperty("description")
-  private String description = null;
+  private LocalizedString description = null;
 
-  public SearchResult name(String name) {
+  public SearchResult name(LocalizedString name) {
     this.name = name;
     return this;
   }
@@ -30,17 +31,18 @@ public class SearchResult   {
    * Get name
    * @return name
   **/
-  @ApiModelProperty(example = "Williams Pear", value = "")
+  @ApiModelProperty(value = "")
   
-    public String getName() {
+    @Valid
+    public LocalizedString getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(LocalizedString name) {
     this.name = name;
   }
 
-  public SearchResult description(String description) {
+  public SearchResult description(LocalizedString description) {
     this.description = description;
     return this;
   }
@@ -49,13 +51,14 @@ public class SearchResult   {
    * Get description
    * @return description
   **/
-  @ApiModelProperty(example = "A spirit distilled from the Williams Pear", value = "")
+  @ApiModelProperty(value = "")
   
-    public String getDescription() {
+    @Valid
+    public LocalizedString getDescription() {
     return description;
   }
 
-  public void setDescription(String description) {
+  public void setDescription(LocalizedString description) {
     this.description = description;
   }
 

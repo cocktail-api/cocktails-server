@@ -3,8 +3,11 @@ package de.slevermann.cocktails.models;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import de.slevermann.cocktails.models.LocalizedString;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -13,16 +16,14 @@ import javax.validation.constraints.*;
  * IngredientDescription
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T17:00:55.672+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T19:47:25.563+02:00[Europe/Berlin]")
 public class IngredientDescription   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("name")
-  private String name = null;
-
-  @JsonProperty("locale")
-  private String locale = null;
+  @JsonProperty("descriptions")
+  @Valid
+  private List<LocalizedString> descriptions = new ArrayList<>();
 
   public IngredientDescription id(Long id) {
     this.id = id;
@@ -43,44 +44,29 @@ public class IngredientDescription   {
     this.id = id;
   }
 
-  public IngredientDescription name(String name) {
-    this.name = name;
+  public IngredientDescription descriptions(List<LocalizedString> descriptions) {
+    this.descriptions = descriptions;
+    return this;
+  }
+
+  public IngredientDescription addDescriptionsItem(LocalizedString descriptionsItem) {
+    this.descriptions.add(descriptionsItem);
     return this;
   }
 
   /**
-   * Get name
-   * @return name
+   * Get descriptions
+   * @return descriptions
   **/
-  @ApiModelProperty(example = "Vodka is a neutral spirit distilled from grain or potatoes", required = true, value = "")
+  @ApiModelProperty(required = true, value = "")
       @NotNull
-
-    public String getName() {
-    return name;
+    @Valid
+    public List<LocalizedString> getDescriptions() {
+    return descriptions;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public IngredientDescription locale(String locale) {
-    this.locale = locale;
-    return this;
-  }
-
-  /**
-   * Get locale
-   * @return locale
-  **/
-  @ApiModelProperty(example = "en-GB", required = true, value = "")
-      @NotNull
-
-    public String getLocale() {
-    return locale;
-  }
-
-  public void setLocale(String locale) {
-    this.locale = locale;
+  public void setDescriptions(List<LocalizedString> descriptions) {
+    this.descriptions = descriptions;
   }
 
 
@@ -94,13 +80,12 @@ public class IngredientDescription   {
     }
     IngredientDescription ingredientDescription = (IngredientDescription) o;
     return Objects.equals(this.id, ingredientDescription.id) &&
-        Objects.equals(this.name, ingredientDescription.name) &&
-        Objects.equals(this.locale, ingredientDescription.locale);
+        Objects.equals(this.descriptions, ingredientDescription.descriptions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, locale);
+    return Objects.hash(id, descriptions);
   }
 
   @Override
@@ -109,8 +94,7 @@ public class IngredientDescription   {
     sb.append("class IngredientDescription {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    locale: ").append(toIndentedString(locale)).append("\n");
+    sb.append("    descriptions: ").append(toIndentedString(descriptions)).append("\n");
     sb.append("}");
     return sb.toString();
   }

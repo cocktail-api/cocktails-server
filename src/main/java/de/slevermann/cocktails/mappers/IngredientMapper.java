@@ -14,7 +14,6 @@ public class IngredientMapper implements RowMapper<Ingredient> {
     public Ingredient map(ResultSet rs, StatementContext ctx) throws SQLException {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(rs.getLong("id"));
-        ingredient.setType(IngredientType.valueOf(rs.getString("type")));
         return ingredient;
     }
 }

@@ -12,10 +12,6 @@ public class IngredientNameMapper implements RowMapper<IngredientName> {
 
     @Override
     public IngredientName map(ResultSet rs, StatementContext ctx) throws SQLException {
-        IngredientName name = new IngredientName();
-        name.setId(rs.getLong("id"));
-        name.setName(rs.getString("name"));
-        name.setLocale(rs.getString("locale"));
-        return name;
+        return new IngredientName().id(rs.getLong("id"));
     }
 }

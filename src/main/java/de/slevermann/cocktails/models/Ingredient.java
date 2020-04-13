@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
  * Ingredient
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T17:00:55.672+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T19:47:25.563+02:00[Europe/Berlin]")
 public class Ingredient   {
   @JsonProperty("id")
   private Long id = null;

@@ -30,6 +30,6 @@ build/
 ### VS Code ###
 .vscode/
 
-# Top level application.properties is ignored, application.properties.example file is used instead
-/application.properties
+# Top level application-dev.properties is ignored, application-dev.properties.example file is used instead
+/application-dev.properties
 /no-docker-tests.properties
