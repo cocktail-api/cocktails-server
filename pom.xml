@@ -12,6 +12,7 @@
     <artifactId>cocktails</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cocktails</name>
+
     <description>Cocktail and Ingredient Management Application</description>
 
     <properties>
