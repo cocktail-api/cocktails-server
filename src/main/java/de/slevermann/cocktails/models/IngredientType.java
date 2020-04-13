@@ -1,33 +1,43 @@
 package de.slevermann.cocktails.models;
 
-import org.springframework.context.support.MessageSourceAccessor;
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
-import java.util.Locale;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * Gets or Sets IngredientType
+ */
 public enum IngredientType {
-    HARD_LIQUOR,
-    LIQUOR,
-    SOFT_DRINK,
-    JUICE,
-    FRUIT,
-    OTHER;
+  HARD_LIQUOR("HARD_LIQUOR"),
+    LIQUOR("LIQUOR"),
+    SOFT_DRINK("SOFT_DRINK"),
+    JUICE("JUICE"),
+    FRUIT("FRUIT"),
+    OTHER("OTHER");
 
-    public String getLocalisedName(Locale locale, MessageSourceAccessor messageSourceAccessor) {
-        switch (this) {
-            case HARD_LIQUOR:
-                return messageSourceAccessor.getMessage("de.slevermann.cocktails.ingredients.types.hard_liquor", locale);
-            case LIQUOR:
-                return messageSourceAccessor.getMessage("de.slevermann.cocktails.ingredients.types.liquor", locale);
-            case SOFT_DRINK:
-                return messageSourceAccessor.getMessage("de.slevermann.cocktails.ingredients.types.soft_drink", locale);
-            case JUICE:
-                return messageSourceAccessor.getMessage("de.slevermann.cocktails.ingredients.types.juice", locale);
-            case FRUIT:
-                return messageSourceAccessor.getMessage("de.slevermann.cocktails.ingredients.types.fruit", locale);
-            case OTHER:
-                return messageSourceAccessor.getMessage("de.slevermann.cocktails.ingredients.types.other", locale);
-            default:
-                throw new RuntimeException("Missing translation data for " + this.toString() + ". This is a bug.");
-        }
+  private String value;
+
+  IngredientType(String value) {
+    this.value = value;
+  }
+
+  @Override
+  @JsonValue
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static IngredientType fromValue(String text) {
+    for (IngredientType b : IngredientType.values()) {
+      if (String.valueOf(b.value).equals(text)) {
+        return b;
+      }
     }
+    return null;
+  }
 }

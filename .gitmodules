@@ -1,0 +1,3 @@
+[submodule "cocktails-api"]
+	path = cocktails-api
+	url = git@github.com:cocktail-api/cocktails-api

@@ -10,54 +10,53 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * IngredientTag
+ * SearchResult
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T15:21:08.556+02:00[Europe/Berlin]")
-public class IngredientTag   {
-  @JsonProperty("id")
-  private Long id = null;
+public class SearchResult   {
+  @JsonProperty("name")
+  private String name = null;
 
-  @JsonProperty("tag")
-  private String tag = null;
+  @JsonProperty("description")
+  private String description = null;
 
-  public IngredientTag id(Long id) {
-    this.id = id;
+  public SearchResult name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get name
+   * @return name
   **/
-  @ApiModelProperty(example = "20", value = "")
+  @ApiModelProperty(example = "Williams Pear", value = "")
   
-    public Long getId() {
-    return id;
+    public String getName() {
+    return name;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public IngredientTag tag(String tag) {
-    this.tag = tag;
+  public SearchResult description(String description) {
+    this.description = description;
     return this;
   }
 
   /**
-   * Get tag
-   * @return tag
+   * Get description
+   * @return description
   **/
-  @ApiModelProperty(example = "Delicious spirits", required = true, value = "")
-      @NotNull
-
-    public String getTag() {
-    return tag;
+  @ApiModelProperty(example = "A spirit distilled from the Williams Pear", value = "")
+  
+    public String getDescription() {
+    return description;
   }
 
-  public void setTag(String tag) {
-    this.tag = tag;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
 
@@ -69,23 +68,23 @@ public class IngredientTag   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    IngredientTag ingredientTag = (IngredientTag) o;
-    return Objects.equals(this.id, ingredientTag.id) &&
-        Objects.equals(this.tag, ingredientTag.tag);
+    SearchResult searchResult = (SearchResult) o;
+    return Objects.equals(this.name, searchResult.name) &&
+        Objects.equals(this.description, searchResult.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tag);
+    return Objects.hash(name, description);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class IngredientTag {\n");
+    sb.append("class SearchResult {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("}");
     return sb.toString();
   }
