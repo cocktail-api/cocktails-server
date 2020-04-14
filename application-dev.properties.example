@@ -3,3 +3,4 @@
 spring.datasource.url=jdbc:postgresql://localhost:54321/cocktails
 spring.datasource.username=dev
 spring.datasource.password=verysecure
+spring.jackson.serialization.INDENT_OUTPUT=true

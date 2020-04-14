@@ -2,17 +2,30 @@ package de.slevermann.cocktails.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.slevermann.cocktails.api.IngredientsApi;
-import de.slevermann.cocktails.models.Ingredient;
+import de.slevermann.cocktails.models.GetIngredient;
+import de.slevermann.cocktails.services.IngredientService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@RestController
+@Controller
 public class IngredientsController implements IngredientsApi {
+
+    private final IngredientService ingredientService;
+
+    private final HttpServletRequest request;
+
+    public IngredientsController(IngredientService ingredientService, HttpServletRequest request) {
+        this.ingredientService = ingredientService;
+        this.request = request;
+    }
+
     @Override
     public Optional<ObjectMapper> getObjectMapper() {
         return Optional.empty();
@@ -24,32 +37,9 @@ public class IngredientsController implements IngredientsApi {
     }
 
     @Override
-    public ResponseEntity<List<Ingredient>> createBulkIngredients(@Valid List<Ingredient> body) {
-        return null;
-    }
+    public ResponseEntity<GetIngredient> getIngredientById(Long id) {
+        List<String> locales = Collections.list(request.getLocales()).stream().map(Locale::toLanguageTag).collect(Collectors.toList());
 
-    @Override
-    public ResponseEntity<Ingredient> createIngredient(@Valid Ingredient body) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteIngredient(Long id) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Ingredient> getAllIngredients() {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Ingredient> getIngredientById(Long id) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Ingredient> updateIngredient(@Valid Ingredient body) {
-        return null;
+        return ResponseEntity.ok(ingredientService.getIngredientById(id, locales));
     }
 }

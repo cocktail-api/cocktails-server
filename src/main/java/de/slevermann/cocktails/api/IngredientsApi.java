@@ -5,7 +5,7 @@
  */
 package de.slevermann.cocktails.api;
 
-import de.slevermann.cocktails.models.Ingredient;
+import de.slevermann.cocktails.models.GetIngredient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-13T19:47:25.563+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-14T23:30:37.584+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -41,65 +41,12 @@ public interface IngredientsApi {
 
     
 
-    @ApiOperation(value = "Create multiple new ingredients", nickname = "createBulkIngredients", notes = "", response = Ingredient.class, responseContainer = "List", tags={ "ingredients", })
+    @ApiOperation(value = "Get a single ingredient by its ID", nickname = "getIngredientById", notes = "", response = GetIngredient.class, tags={ "ingredients", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "All ingredients were created successfully", response = Ingredient.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "One or more ingredients were malformed", response = String.class) })
-    @RequestMapping(value = "/ingredients/bulk",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<List<Ingredient>> createBulkIngredients(@ApiParam(value = "New ingredients"  )  @Valid @RequestBody List<Ingredient> body);
-
-
-    @ApiOperation(value = "Create a new ingredient", nickname = "createIngredient", notes = "", response = Ingredient.class, tags={ "ingredients", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Creation successful", response = Ingredient.class),
-        @ApiResponse(code = 400, message = "Input object malformed", response = String.class) })
-    @RequestMapping(value = "/ingredients",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<Ingredient> createIngredient(@ApiParam(value = "New ingredient"  )  @Valid @RequestBody Ingredient body);
-
-
-    @ApiOperation(value = "Delete a single ingredient", nickname = "deleteIngredient", notes = "", tags={ "ingredients", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 204, message = "Ingredient was deleted successfully"),
-        @ApiResponse(code = 404, message = "ID not found") })
-    @RequestMapping(value = "/ingredients/{id}",
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteIngredient(@ApiParam(value = "ID of the ingredient to delete",required=true) @PathVariable("id") Long id);
-
-
-    @ApiOperation(value = "Return a list of ingredients", nickname = "getAllIngredients", notes = "", response = Ingredient.class, tags={ "ingredients", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "JSON Array of ingredients", response = Ingredient.class) })
-    @RequestMapping(value = "/ingredients",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<Ingredient> getAllIngredients();
-
-
-    @ApiOperation(value = "Get a single ingredient", nickname = "getIngredientById", notes = "", response = Ingredient.class, tags={ "ingredients", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "JSON Ingredient", response = Ingredient.class),
-        @ApiResponse(code = 404, message = "ID not found") })
+        @ApiResponse(code = 200, message = "Successfully received ingredient", response = GetIngredient.class) })
     @RequestMapping(value = "/ingredients/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Ingredient> getIngredientById(@ApiParam(value = "ID of the ingredient to get",required=true) @PathVariable("id") Long id);
-
-
-    @ApiOperation(value = "Update existing ingredient", nickname = "updateIngredient", notes = "", response = Ingredient.class, tags={ "ingredients", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Update successful", response = Ingredient.class),
-        @ApiResponse(code = 400, message = "Input object malformed", response = String.class),
-        @ApiResponse(code = 404, message = "Ingredient with ID not found") })
-    @RequestMapping(value = "/ingredients",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.PATCH)
-    ResponseEntity<Ingredient> updateIngredient(@ApiParam(value = "Updated ingredient"  )  @Valid @RequestBody Ingredient body);
+    ResponseEntity<GetIngredient> getIngredientById(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
 
 }
