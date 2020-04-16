@@ -7,4 +7,5 @@
 
     <include file="migrations/0001-create-language.xml" relativeToChangelogFile="true"/>
     <include file="migrations/0002-create-ingredient.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/0003-locale-split.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -13,7 +13,8 @@ public class GetIngredientMapper implements RowMapper<GetIngredient> {
     public GetIngredient map(ResultSet rs, StatementContext ctx) throws SQLException {
         return new GetIngredient()
                 .id(rs.getLong("id"))
-                .locale(rs.getString("locale"))
+                .language(rs.getString("language"))
+                .country(rs.getString("country"))
                 .typeId(rs.getLong("typeid"))
                 .type(rs.getString("typename"))
                 .name(rs.getString("name"))

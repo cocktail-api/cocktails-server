@@ -13,13 +13,16 @@ import javax.validation.constraints.*;
  * GetIngredient
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-14T23:30:37.584+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-16T17:30:10.709+02:00[Europe/Berlin]")
 public class GetIngredient   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("locale")
-  private String locale = null;
+  @JsonProperty("language")
+  private String language = null;
+
+  @JsonProperty("country")
+  private String country = null;
 
   @JsonProperty("type")
   private String type = null;
@@ -39,10 +42,10 @@ public class GetIngredient   {
   }
 
   /**
-   * Get id
+   * The database ID of the locale
    * @return id
   **/
-  @ApiModelProperty(example = "10", required = true, value = "")
+  @ApiModelProperty(example = "10", required = true, value = "The database ID of the locale")
       @NotNull
 
     public Long getId() {
@@ -53,24 +56,44 @@ public class GetIngredient   {
     this.id = id;
   }
 
-  public GetIngredient locale(String locale) {
-    this.locale = locale;
+  public GetIngredient language(String language) {
+    this.language = language;
     return this;
   }
 
   /**
-   * Get locale
-   * @return locale
+   * A 2-letter language designator so that a language-country tuple like de-DE can be formed
+   * @return language
   **/
-  @ApiModelProperty(example = "en", required = true, value = "")
+  @ApiModelProperty(example = "de", required = true, value = "A 2-letter language designator so that a language-country tuple like de-DE can be formed")
       @NotNull
 
-    public String getLocale() {
-    return locale;
+  @Size(min=2,max=2)   public String getLanguage() {
+    return language;
   }
 
-  public void setLocale(String locale) {
-    this.locale = locale;
+  public void setLanguage(String language) {
+    this.language = language;
+  }
+
+  public GetIngredient country(String country) {
+    this.country = country;
+    return this;
+  }
+
+  /**
+   * A 2-letter region designator so that a language-country tuple like de-DE can be formed
+   * @return country
+  **/
+  @ApiModelProperty(example = "DE", required = true, value = "A 2-letter region designator so that a language-country tuple like de-DE can be formed")
+      @NotNull
+
+  @Size(min=2,max=2)   public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
   }
 
   public GetIngredient type(String type) {
@@ -164,7 +187,8 @@ public class GetIngredient   {
     }
     GetIngredient getIngredient = (GetIngredient) o;
     return Objects.equals(this.id, getIngredient.id) &&
-        Objects.equals(this.locale, getIngredient.locale) &&
+        Objects.equals(this.language, getIngredient.language) &&
+        Objects.equals(this.country, getIngredient.country) &&
         Objects.equals(this.type, getIngredient.type) &&
         Objects.equals(this.typeId, getIngredient.typeId) &&
         Objects.equals(this.name, getIngredient.name) &&
@@ -173,7 +197,7 @@ public class GetIngredient   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, locale, type, typeId, name, description);
+    return Objects.hash(id, language, country, type, typeId, name, description);
   }
 
   @Override
@@ -182,7 +206,8 @@ public class GetIngredient   {
     sb.append("class GetIngredient {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    locale: ").append(toIndentedString(locale)).append("\n");
+    sb.append("    language: ").append(toIndentedString(language)).append("\n");
+    sb.append("    country: ").append(toIndentedString(country)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    typeId: ").append(toIndentedString(typeId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");

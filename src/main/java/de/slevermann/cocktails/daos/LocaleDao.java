@@ -1,19 +1,21 @@
 package de.slevermann.cocktails.daos;
 
-import de.slevermann.cocktails.models.GetIngredient;
+import de.slevermann.cocktails.models.CreateLocale;
 import de.slevermann.cocktails.models.Locale;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
 
 @UseClasspathSqlLocator
-public interface IngredientDao {
+public interface LocaleDao {
 
     @SqlQuery
-    GetIngredient findByIdAndLocale(@Bind Long id, @Bind String language, @Bind String country);
+    List<Locale> getAll();
 
     @SqlQuery
-    List<Locale> findLocalesForIngredient(@Bind Long id);
+    Locale findByTuple(@Bind String language, @Bind String country);
 }

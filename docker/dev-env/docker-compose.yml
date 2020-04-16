@@ -9,3 +9,13 @@ services:
     ports:
       - "54321:5432"
     restart: always
+  swagger_ui:
+    image: swaggerapi/swagger-ui:v3.25.0
+    environment:
+      SWAGGER_JSON: /spec/cocktails.yml
+    volumes:
+      - type: bind
+        source: ../../cocktails-api/cocktails.yml
+        target: /spec/cocktails.yml
+    ports:
+      - "8888:8080"

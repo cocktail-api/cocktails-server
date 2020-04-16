@@ -1,0 +1,64 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="3" author="Simon Levermann">
+        <comment>Split the locales into the language and country parts for better search capabilities</comment>
+        <addColumn tableName="language">
+            <column name="country" type="varchar"/>
+        </addColumn>
+        <dropUniqueConstraint tableName="language" constraintName="language_locale_key"/>
+        <dropUniqueConstraint tableName="language" constraintName="language_name_key"/>
+        <dropUniqueConstraint tableName="language" constraintName="language_localized_name_key"/>
+        <sqlFile path="initData/addCountryCode.sql" relativeToChangelogFile="true"/>
+        <renameColumn tableName="language" oldColumnName="locale" newColumnName="language"/>
+        <addUniqueConstraint tableName="language" columnNames="language, country"
+                             constraintName="language_unique_locale_constraint"/>
+        <addNotNullConstraint tableName="language" columnName="country"/>
+
+        <!-- Create columns for splitting the locale primary key-->
+        <addColumn tableName="ingredient_data">
+            <column name="language_language" type="varchar"/>
+            <column name="language_country" type="varchar"/>
+        </addColumn>
+        <addColumn tableName="ingredient_type_name">
+            <column name="language_language" type="varchar"/>
+            <column name="language_country" type="varchar"/>
+        </addColumn>
+        <!-- Load the split language data into the new fields -->
+        <sqlFile path="initData/loadSplitLanguages.sql" relativeToChangelogFile="true"/>
+        <!-- Drop the old foreign keys -->
+        <dropForeignKeyConstraint baseTableName="ingredient_type_name"
+                                  constraintName="ingredient_type_name_language_fk"/>
+        <dropForeignKeyConstraint baseTableName="ingredient_data"
+                                  constraintName="ingredient_data_language_fk"/>
+        <!-- Drop the old primary keys -->
+        <dropPrimaryKey tableName="language" constraintName="language_pk"/>
+        <dropColumn tableName="ingredient_type_name" columnName="language_id"/>
+        <dropColumn tableName="ingredient_data" columnName="language_id"/>
+        <dropColumn tableName="language" columnName="id"/>
+
+        <!-- Create the new relations -->
+        <addPrimaryKey tableName="language" columnNames="language, country" constraintName="language_pk"/>
+        <addForeignKeyConstraint baseTableName="ingredient_type_name"
+                                 baseColumnNames="language_language, language_country"
+                                 constraintName="ingredient_type_name_language_fk"
+                                 referencedTableName="language"
+                                 referencedColumnNames="language, country"/>
+        <addForeignKeyConstraint baseTableName="ingredient_data"
+                                 baseColumnNames="language_language, language_country"
+                                 constraintName="ingredient_data_language_fk"
+                                 referencedTableName="language"
+                                 referencedColumnNames="language, country"/>
+
+        <!-- Create the new primary keys -->
+        <addPrimaryKey tableName="ingredient_type_name"
+                       columnNames="ingredient_type_id, language_language, language_country"
+                       constraintName="ingredient_type_name_pk"/>
+        <addPrimaryKey tableName="ingredient_data"
+                       columnNames="ingredient_id, language_language, language_country"
+                       constraintName="ingredient_data_pk"/>
+    </changeSet>
+</databaseChangeLog>
