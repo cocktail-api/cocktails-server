@@ -3,6 +3,7 @@ package de.slevermann.cocktails.models;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.TranslatedString;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,14 +12,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * An ingredient for creation on the server
+ * An ingredient, with all languages
  */
-@ApiModel(description = "An ingredient for creation on the server")
+@ApiModel(description = "An ingredient, with all languages")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-17T18:13:03.596+02:00[Europe/Berlin]")
-public class CreateIngredient   {
-  @JsonProperty("typeId")
-  private Long typeId = null;
+public class Ingredient   {
+  @JsonProperty("id")
+  private Long id = null;
+
+  @JsonProperty("type")
+  private IngredientType type = null;
 
   @JsonProperty("names")
   private TranslatedString names = null;
@@ -26,27 +30,48 @@ public class CreateIngredient   {
   @JsonProperty("descriptions")
   private TranslatedString descriptions = null;
 
-  public CreateIngredient typeId(Long typeId) {
-    this.typeId = typeId;
+  public Ingredient id(Long id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get typeId
-   * @return typeId
+   * Get id
+   * @return id
   **/
-  @ApiModelProperty(example = "42", required = true, value = "")
+  @ApiModelProperty(example = "1337", required = true, value = "")
       @NotNull
 
-    public Long getTypeId() {
-    return typeId;
+    public Long getId() {
+    return id;
   }
 
-  public void setTypeId(Long typeId) {
-    this.typeId = typeId;
+  public void setId(Long id) {
+    this.id = id;
   }
 
-  public CreateIngredient names(TranslatedString names) {
+  public Ingredient type(IngredientType type) {
+    this.type = type;
+    return this;
+  }
+
+  /**
+   * Get type
+   * @return type
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
+    public IngredientType getType() {
+    return type;
+  }
+
+  public void setType(IngredientType type) {
+    this.type = type;
+  }
+
+  public Ingredient names(TranslatedString names) {
     this.names = names;
     return this;
   }
@@ -67,7 +92,7 @@ public class CreateIngredient   {
     this.names = names;
   }
 
-  public CreateIngredient descriptions(TranslatedString descriptions) {
+  public Ingredient descriptions(TranslatedString descriptions) {
     this.descriptions = descriptions;
     return this;
   }
@@ -97,23 +122,25 @@ public class CreateIngredient   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateIngredient createIngredient = (CreateIngredient) o;
-    return Objects.equals(this.typeId, createIngredient.typeId) &&
-        Objects.equals(this.names, createIngredient.names) &&
-        Objects.equals(this.descriptions, createIngredient.descriptions);
+    Ingredient ingredient = (Ingredient) o;
+    return Objects.equals(this.id, ingredient.id) &&
+        Objects.equals(this.type, ingredient.type) &&
+        Objects.equals(this.names, ingredient.names) &&
+        Objects.equals(this.descriptions, ingredient.descriptions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(typeId, names, descriptions);
+    return Objects.hash(id, type, names, descriptions);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateIngredient {\n");
+    sb.append("class Ingredient {\n");
     
-    sb.append("    typeId: ").append(toIndentedString(typeId)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    names: ").append(toIndentedString(names)).append("\n");
     sb.append("    descriptions: ").append(toIndentedString(descriptions)).append("\n");
     sb.append("}");

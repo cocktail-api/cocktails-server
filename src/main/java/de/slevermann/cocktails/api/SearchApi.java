@@ -5,7 +5,7 @@
  */
 package de.slevermann.cocktails.api;
 
-import de.slevermann.cocktails.models.Locale;
+import de.slevermann.cocktails.models.SearchResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -29,11 +29,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-16T17:30:10.709+02:00[Europe/Berlin]")
-@Api(value = "locales", description = "the locales API")
-public interface LocalesApi {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-17T18:13:03.596+02:00[Europe/Berlin]")
+@Api(value = "search", description = "the search API")
+public interface SearchApi {
 
-    Logger log = LoggerFactory.getLogger(LocalesApi.class);
+    Logger log = LoggerFactory.getLogger(SearchApi.class);
 
     Optional<ObjectMapper> getObjectMapper();
 
@@ -41,12 +41,12 @@ public interface LocalesApi {
 
     
 
-    @ApiOperation(value = "Get the server's list of supported locales", nickname = "getLocales", notes = "", response = Locale.class, responseContainer = "List", tags={ "locales", })
+    @ApiOperation(value = "Search for ingredients and cocktails", nickname = "search", notes = "", response = SearchResult.class, responseContainer = "List", tags={ "ingredients","cocktails", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "A list of locales supported by the server", response = Locale.class, responseContainer = "List") })
-    @RequestMapping(value = "/locales",
+        @ApiResponse(code = 200, message = "Success", response = SearchResult.class, responseContainer = "List") })
+    @RequestMapping(value = "/search",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Locale>> getLocales();
+    ResponseEntity<List<SearchResult>> search(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "q", required = true) String q);
 
 }

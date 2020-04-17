@@ -1,8 +1,5 @@
 package de.slevermann.cocktails.config;
 
-import de.slevermann.cocktails.daos.IngredientDao;
-import de.slevermann.cocktails.daos.IngredientTypeDao;
-import de.slevermann.cocktails.daos.LocaleDao;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.enums.EnumStrategy;
 import org.jdbi.v3.core.enums.Enums;
@@ -32,20 +29,5 @@ public class JdbiConfiguration {
         rowMappers.forEach(jdbi::registerRowMapper);
         jdbi.getConfig().get(Enums.class).setEnumStrategy(EnumStrategy.BY_NAME);
         return jdbi;
-    }
-
-    @Bean
-    public IngredientDao ingredientDao(Jdbi jdbi) {
-        return jdbi.onDemand(IngredientDao.class);
-    }
-
-    @Bean
-    public LocaleDao localeDao(Jdbi jdbi) {
-        return jdbi.onDemand(LocaleDao.class);
-    }
-
-    @Bean
-    public IngredientTypeDao ingredientTypeDao(Jdbi jdbi) {
-        return jdbi.onDemand(IngredientTypeDao.class);
     }
 }

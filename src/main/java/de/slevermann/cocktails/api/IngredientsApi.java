@@ -6,8 +6,10 @@
 package de.slevermann.cocktails.api;
 
 import de.slevermann.cocktails.models.CreateIngredient;
-import de.slevermann.cocktails.models.GetIngredient;
+import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
+import de.slevermann.cocktails.models.LocalizedIngredient;
+import de.slevermann.cocktails.models.LocalizedIngredientType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -31,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-16T17:30:10.709+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-17T18:13:03.596+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -43,33 +45,64 @@ public interface IngredientsApi {
 
     
 
-    @ApiOperation(value = "Create a new ingredient", nickname = "createNewIngredient", notes = "", response = GetIngredient.class, tags={ "ingredients", })
+    @ApiOperation(value = "Create a new ingredient in the database", nickname = "createIngredient", notes = "", response = Ingredient.class, tags={ "ingredients", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "The created ingredient", response = GetIngredient.class),
-        @ApiResponse(code = 400, message = "The ingredient was invalid") })
+        @ApiResponse(code = 200, message = "Retrieve the created ingredient", response = Ingredient.class),
+        @ApiResponse(code = 400, message = "Invalid ingredient data") })
     @RequestMapping(value = "/ingredients",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<GetIngredient> createNewIngredient(@ApiParam(value = "The ingredient to create" ,required=true )  @Valid @RequestBody CreateIngredient body);
+    ResponseEntity<Ingredient> createIngredient(@ApiParam(value = "The ingredient to create" ,required=true )  @Valid @RequestBody CreateIngredient body);
 
 
-    @ApiOperation(value = "Get a single ingredient by its ID", nickname = "getIngredientById", notes = "", response = GetIngredient.class, tags={ "ingredients", })
+    @ApiOperation(value = "Get a single ingredient by its ID", nickname = "getIngredientById", notes = "", response = Ingredient.class, tags={ "ingredients", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successfully received ingredient", response = GetIngredient.class),
+        @ApiResponse(code = 200, message = "Found ingredient", response = Ingredient.class),
         @ApiResponse(code = 404, message = "Ingredient not found") })
     @RequestMapping(value = "/ingredients/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<GetIngredient> getIngredientById(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
+    ResponseEntity<Ingredient> getIngredientById(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "Get the available ingredient types", nickname = "getIngredientTypes", notes = "", response = IngredientType.class, responseContainer = "List", tags={ "ingredients", })
+    @ApiOperation(value = "Get an ingredient type by its ID", nickname = "getIngredientTypeById", notes = "", response = IngredientType.class, responseContainer = "List", tags={ "ingredients", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "A list of ingredient types", response = IngredientType.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "Success", response = IngredientType.class, responseContainer = "List"),
+        @ApiResponse(code = 404, message = "Ingredient Type not found") })
+    @RequestMapping(value = "/ingredients/types/{id}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<IngredientType>> getIngredientTypeById(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
+
+
+    @ApiOperation(value = "Get a list of ingredient types on the server", nickname = "getIngredientTypes", notes = "", response = LocalizedIngredientType.class, tags={ "ingredients", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success", response = LocalizedIngredientType.class) })
     @RequestMapping(value = "/ingredients/types",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<IngredientType>> getIngredientTypes();
+    ResponseEntity<LocalizedIngredientType> getIngredientTypes();
+
+
+    @ApiOperation(value = "Get all ingredients", nickname = "getIngredients", notes = "", response = LocalizedIngredient.class, responseContainer = "List", tags={ "ingredients", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success", response = LocalizedIngredient.class, responseContainer = "List") })
+    @RequestMapping(value = "/ingredients",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<LocalizedIngredient>> getIngredients();
+
+
+    @ApiOperation(value = "Update the ingredient with the specified ID", nickname = "updateIngredient", notes = "", response = Ingredient.class, tags={ "ingredients", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Updated successfully", response = Ingredient.class),
+        @ApiResponse(code = 400, message = "Invalid ingredient data"),
+        @ApiResponse(code = 404, message = "Ingredient not found") })
+    @RequestMapping(value = "/ingredients/{id}",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
+    ResponseEntity<Ingredient> updateIngredient(@ApiParam(value = "The ingredient data to update with" ,required=true )  @Valid @RequestBody CreateIngredient body,@ApiParam(value = "",required=true) @PathVariable("id") Long id);
 
 }

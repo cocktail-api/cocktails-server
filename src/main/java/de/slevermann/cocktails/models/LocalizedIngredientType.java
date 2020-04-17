@@ -3,7 +3,6 @@ package de.slevermann.cocktails.models;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import de.slevermann.cocktails.models.TranslatedString;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -11,19 +10,22 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * An ingredient type, with all languages
+ * An ingredient type in a single language
  */
-@ApiModel(description = "An ingredient type, with all languages")
+@ApiModel(description = "An ingredient type in a single language")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-17T18:13:03.596+02:00[Europe/Berlin]")
-public class IngredientType   {
+public class LocalizedIngredientType   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("names")
-  private TranslatedString names = null;
+  @JsonProperty("language")
+  private String language = null;
 
-  public IngredientType id(Long id) {
+  @JsonProperty("type")
+  private String type = null;
+
+  public LocalizedIngredientType id(Long id) {
     this.id = id;
     return this;
   }
@@ -43,25 +45,44 @@ public class IngredientType   {
     this.id = id;
   }
 
-  public IngredientType names(TranslatedString names) {
-    this.names = names;
+  public LocalizedIngredientType language(String language) {
+    this.language = language;
     return this;
   }
 
   /**
-   * Get names
-   * @return names
+   * Get language
+   * @return language
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(example = "de", required = true, value = "")
       @NotNull
 
-    @Valid
-    public TranslatedString getNames() {
-    return names;
+    public String getLanguage() {
+    return language;
   }
 
-  public void setNames(TranslatedString names) {
-    this.names = names;
+  public void setLanguage(String language) {
+    this.language = language;
+  }
+
+  public LocalizedIngredientType type(String type) {
+    this.type = type;
+    return this;
+  }
+
+  /**
+   * Get type
+   * @return type
+  **/
+  @ApiModelProperty(example = "Starker Alkohol", required = true, value = "")
+      @NotNull
+
+    public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
 
@@ -73,23 +94,25 @@ public class IngredientType   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    IngredientType ingredientType = (IngredientType) o;
-    return Objects.equals(this.id, ingredientType.id) &&
-        Objects.equals(this.names, ingredientType.names);
+    LocalizedIngredientType localizedIngredientType = (LocalizedIngredientType) o;
+    return Objects.equals(this.id, localizedIngredientType.id) &&
+        Objects.equals(this.language, localizedIngredientType.language) &&
+        Objects.equals(this.type, localizedIngredientType.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, names);
+    return Objects.hash(id, language, type);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class IngredientType {\n");
+    sb.append("class LocalizedIngredientType {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    names: ").append(toIndentedString(names)).append("\n");
+    sb.append("    language: ").append(toIndentedString(language)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("}");
     return sb.toString();
   }
