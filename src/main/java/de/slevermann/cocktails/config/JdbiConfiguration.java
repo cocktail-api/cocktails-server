@@ -1,5 +1,6 @@
 package de.slevermann.cocktails.config;
 
+import de.slevermann.cocktails.daos.IngredientDao;
 import de.slevermann.cocktails.daos.IngredientTypeDao;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.enums.EnumStrategy;
@@ -35,5 +36,10 @@ public class JdbiConfiguration {
     @Bean
     public IngredientTypeDao ingredientTypeDao(Jdbi jdbi) {
         return jdbi.onDemand(IngredientTypeDao.class);
+    }
+
+    @Bean
+    public IngredientDao ingredientDao(Jdbi jdbi) {
+        return jdbi.onDemand(IngredientDao.class);
     }
 }

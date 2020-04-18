@@ -3,6 +3,7 @@ package de.slevermann.cocktails.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.slevermann.cocktails.api.IngredientsApi;
 import de.slevermann.cocktails.models.*;
+import de.slevermann.cocktails.services.IngredientService;
 import de.slevermann.cocktails.services.IngredientTypeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,10 +17,14 @@ import java.util.Optional;
 public class IngredientsController implements IngredientsApi {
 
     private final IngredientTypeService ingredientTypeService;
+
+    private final IngredientService ingredientService;
+
     private final HttpServletRequest request;
 
-    public IngredientsController(IngredientTypeService ingredientTypeService, HttpServletRequest request) {
+    public IngredientsController(IngredientTypeService ingredientTypeService, IngredientService ingredientService, HttpServletRequest request) {
         this.ingredientTypeService = ingredientTypeService;
+        this.ingredientService = ingredientService;
         this.request = request;
     }
 
@@ -40,7 +45,7 @@ public class IngredientsController implements IngredientsApi {
 
     @Override
     public ResponseEntity<Ingredient> getIngredientById(Long id) {
-        return null;
+        return ResponseEntity.ok(ingredientService.getById(id));
     }
 
     @Override
@@ -55,7 +60,7 @@ public class IngredientsController implements IngredientsApi {
 
     @Override
     public ResponseEntity<List<LocalizedIngredient>> getIngredients() {
-        return null;
+        return ResponseEntity.ok(ingredientService.getAll(request.getLocales()));
     }
 
     @Override
