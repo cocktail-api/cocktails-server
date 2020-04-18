@@ -1,5 +1,6 @@
 package de.slevermann.cocktails.config;
 
+import de.slevermann.cocktails.daos.IngredientTypeDao;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.enums.EnumStrategy;
 import org.jdbi.v3.core.enums.Enums;
@@ -29,5 +30,10 @@ public class JdbiConfiguration {
         rowMappers.forEach(jdbi::registerRowMapper);
         jdbi.getConfig().get(Enums.class).setEnumStrategy(EnumStrategy.BY_NAME);
         return jdbi;
+    }
+
+    @Bean
+    public IngredientTypeDao ingredientTypeDao(Jdbi jdbi) {
+        return jdbi.onDemand(IngredientTypeDao.class);
     }
 }
