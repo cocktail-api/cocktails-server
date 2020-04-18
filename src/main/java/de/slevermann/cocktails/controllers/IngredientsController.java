@@ -45,7 +45,7 @@ public class IngredientsController implements IngredientsApi {
 
     @Override
     public ResponseEntity<IngredientType> getIngredientTypeById(Long id) {
-        return null;
+        return ResponseEntity.ok(ingredientTypeService.getById(id));
     }
 
     @Override
