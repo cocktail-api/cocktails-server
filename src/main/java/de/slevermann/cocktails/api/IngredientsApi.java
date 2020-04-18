@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-17T18:13:03.596+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-17T19:58:37.019+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -76,13 +76,13 @@ public interface IngredientsApi {
     ResponseEntity<List<IngredientType>> getIngredientTypeById(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "Get a list of ingredient types on the server", nickname = "getIngredientTypes", notes = "", response = LocalizedIngredientType.class, tags={ "ingredients", })
+    @ApiOperation(value = "Get a list of ingredient types on the server", nickname = "getIngredientTypes", notes = "", response = LocalizedIngredientType.class, responseContainer = "List", tags={ "ingredients", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = LocalizedIngredientType.class) })
+        @ApiResponse(code = 200, message = "Success", response = LocalizedIngredientType.class, responseContainer = "List") })
     @RequestMapping(value = "/ingredients/types",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<LocalizedIngredientType> getIngredientTypes();
+    ResponseEntity<List<LocalizedIngredientType>> getIngredientTypes();
 
 
     @ApiOperation(value = "Get all ingredients", nickname = "getIngredients", notes = "", response = LocalizedIngredient.class, responseContainer = "List", tags={ "ingredients", })
