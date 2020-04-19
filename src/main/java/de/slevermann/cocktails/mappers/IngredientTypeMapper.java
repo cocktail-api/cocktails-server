@@ -1,11 +1,10 @@
 package de.slevermann.cocktails.mappers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.TranslatedString;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.jdbi.v3.postgres.HStoreColumnMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,23 +12,18 @@ import java.sql.SQLException;
 @Mapper
 public class IngredientTypeMapper implements RowMapper<IngredientType> {
 
-    private final Jackson2ObjectMapperBuilder builder;
+    private final HStoreColumnMapper hStoreColumnMapper;
 
-    public IngredientTypeMapper(Jackson2ObjectMapperBuilder builder) {
-        this.builder = builder;
+    public IngredientTypeMapper(HStoreColumnMapper hStoreColumnMapper) {
+        this.hStoreColumnMapper = hStoreColumnMapper;
     }
 
     @Override
     public IngredientType map(ResultSet rs, StatementContext ctx) throws SQLException {
-        TranslatedString translatedString;
-        try {
-            translatedString = builder.build().readValue(rs.getString("name"), TranslatedString.class);
-        } catch (JsonProcessingException e) {
-            throw new SQLException(e);
-        }
-
+        TranslatedString ts = new TranslatedString();
+        ts.putAll(hStoreColumnMapper.map(rs, "name", ctx));
         return new IngredientType()
                 .id(rs.getLong("id"))
-                .names(translatedString);
+                .names(ts);
     }
 }
