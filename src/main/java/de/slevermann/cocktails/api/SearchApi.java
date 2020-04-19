@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-18T10:28:44.813+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-19T14:25:15.031+02:00[Europe/Berlin]")
 @Api(value = "search", description = "the search API")
 public interface SearchApi {
 
@@ -47,6 +47,6 @@ public interface SearchApi {
     @RequestMapping(value = "/search",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<SearchResult>> search(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "q", required = true) String q);
+    ResponseEntity<List<SearchResult>> search(@NotNull @ApiParam(value = "The term to search for", required = true) @Valid @RequestParam(value = "q", required = true) String q);
 
 }

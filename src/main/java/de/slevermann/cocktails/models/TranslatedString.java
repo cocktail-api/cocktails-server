@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "A translated string")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-18T10:28:44.813+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-19T14:25:15.031+02:00[Europe/Berlin]")
 public class TranslatedString extends HashMap<String, String>  {
 
   @Override

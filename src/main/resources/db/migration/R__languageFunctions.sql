@@ -10,46 +10,42 @@ SELECT CASE
            WHEN store ? 'de' THEN 'de'
            END
 $$
-    LANGUAGE SQL IMMUTABLE
+    LANGUAGE SQL STABLE
                  STRICT;
 
 -- Find the actual translations for an entry
 -- Returns the preferred language if it is present as a key, otherwise falls back through the list to different values
 CREATE OR REPLACE FUNCTION find_translations(store hstore, preferred varchar) RETURNS varchar AS
 $$
-SELECT COALESCE(store -> preferred, store -> 'en', store -> 'de')
+SELECT COALESCE(store -> preferred,
+                store -> 'en',
+                store -> 'de')
 $$
-    LANGUAGE SQL IMMUTABLE
+    LANGUAGE SQL STABLE
                  STRICT;
 
--- Search for a search term in a text indexed column
--- This should be used for long data like descriptions or instructions
-CREATE OR REPLACE FUNCTION match_text_index(store hstore, query text) RETURNS BOOLEAN AS
-$$
-SELECT to_tsvector('english', store -> 'en') @@ plainto_tsquery('english', query) OR
-       to_tsvector('german', store -> 'en') @@ plainto_tsquery('german', query)
-$$
-    LANGUAGE SQL;
-
 -- Search for a search term in a trigram indexed column
--- This should be used for short data like tags or names
-CREATE OR REPLACE FUNCTION match_trigram_index(store hstore, query text) RETURNS BOOLEAN AS
+-- This should be used for "exact" for substring matching  '%multiple searchExact words%'
+CREATE OR REPLACE FUNCTION match_substring(store hstore, query text) RETURNS BOOLEAN AS
 $$
-SELECT store -> 'en' ILIKE query OR store -> 'de' ILIKE query
+SELECT store -> 'en' ILIKE query
+           OR store -> 'de' ILIKE query
 $$
-    LANGUAGE SQL;
+    LANGUAGE SQL
+    STABLE;
 
--- Create text indexes for columns with text
-CREATE INDEX IF NOT EXISTS ingredient_description_index_en
-    ON ingredient USING GIN (to_tsvector('english', description -> 'en'));
-CREATE INDEX IF NOT EXISTS ingredient_description_index_de
-    ON ingredient USING GIN (to_tsvector('german', description -> 'de'));
-
--- Create trigram indexes for word columns
+-- Create trigram indexes for searching
 CREATE INDEX IF NOT EXISTS ingredient_name_index_en
     ON ingredient USING GIN ((name -> 'en') gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS ingredient_name_index_de
     ON ingredient USING GIN ((name -> 'de') gin_trgm_ops);
+
+CREATE INDEX IF NOT EXISTS ingredient_description_index_en
+    ON ingredient USING GIN ((description -> 'en') gin_trgm_ops);
+CREATE INDEX IF NOT EXISTS ingredient_description_index_de
+    ON ingredient USING GIN ((description -> 'de') gin_trgm_ops);
+
+-- Do we really need these?
 CREATE INDEX IF NOT EXISTS ingredient_type_name_index_en
     ON ingredient_type USING GIN ((name -> 'en') gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS ingredient_type_name_index_de

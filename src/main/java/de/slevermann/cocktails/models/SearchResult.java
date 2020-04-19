@@ -15,13 +15,16 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "A result of a search for cocktails and ingredients")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-18T10:28:44.813+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-19T14:25:15.031+02:00[Europe/Berlin]")
 public class SearchResult   {
   @JsonProperty("id")
-  private Integer id = null;
+  private Long id = null;
 
   @JsonProperty("name")
   private String name = null;
+
+  @JsonProperty("description")
+  private String description = null;
 
   /**
    * Gets or Sets type
@@ -56,7 +59,7 @@ public class SearchResult   {
   @JsonProperty("type")
   private TypeEnum type = null;
 
-  public SearchResult id(Integer id) {
+  public SearchResult id(Long id) {
     this.id = id;
     return this;
   }
@@ -68,11 +71,11 @@ public class SearchResult   {
   @ApiModelProperty(required = true, value = "The ID of the resource that was found")
       @NotNull
 
-    public Integer getId() {
+    public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -94,6 +97,26 @@ public class SearchResult   {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public SearchResult description(String description) {
+    this.description = description;
+    return this;
+  }
+
+  /**
+   * Get description
+   * @return description
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public SearchResult type(TypeEnum type) {
@@ -128,12 +151,13 @@ public class SearchResult   {
     SearchResult searchResult = (SearchResult) o;
     return Objects.equals(this.id, searchResult.id) &&
         Objects.equals(this.name, searchResult.name) &&
+        Objects.equals(this.description, searchResult.description) &&
         Objects.equals(this.type, searchResult.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, type);
+    return Objects.hash(id, name, description, type);
   }
 
   @Override
@@ -143,6 +167,7 @@ public class SearchResult   {
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("}");
     return sb.toString();
