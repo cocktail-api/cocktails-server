@@ -28,11 +28,20 @@ $$
 -- This should be used for "exact" for substring matching  '%multiple searchExact words%'
 CREATE OR REPLACE FUNCTION match_substring(store hstore, query text) RETURNS BOOLEAN AS
 $$
-SELECT store -> 'en' ILIKE query
-           OR store -> 'de' ILIKE query
+
+SELECT (store -> 'en') % query
+           OR (store -> 'de') % query
 $$
     LANGUAGE SQL
     STABLE;
+
+-- In order to match short things, like "Zu" to "Zuckersirup", we need to lower the similarity threshold
+DO
+$$
+    BEGIN
+        EXECUTE 'ALTER DATABASE ' || current_database() || ' SET pg_trgm.similarity_threshold TO 0.15';
+    END
+$$;
 
 -- Create trigram indexes for searching
 CREATE INDEX IF NOT EXISTS ingredient_name_index_en

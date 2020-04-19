@@ -26,24 +26,10 @@ public class SearchService {
     }
 
     private List<SearchResult> searchIngredients(String search, Enumeration<Locale> locales) {
-        String query = escape(search);
-        return ingredientDao.search("%" + query + "%", locales.nextElement().getLanguage());
+        return ingredientDao.search(search, locales.nextElement().getLanguage());
     }
 
     private List<SearchResult> searchCocktails(String search, Enumeration<Locale> locales) {
         return new ArrayList<>();
     }
-
-    /**
-     * Escape string comparison operators and backslashes
-     *
-     * @param search input
-     * @return escaped string
-     */
-    private static String escape(String search) {
-        return search.replace("\\", "\\\\")
-                .replace("%", "\\%")
-                .replace("_", "\\_");
-    }
-
 }
