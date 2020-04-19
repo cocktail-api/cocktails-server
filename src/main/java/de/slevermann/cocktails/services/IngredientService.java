@@ -50,10 +50,10 @@ public class IngredientService {
     }
 
     public Ingredient updateIngredient(CreateIngredient ingredient, Long id) {
-        if (!ingredientDao.exists(id)) {
+        long rowsAffected = ingredientDao.update(id, ingredient);
+        if (rowsAffected == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        ingredientDao.update(id, ingredient);
         return ingredientDao.getById(id);
     }
 }
