@@ -30,5 +30,8 @@ public interface IngredientDao {
     Long create(@BindBean CreateIngredient createIngredient);
 
     @SqlUpdate
-    long update(@Bind("id") Long id, @BindBean CreateIngredient ingredient);
+    int update(@Bind("id") Long id, @BindBean CreateIngredient ingredient);
+
+    @SqlUpdate
+    int delete(@Bind("id") Long id);
 }

@@ -56,4 +56,11 @@ public class IngredientService {
         }
         return ingredientDao.getById(id);
     }
+
+    public void deleteIngredient(Long id) {
+        long rowsAffected = ingredientDao.delete(id);
+        if (rowsAffected == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 }

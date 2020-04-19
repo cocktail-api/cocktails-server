@@ -44,6 +44,12 @@ public class IngredientsController implements IngredientsApi {
     }
 
     @Override
+    public ResponseEntity<Void> deleteIngredient(Long id) {
+        ingredientService.deleteIngredient(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
     public ResponseEntity<Ingredient> getIngredientById(Long id) {
         return ResponseEntity.ok(ingredientService.getById(id));
     }

@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "A result of a search for cocktails and ingredients")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-19T14:25:15.031+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-19T22:09:42.212+02:00[Europe/Berlin]")
 public class SearchResult   {
   @JsonProperty("id")
   private Long id = null;
