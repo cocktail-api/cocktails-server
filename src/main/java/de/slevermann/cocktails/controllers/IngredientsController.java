@@ -65,6 +65,6 @@ public class IngredientsController implements IngredientsApi {
 
     @Override
     public ResponseEntity<Ingredient> updateIngredient(@Valid CreateIngredient body, Long id) {
-        return null;
+        return ResponseEntity.ok(ingredientService.updateIngredient(body, id));
     }
 }

@@ -48,4 +48,12 @@ public class IngredientService {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error when inserting entity");
     }
+
+    public Ingredient updateIngredient(CreateIngredient ingredient, Long id) {
+        if (!ingredientDao.exists(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        ingredientDao.update(id, ingredient);
+        return ingredientDao.getById(id);
+    }
 }

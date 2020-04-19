@@ -28,4 +28,10 @@ public interface IngredientDao {
     @SqlUpdate
     @GetGeneratedKeys
     Long create(@BindBean CreateIngredient createIngredient);
+
+    @SqlQuery
+    boolean exists(@Bind("id") Long id);
+
+    @SqlUpdate
+    void update(@Bind("id") Long id, @BindBean CreateIngredient ingredient);
 }
