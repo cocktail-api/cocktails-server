@@ -40,7 +40,7 @@ public class IngredientsController implements IngredientsApi {
 
     @Override
     public ResponseEntity<Ingredient> createIngredient(@Valid CreateIngredient body) {
-        return null;
+        return ResponseEntity.ok(ingredientService.createIngredient(body));
     }
 
     @Override

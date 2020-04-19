@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.services;
 
 import de.slevermann.cocktails.daos.IngredientDao;
+import de.slevermann.cocktails.models.CreateIngredient;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.LocalizedIngredient;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,17 @@ public class IngredientService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return ingredient;
+    }
+
+    public Ingredient createIngredient(CreateIngredient ingredient) {
+        Long insertedId = ingredientDao.create(ingredient);
+
+        if (insertedId != null) {
+            Ingredient result = ingredientDao.getById(insertedId);
+            if (result != null) {
+                return result;
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error when inserting entity");
     }
 }
