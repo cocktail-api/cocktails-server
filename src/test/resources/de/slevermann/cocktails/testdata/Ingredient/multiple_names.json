@@ -1,0 +1,11 @@
+{
+  "id": 1001,
+  "names": {
+    "de": "Deutscher Zutatenname",
+    "en": "English ingredient name"
+  },
+  "descriptions": {
+    "de": "Deutsche Beschreibung",
+    "en": "English description"
+  }
+}
