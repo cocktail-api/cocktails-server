@@ -8,19 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class IngredientTypeDaoTest extends DaoTestBase {
-
+public class IngredientTypeDaoIT extends DaoTestBase {
 
     private final IngredientTypeDao ingredientTypeDao;
 
 
     @Autowired
-    public IngredientTypeDaoTest(Jdbi jdbi, IngredientTypeDao ingredientTypeDao, Jackson2ObjectMapperBuilder builder) {
+    public IngredientTypeDaoIT(Jdbi jdbi, IngredientTypeDao ingredientTypeDao, Jackson2ObjectMapperBuilder builder) {
         super(jdbi, builder);
         this.ingredientTypeDao = ingredientTypeDao;
     }
@@ -36,6 +36,12 @@ public class IngredientTypeDaoTest extends DaoTestBase {
         IngredientType fromDb = ingredientTypeDao.getById(id);
 
         assertEquals(ingredientType, fromDb, "The object from the database should equal the object we inserted");
+
+        HashMap<String, String> expected = new HashMap<>(ingredientType.getNames());
+        HashMap<String, String> actual = new HashMap<>(fromDb.getNames());
+
+        // This is necessary because swagger-codegen has a bug in the map code generation
+        assertEquals(expected, actual, "The object from the database should equal the object we inserted");
     }
 
     @Test

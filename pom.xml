@@ -16,7 +16,8 @@
     <description>Cocktail and Ingredient Management Application</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <maven.compiler.release>14</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdbi.version>3.12.2</jdbi.version>
     </properties>
 
@@ -96,11 +97,18 @@
             <version>2.2.2.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>com.playtika.testcontainers</groupId>
-            <artifactId>embedded-postgresql</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>1.14.1</version>
             <scope>test</scope>
-            <version>1.44</version>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.14.1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -108,6 +116,17 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*IT.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -122,20 +141,9 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <systemPropertiesFile>${project.basedir}/no-docker-tests.properties</systemPropertiesFile>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>github-actions</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <systemPropertiesFile>${project.basedir}/ci.properties</systemPropertiesFile>
+                            <environmentVariables>
+                                <NO_DOCKER>true</NO_DOCKER>
+                            </environmentVariables>
                         </configuration>
                     </plugin>
                 </plugins>

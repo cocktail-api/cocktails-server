@@ -32,7 +32,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Setup CI config
+        run: cp ci.properties no-docker-tests.properties
       - name: Compile
         run: ./mvnw --batch-mode clean compile
       - name: Test
-        run: ./mvnw --batch-mode -P github-actions test
+        run: ./mvnw --batch-mode -P no-docker test

@@ -1,0 +1,16 @@
+server:
+  error:
+    include-exception: false
+    include-stacktrace: never
+management:
+  server:
+    port: 8091
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+  health:
+    probes:
+      enabled: true

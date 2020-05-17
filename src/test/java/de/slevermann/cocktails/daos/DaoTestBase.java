@@ -1,5 +1,6 @@
 package de.slevermann.cocktails.daos;
 
+import de.slevermann.cocktails.ContainerTestBase;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
 import org.jdbi.v3.core.Jdbi;
@@ -7,7 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-public abstract class DaoTestBase {
+public abstract class DaoTestBase extends ContainerTestBase {
 
     protected final Jdbi jdbi;
 

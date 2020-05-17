@@ -11,12 +11,12 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class IngredientDaoTest extends DaoTestBase {
+public class IngredientDaoIT extends DaoTestBase {
 
     private final IngredientDao ingredientDao;
 
     @Autowired
-    protected IngredientDaoTest(Jdbi jdbi, Jackson2ObjectMapperBuilder builder, IngredientDao ingredientDao) {
+    protected IngredientDaoIT(Jdbi jdbi, Jackson2ObjectMapperBuilder builder, IngredientDao ingredientDao) {
         super(jdbi, builder);
         this.ingredientDao = ingredientDao;
     }
@@ -46,4 +46,25 @@ public class IngredientDaoTest extends DaoTestBase {
         ingredientDao.delete(ingredient.getId());
         assertNull(ingredientDao.getById(ingredient.getId()), "Value should be gone after deleting");
     }
+
+    @Test
+    public void testGetAll() throws Exception {
+        Ingredient ingredient1 = loadIngredient("multiple_names.json");
+        IngredientType type1 = loadIngredientType("multiple_names.json");
+        insertIngredientType(type1);
+        ingredient1.setType(type1);
+
+        insertIngredient(ingredient1);
+
+        Ingredient ingredient2 = loadIngredient("only_english.json");
+        IngredientType type2 = loadIngredientType("only_german_name.json");
+        insertIngredientType(type2);
+        ingredient2.setType(type2);
+
+        insertIngredient(ingredient2);
+
+        assertEquals(2, ingredientDao.getAll("de").size(), "GetAll should return all entries");
+    }
+
+
 }
