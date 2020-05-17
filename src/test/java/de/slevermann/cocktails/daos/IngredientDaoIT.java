@@ -1,16 +1,16 @@
 package de.slevermann.cocktails.daos;
 
+import de.slevermann.cocktails.JdbiTest;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
 import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@JdbiTest
 public class IngredientDaoIT extends DaoTestBase {
 
     private final IngredientDao ingredientDao;

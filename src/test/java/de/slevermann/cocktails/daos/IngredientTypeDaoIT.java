@@ -1,11 +1,11 @@
 package de.slevermann.cocktails.daos;
 
+import de.slevermann.cocktails.JdbiTest;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.LocalizedIngredientType;
 import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.util.HashMap;
@@ -13,11 +13,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@JdbiTest
 public class IngredientTypeDaoIT extends DaoTestBase {
 
     private final IngredientTypeDao ingredientTypeDao;
-
 
     @Autowired
     public IngredientTypeDaoIT(Jdbi jdbi, IngredientTypeDao ingredientTypeDao, Jackson2ObjectMapperBuilder builder) {
