@@ -1,0 +1,9 @@
+spring:
+  devtools:
+    restart:
+      exclude: ""
+      additional-paths:
+        - static/**
+        - static
+        - /static/**
+        - /static

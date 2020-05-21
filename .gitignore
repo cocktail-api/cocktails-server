@@ -33,3 +33,6 @@ build/
 # Top level application-dev.yml is ignored, application-dev.yml.example file is used instead
 /application-dev.yml
 /no-docker-tests.properties
+
+# The node application needs to be generated into this folder
+/src/main/resources/static
