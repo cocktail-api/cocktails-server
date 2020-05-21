@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.daos;
 
-import de.slevermann.cocktails.models.CreateIngredient;
+import de.slevermann.cocktails.dbmodels.DbCreateIngredient;
+import de.slevermann.cocktails.dbmodels.DbIngredient;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.LocalizedIngredient;
 import de.slevermann.cocktails.models.SearchResult;
@@ -20,17 +21,17 @@ public interface IngredientDao {
     List<LocalizedIngredient> getAll(@Bind("preferred_locale") String preferredLocale);
 
     @SqlQuery
-    Ingredient getById(@Bind("id") Long id);
+    DbIngredient getById(@Bind("id") Long id);
 
     @SqlQuery
     List<SearchResult> search(@Bind("query") String query, @Bind("preferred_locale") String preferredLocale);
 
     @SqlUpdate
     @GetGeneratedKeys
-    Long create(@BindBean CreateIngredient createIngredient);
+    Long create(@BindBean DbCreateIngredient dbCreateIngredient);
 
     @SqlUpdate
-    int update(@Bind("id") Long id, @BindBean CreateIngredient ingredient);
+    int update(@Bind("id") Long id, @BindBean DbCreateIngredient ingredient);
 
     @SqlUpdate
     int delete(@Bind("id") Long id);

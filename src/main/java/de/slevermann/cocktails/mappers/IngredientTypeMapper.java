@@ -1,5 +1,6 @@
 package de.slevermann.cocktails.mappers;
 
+import de.slevermann.cocktails.dbmodels.DbIngredientType;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.TranslatedString;
 import org.jdbi.v3.core.mapper.RowMapper;
@@ -10,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Mapper
-public class IngredientTypeMapper implements RowMapper<IngredientType> {
+public class IngredientTypeMapper implements RowMapper<DbIngredientType> {
 
     private final HStoreColumnMapper hStoreColumnMapper;
 
@@ -19,11 +20,9 @@ public class IngredientTypeMapper implements RowMapper<IngredientType> {
     }
 
     @Override
-    public IngredientType map(ResultSet rs, StatementContext ctx) throws SQLException {
-        TranslatedString ts = new TranslatedString();
-        ts.putAll(hStoreColumnMapper.map(rs, "name", ctx));
-        return new IngredientType()
+    public DbIngredientType map(ResultSet rs, StatementContext ctx) throws SQLException {
+        return DbIngredientType.builder()
                 .id(rs.getLong("id"))
-                .names(ts);
+                .names(hStoreColumnMapper.map(rs, "name", ctx)).build();
     }
 }

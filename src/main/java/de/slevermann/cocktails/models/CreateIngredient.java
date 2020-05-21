@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import de.slevermann.cocktails.models.TranslatedString;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,16 +17,18 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient for creation on the server")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-19T22:09:42.212+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T21:13:28.957416+02:00[Europe/Berlin]")
 public class CreateIngredient   {
   @JsonProperty("typeId")
   private Long typeId = null;
 
   @JsonProperty("names")
-  private TranslatedString names = null;
+  @Valid
+  private List<TranslatedString> names = new ArrayList<>();
 
   @JsonProperty("descriptions")
-  private TranslatedString descriptions = null;
+  @Valid
+  private List<TranslatedString> descriptions = new ArrayList<>();
 
   public CreateIngredient typeId(Long typeId) {
     this.typeId = typeId;
@@ -46,8 +50,13 @@ public class CreateIngredient   {
     this.typeId = typeId;
   }
 
-  public CreateIngredient names(TranslatedString names) {
+  public CreateIngredient names(List<TranslatedString> names) {
     this.names = names;
+    return this;
+  }
+
+  public CreateIngredient addNamesItem(TranslatedString namesItem) {
+    this.names.add(namesItem);
     return this;
   }
 
@@ -57,18 +66,22 @@ public class CreateIngredient   {
   **/
   @ApiModelProperty(required = true, value = "")
       @NotNull
-
     @Valid
-    public TranslatedString getNames() {
+    public List<TranslatedString> getNames() {
     return names;
   }
 
-  public void setNames(TranslatedString names) {
+  public void setNames(List<TranslatedString> names) {
     this.names = names;
   }
 
-  public CreateIngredient descriptions(TranslatedString descriptions) {
+  public CreateIngredient descriptions(List<TranslatedString> descriptions) {
     this.descriptions = descriptions;
+    return this;
+  }
+
+  public CreateIngredient addDescriptionsItem(TranslatedString descriptionsItem) {
+    this.descriptions.add(descriptionsItem);
     return this;
   }
 
@@ -78,13 +91,12 @@ public class CreateIngredient   {
   **/
   @ApiModelProperty(required = true, value = "")
       @NotNull
-
     @Valid
-    public TranslatedString getDescriptions() {
+    public List<TranslatedString> getDescriptions() {
     return descriptions;
   }
 
-  public void setDescriptions(TranslatedString descriptions) {
+  public void setDescriptions(List<TranslatedString> descriptions) {
     this.descriptions = descriptions;
   }
 

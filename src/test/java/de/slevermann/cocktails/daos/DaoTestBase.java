@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.daos;
 
 import de.slevermann.cocktails.ContainerTestBase;
+import de.slevermann.cocktails.dbmodels.DbIngredientType;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
 import org.jdbi.v3.core.Jdbi;
@@ -32,16 +33,16 @@ public abstract class DaoTestBase extends ContainerTestBase {
         beforeEach();
     }
 
-    protected void insertIngredientType(IngredientType type) {
+    protected void insertIngredientType(DbIngredientType type) {
         jdbi.useHandle(h ->
                 h.createUpdate("INSERT INTO ingredient_type (id, name) VALUES (:id, :names)")
                         .bindBean(type)
                         .execute());
     }
 
-    protected IngredientType loadIngredientType(String name) throws Exception {
+    protected DbIngredientType loadIngredientType(String name) throws Exception {
         return builder.build().readValue(getClass()
-                .getResource("/de/slevermann/cocktails/testdata/IngredientType/" + name), IngredientType.class);
+                .getResource("/de/slevermann/cocktails/testdata/IngredientType/" + name), DbIngredientType.class);
     }
 
     protected Ingredient loadIngredient(String name) throws Exception {

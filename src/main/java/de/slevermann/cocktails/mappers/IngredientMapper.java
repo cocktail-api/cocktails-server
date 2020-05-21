@@ -1,5 +1,7 @@
 package de.slevermann.cocktails.mappers;
 
+import de.slevermann.cocktails.dbmodels.DbIngredient;
+import de.slevermann.cocktails.dbmodels.DbIngredientType;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.TranslatedString;
@@ -9,9 +11,11 @@ import org.jdbi.v3.postgres.HStoreColumnMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Mapper
-public class IngredientMapper implements RowMapper<Ingredient> {
+public class IngredientMapper implements RowMapper<DbIngredient> {
 
     private final HStoreColumnMapper hStoreColumnMapper;
 
@@ -20,19 +24,13 @@ public class IngredientMapper implements RowMapper<Ingredient> {
     }
 
     @Override
-    public Ingredient map(ResultSet rs, StatementContext ctx) throws SQLException {
-        TranslatedString typeName = new TranslatedString();
-        typeName.putAll(hStoreColumnMapper.map(rs, "type_name", ctx));
-        TranslatedString name = new TranslatedString();
-        name.putAll(hStoreColumnMapper.map(rs, "name", ctx));
-        TranslatedString description = new TranslatedString();
-        description.putAll(hStoreColumnMapper.map(rs, "description", ctx));
-        return new Ingredient()
+    public DbIngredient map(ResultSet rs, StatementContext ctx) throws SQLException {
+        return DbIngredient.builder()
                 .id(rs.getLong("id"))
-                .type(new IngredientType()
+                .type(DbIngredientType.builder()
                         .id(rs.getLong("type_id"))
-                        .names(typeName))
-                .names(name)
-                .descriptions(description);
+                        .names(hStoreColumnMapper.map(rs, "type_name", ctx)).build())
+                .names(hStoreColumnMapper.map(rs, "name", ctx))
+                .descriptions(hStoreColumnMapper.map(rs, "description", ctx)).build();
     }
 }

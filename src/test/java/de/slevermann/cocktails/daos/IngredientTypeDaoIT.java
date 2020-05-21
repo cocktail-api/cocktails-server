@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.daos;
 
 import de.slevermann.cocktails.JdbiTest;
+import de.slevermann.cocktails.dbmodels.DbIngredientType;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.LocalizedIngredientType;
 import org.jdbi.v3.core.Jdbi;
@@ -26,13 +27,13 @@ public class IngredientTypeDaoIT extends DaoTestBase {
 
     @Test
     public void testGetById() throws Exception {
-        IngredientType ingredientType = loadIngredientType("multiple_names.json");
+        DbIngredientType ingredientType = loadIngredientType("multiple_names.json");
 
         Long id = ingredientType.getId();
 
         insertIngredientType(ingredientType);
 
-        IngredientType fromDb = ingredientTypeDao.getById(id);
+        DbIngredientType fromDb = ingredientTypeDao.getById(id);
 
         assertEquals(ingredientType, fromDb, "The object from the database should equal the object we inserted");
 
@@ -45,8 +46,8 @@ public class IngredientTypeDaoIT extends DaoTestBase {
 
     @Test
     public void testGetAll() throws Exception {
-        IngredientType first = loadIngredientType("multiple_names.json");
-        IngredientType second = loadIngredientType("only_german_name.json");
+        DbIngredientType first = loadIngredientType("multiple_names.json");
+        DbIngredientType second = loadIngredientType("only_german_name.json");
 
         insertIngredientType(first);
         insertIngredientType(second);
@@ -58,7 +59,7 @@ public class IngredientTypeDaoIT extends DaoTestBase {
 
     @Test
     public void testLocalizationRulesMultiple() throws Exception {
-        IngredientType multipleNames = loadIngredientType("multiple_names.json");
+        DbIngredientType multipleNames = loadIngredientType("multiple_names.json");
         insertIngredientType(multipleNames);
 
         for (String locale : new String[]{"de", "en"}) {
@@ -74,7 +75,7 @@ public class IngredientTypeDaoIT extends DaoTestBase {
 
     @Test
     public void testLocalizationRulesSingle() throws Exception {
-        IngredientType singleName = loadIngredientType("only_german_name.json");
+        DbIngredientType singleName = loadIngredientType("only_german_name.json");
         insertIngredientType(singleName);
 
         List<LocalizedIngredientType> types = ingredientTypeDao.getAll("unavailable");

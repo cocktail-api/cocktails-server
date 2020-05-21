@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.services;
 
 import de.slevermann.cocktails.daos.IngredientTypeDao;
+import de.slevermann.cocktails.dbmodels.DbIngredientType;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.LocalizedIngredientType;
 import org.springframework.http.HttpStatus;
@@ -29,10 +30,10 @@ public class IngredientTypeService {
     }
 
     public IngredientType getById(Long id) {
-        IngredientType itype = ingredientTypeDao.getById(id);
-        if (itype == null) {
+        DbIngredientType type = ingredientTypeDao.getById(id);
+        if (type == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return ingredientTypeDao.getById(id);
+        return type.toIngredientType();
     }
 }

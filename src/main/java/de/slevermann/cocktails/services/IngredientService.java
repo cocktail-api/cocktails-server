@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.services;
 
 import de.slevermann.cocktails.daos.IngredientDao;
+import de.slevermann.cocktails.dbmodels.DbCreateIngredient;
 import de.slevermann.cocktails.models.CreateIngredient;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.LocalizedIngredient;
@@ -30,7 +31,7 @@ public class IngredientService {
     }
 
     public Ingredient getById(Long id) {
-        Ingredient ingredient = ingredientDao.getById(id);
+        Ingredient ingredient = ingredientDao.getById(id).toIngredient();
         if (ingredient == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -38,10 +39,10 @@ public class IngredientService {
     }
 
     public Ingredient createIngredient(CreateIngredient ingredient) {
-        Long insertedId = ingredientDao.create(ingredient);
+        Long insertedId = ingredientDao.create(new DbCreateIngredient(ingredient));
 
         if (insertedId != null) {
-            Ingredient result = ingredientDao.getById(insertedId);
+            Ingredient result = ingredientDao.getById(insertedId).toIngredient();
             if (result != null) {
                 return result;
             }
@@ -50,11 +51,11 @@ public class IngredientService {
     }
 
     public Ingredient updateIngredient(CreateIngredient ingredient, Long id) {
-        long rowsAffected = ingredientDao.update(id, ingredient);
+        long rowsAffected = ingredientDao.update(id, new DbCreateIngredient(ingredient));
         if (rowsAffected == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return ingredientDao.getById(id);
+        return ingredientDao.getById(id).toIngredient();
     }
 
     public void deleteIngredient(Long id) {

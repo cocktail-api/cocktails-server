@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.services;
 
 import de.slevermann.cocktails.daos.IngredientTypeDao;
+import de.slevermann.cocktails.dbmodels.DbIngredientType;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.LocalizedIngredientType;
 import de.slevermann.cocktails.models.TranslatedString;
@@ -14,10 +15,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
@@ -61,24 +59,17 @@ public class IngredientTypeServiceTest {
 
     @Test
     public void testGetSingleIngredientType() {
-        IngredientType it = new IngredientType();
-        it.setId(1L);
-        TranslatedString names = new TranslatedString();
+        Map<String, String> names = new HashMap<>();
         names.put("de", "Deutscher name");
         names.put("en", "English name");
-        it.setNames(names);
-
+        DbIngredientType it = DbIngredientType.builder()
+                .id(1L)
+                .names(names).build();
         when(ingredientTypeDao.getById(anyLong())).thenReturn(it);
 
         IngredientType fromService = ingredientTypeService.getById(1L);
 
-        assertEquals(it, fromService, "Returned object should equal input");
-
-        HashMap<String, String> expected = new HashMap<>(it.getNames());
-        HashMap<String, String> actual = new HashMap<>(fromService.getNames());
-
-        // This is necessary because swagger-codegen has a bug in the map code generation
-        assertEquals(expected, actual, "The object from the database should equal the object we inserted");
+        assertEquals(it.toIngredientType(), fromService, "Returned object should equal input");
     }
 
     @Test
