@@ -17,7 +17,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient for creation on the server")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T21:13:28.957416+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-22T16:31:51.083943+02:00[Europe/Berlin]")
 public class CreateIngredient   {
   @JsonProperty("typeId")
   private Long typeId = null;

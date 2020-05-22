@@ -10,9 +10,11 @@ services:
       - "54321:5432"
     restart: always
   swagger_ui:
-    image: swaggerapi/swagger-ui:v3.25.0
+    image: swaggerapi/swagger-ui:v3.25.4
     environment:
       SWAGGER_JSON: /spec/cocktails.yml
+      OAUTH_CLIENT_ID: ${CLIENT_ID}
+      OAUTH_ADDITIONAL_PARAMS: "{\"nonce\": \"imanonce\"}"
     volumes:
       - type: bind
         source: ../../cocktails-api/cocktails.yml

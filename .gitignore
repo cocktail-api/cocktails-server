@@ -36,3 +36,6 @@ build/
 
 # The node application needs to be generated into this folder
 /src/main/resources/static
+
+# This file contains confidential information
+/docker/dev-env/.env
