@@ -15,7 +15,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST).authenticated()
                 .antMatchers(HttpMethod.DELETE).authenticated()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+                // Disable Spring's automatically generated login URL, and delegate to our Angular application
+                .and().oauth2Login().loginPage("/login");
         http.oauth2ResourceServer().jwt();
     }
 }
