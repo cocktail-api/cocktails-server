@@ -14,3 +14,9 @@ management:
   health:
     probes:
       enabled: true
+okta:
+  oauth2:
+    issuer: https://dev-991339.okta.com/oauth2/default
+    client-id: 0oaclzf69sveYfurb4x6
+    groups-claim: roles
+    audience: api://default

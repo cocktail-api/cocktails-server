@@ -6,6 +6,7 @@ import de.slevermann.cocktails.models.*;
 import de.slevermann.cocktails.services.IngredientService;
 import de.slevermann.cocktails.services.IngredientTypeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,11 +42,13 @@ public class IngredientsController implements IngredientsApi {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Ingredient> createIngredient(@Valid CreateIngredient body) {
         return ResponseEntity.ok(ingredientService.createIngredient(body));
     }
 
     @Override
+    @PreAuthorize("hasAuthority('cocktail-admins')")
     public ResponseEntity<Void> deleteIngredient(Long id) {
         ingredientService.deleteIngredient(id);
         return ResponseEntity.noContent().build();
@@ -72,6 +75,7 @@ public class IngredientsController implements IngredientsApi {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('cocktail-admins', 'cocktail-curators')")
     public ResponseEntity<Ingredient> updateIngredient(@Valid CreateIngredient body, Long id) {
         return ResponseEntity.ok(ingredientService.updateIngredient(body, id));
     }

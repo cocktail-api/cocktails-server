@@ -17,6 +17,8 @@
 
     <properties>
         <maven.compiler.release>14</maven.compiler.release>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdbi.version>3.12.2</jdbi.version>
     </properties>
@@ -61,6 +63,11 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>1.5.24</version>
+        </dependency>
+        <dependency>
+            <groupId>com.okta.spring</groupId>
+            <artifactId>okta-spring-boot-starter</artifactId>
+            <version>1.4.0</version>
         </dependency>
 
         <dependency>
@@ -108,7 +115,11 @@
             <version>1.14.1</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

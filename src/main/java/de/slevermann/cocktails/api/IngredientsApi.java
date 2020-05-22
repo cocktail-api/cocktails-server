@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-22T16:31:51.083943+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-22T17:44:31.985434+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -45,7 +45,12 @@ public interface IngredientsApi {
 
     
 
-    @ApiOperation(value = "Create a new ingredient in the database", nickname = "createIngredient", notes = "", response = Ingredient.class, tags={ "ingredients", })
+    @ApiOperation(value = "Create a new ingredient in the database", nickname = "createIngredient", notes = "", response = Ingredient.class, authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope"),
+            @AuthorizationScope(scope = "profile", description = "Read profile"),
+            @AuthorizationScope(scope = "email", description = "Read email")
+            })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Retrieve the created ingredient", response = Ingredient.class),
         @ApiResponse(code = 400, message = "Invalid ingredient data") })
@@ -56,7 +61,12 @@ public interface IngredientsApi {
     ResponseEntity<Ingredient> createIngredient(@ApiParam(value = "The ingredient to create" ,required=true )  @Valid @RequestBody CreateIngredient body);
 
 
-    @ApiOperation(value = "Delete the specified ingredient", nickname = "deleteIngredient", notes = "", tags={ "ingredients", })
+    @ApiOperation(value = "Delete the specified ingredient", nickname = "deleteIngredient", notes = "", authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope"),
+            @AuthorizationScope(scope = "profile", description = "Read profile"),
+            @AuthorizationScope(scope = "email", description = "Read email")
+            })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 204, message = "Deleted successfully"),
         @ApiResponse(code = 404, message = "Ingredient not found") })
@@ -103,7 +113,12 @@ public interface IngredientsApi {
     ResponseEntity<List<LocalizedIngredient>> getIngredients();
 
 
-    @ApiOperation(value = "Update the ingredient with the specified ID", nickname = "updateIngredient", notes = "", response = Ingredient.class, tags={ "ingredients", })
+    @ApiOperation(value = "Update the ingredient with the specified ID", nickname = "updateIngredient", notes = "", response = Ingredient.class, authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope"),
+            @AuthorizationScope(scope = "profile", description = "Read profile"),
+            @AuthorizationScope(scope = "email", description = "Read email")
+            })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Updated successfully", response = Ingredient.class),
         @ApiResponse(code = 400, message = "Invalid ingredient data"),
