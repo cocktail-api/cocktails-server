@@ -49,6 +49,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> setNick(@Valid String body) {
         userService.updateNick(body, authenticationService.getUserDetails().getUuid());
         return ResponseEntity.ok().build();
