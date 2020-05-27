@@ -1,4 +1,4 @@
-package de.slevermann.cocktails.mappers;
+package de.slevermann.cocktails.mapper.db;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;

@@ -5,6 +5,7 @@
  */
 package de.slevermann.cocktails.api;
 
+import java.util.UUID;
 import de.slevermann.cocktails.models.UserInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -29,7 +30,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T16:44:14.258224+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T22:43:36.363649+02:00[Europe/Berlin]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
@@ -41,7 +42,19 @@ public interface UsersApi {
 
     
 
-    @ApiOperation(value = "Get information about the currently logged in user", nickname = "getUserInfo", notes = "", response = UserInfo.class, tags={ "users", })
+    @ApiOperation(value = "Get a user's profile information", nickname = "getProfile", notes = "", response = UserInfo.class, tags={ "users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success", response = UserInfo.class) })
+    @RequestMapping(value = "/users/info/{id}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<UserInfo> getProfile(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
+
+
+    @ApiOperation(value = "Get information about the currently logged in user", nickname = "getUserInfo", notes = "", response = UserInfo.class, authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
+            })    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = UserInfo.class) })
     @RequestMapping(value = "/users/info",
@@ -50,7 +63,10 @@ public interface UsersApi {
     ResponseEntity<UserInfo> getUserInfo();
 
 
-    @ApiOperation(value = "Set the current user's nickname", nickname = "setNick", notes = "", tags={ "users", })
+    @ApiOperation(value = "Set the current user's nickname", nickname = "setNick", notes = "", authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
+            })    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 204, message = "Success"),
         @ApiResponse(code = 409, message = "Name is taken") })

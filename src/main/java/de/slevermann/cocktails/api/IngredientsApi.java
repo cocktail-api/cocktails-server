@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T16:44:14.258224+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T22:43:36.363649+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -48,9 +48,7 @@ public interface IngredientsApi {
 
     @ApiOperation(value = "Create a new ingredient in the database", nickname = "createIngredient", notes = "", response = Ingredient.class, authorizations = {
         @Authorization(value = "oauth2", scopes = { 
-            @AuthorizationScope(scope = "openid", description = "Default OpenID scope"),
-            @AuthorizationScope(scope = "profile", description = "Read profile"),
-            @AuthorizationScope(scope = "email", description = "Read email")
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
             })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Retrieve the created ingredient", response = Ingredient.class),
@@ -64,9 +62,7 @@ public interface IngredientsApi {
 
     @ApiOperation(value = "Delete the specified ingredient", nickname = "deleteIngredient", notes = "", authorizations = {
         @Authorization(value = "oauth2", scopes = { 
-            @AuthorizationScope(scope = "openid", description = "Default OpenID scope"),
-            @AuthorizationScope(scope = "profile", description = "Read profile"),
-            @AuthorizationScope(scope = "email", description = "Read email")
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
             })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 204, message = "Deleted successfully"),
@@ -116,9 +112,7 @@ public interface IngredientsApi {
 
     @ApiOperation(value = "Update the ingredient with the specified ID", nickname = "updateIngredient", notes = "", response = Ingredient.class, authorizations = {
         @Authorization(value = "oauth2", scopes = { 
-            @AuthorizationScope(scope = "openid", description = "Default OpenID scope"),
-            @AuthorizationScope(scope = "profile", description = "Read profile"),
-            @AuthorizationScope(scope = "email", description = "Read email")
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
             })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Updated successfully", response = Ingredient.class),

@@ -2,6 +2,7 @@ package de.slevermann.cocktails.services;
 
 import de.slevermann.cocktails.daos.IngredientTypeDao;
 import de.slevermann.cocktails.dbmodels.DbIngredientType;
+import de.slevermann.cocktails.mapper.IngredientTypeMapper;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.LocalizedIngredientType;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,11 @@ public class IngredientTypeService {
 
     private final IngredientTypeDao ingredientTypeDao;
 
-    public IngredientTypeService(IngredientTypeDao ingredientTypeDao) {
+    private final IngredientTypeMapper ingredientTypeMapper;
+
+    public IngredientTypeService(IngredientTypeDao ingredientTypeDao, IngredientTypeMapper ingredientTypeMapper) {
         this.ingredientTypeDao = ingredientTypeDao;
+        this.ingredientTypeMapper = ingredientTypeMapper;
     }
 
     public List<LocalizedIngredientType> getAll(Enumeration<Locale> locales) {
@@ -35,6 +39,6 @@ public class IngredientTypeService {
         if (type == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return type.toIngredientType();
+        return ingredientTypeMapper.dbIngredientTypetoIngredientType(type);
     }
 }

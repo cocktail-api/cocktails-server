@@ -6,4 +6,5 @@ RETURNING uuid AS uuid,
     name as name,
     description as description,
     public as public,
-    owner as owner;
+    owner as owner_uuid,
+    (SELECT nick FROM "user" WHERE "user".uuid = owner) AS owner_nick;

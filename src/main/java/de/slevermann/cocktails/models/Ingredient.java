@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.TranslatedString;
+import de.slevermann.cocktails.models.UserInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient, with all languages")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T16:44:14.258224+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T22:43:36.363649+02:00[Europe/Berlin]")
 public class Ingredient   {
   @JsonProperty("id")
   private UUID id = null;
@@ -34,6 +35,12 @@ public class Ingredient   {
   @JsonProperty("descriptions")
   @Valid
   private List<TranslatedString> descriptions = new ArrayList<>();
+
+  @JsonProperty("owner")
+  private UserInfo owner = null;
+
+  @JsonProperty("public")
+  private Boolean _public = null;
 
   public Ingredient id(UUID id) {
     this.id = id;
@@ -127,6 +134,46 @@ public class Ingredient   {
     this.descriptions = descriptions;
   }
 
+  public Ingredient owner(UserInfo owner) {
+    this.owner = owner;
+    return this;
+  }
+
+  /**
+   * Get owner
+   * @return owner
+  **/
+  @ApiModelProperty(value = "")
+  
+    @Valid
+    public UserInfo getOwner() {
+    return owner;
+  }
+
+  public void setOwner(UserInfo owner) {
+    this.owner = owner;
+  }
+
+  public Ingredient _public(Boolean _public) {
+    this._public = _public;
+    return this;
+  }
+
+  /**
+   * Get _public
+   * @return _public
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    public Boolean isPublic() {
+    return _public;
+  }
+
+  public void setPublic(Boolean _public) {
+    this._public = _public;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -140,12 +187,14 @@ public class Ingredient   {
     return Objects.equals(this.id, ingredient.id) &&
         Objects.equals(this.type, ingredient.type) &&
         Objects.equals(this.names, ingredient.names) &&
-        Objects.equals(this.descriptions, ingredient.descriptions);
+        Objects.equals(this.descriptions, ingredient.descriptions) &&
+        Objects.equals(this.owner, ingredient.owner) &&
+        Objects.equals(this._public, ingredient._public);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, type, names, descriptions);
+    return Objects.hash(id, type, names, descriptions, owner, _public);
   }
 
   @Override
@@ -157,6 +206,8 @@ public class Ingredient   {
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    names: ").append(toIndentedString(names)).append("\n");
     sb.append("    descriptions: ").append(toIndentedString(descriptions)).append("\n");
+    sb.append("    owner: ").append(toIndentedString(owner)).append("\n");
+    sb.append("    _public: ").append(toIndentedString(_public)).append("\n");
     sb.append("}");
     return sb.toString();
   }

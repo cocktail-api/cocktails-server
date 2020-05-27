@@ -1,37 +1,18 @@
 package de.slevermann.cocktails.dbmodels;
 
-import de.slevermann.cocktails.models.CreateIngredient;
-import de.slevermann.cocktails.models.TranslatedString;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Data
+@Value
 @Builder
-@AllArgsConstructor
 public class DbCreateIngredient {
 
-    private UUID typeId;
+    UUID typeId;
 
-    private Map<String, String> names;
+    Map<String, String> names;
 
-    private Map<String, String> descriptions;
-
-    public DbCreateIngredient(CreateIngredient ingredient) {
-        typeId = ingredient.getTypeId();
-        names = new HashMap<>();
-
-        for (TranslatedString name : ingredient.getNames()) {
-            names.put(name.getLanguage(), name.getTranslation());
-        }
-
-        descriptions = new HashMap<>();
-        for (TranslatedString description : ingredient.getDescriptions()) {
-            descriptions.put(description.getLanguage(), description.getTranslation());
-        }
-    }
+    Map<String, String> descriptions;
 }

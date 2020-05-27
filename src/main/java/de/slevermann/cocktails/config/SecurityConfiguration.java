@@ -1,5 +1,6 @@
 package de.slevermann.cocktails.config;
 
+import com.okta.spring.boot.oauth.Okta;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,9 +16,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST).authenticated()
                 .antMatchers(HttpMethod.DELETE).authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().permitAll().and()
                 // Disable Spring's automatically generated login URL, and delegate to our Angular application
-                .and().oauth2Login().loginPage("/login");
+                .oauth2Login().loginPage("/login");
         http.oauth2ResourceServer().jwt();
+        Okta.configureResourceServer401ResponseBody(http);
     }
 }

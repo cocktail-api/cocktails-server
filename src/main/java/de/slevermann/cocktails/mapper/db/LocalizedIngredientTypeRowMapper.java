@@ -1,4 +1,4 @@
-package de.slevermann.cocktails.mappers;
+package de.slevermann.cocktails.mapper.db;
 
 import de.slevermann.cocktails.models.LocalizedIngredientType;
 import org.jdbi.v3.core.mapper.RowMapper;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 @Mapper
-public class LocalizedIngredientTypeMapper implements RowMapper<LocalizedIngredientType> {
+public class LocalizedIngredientTypeRowMapper implements RowMapper<LocalizedIngredientType> {
     @Override
     public LocalizedIngredientType map(ResultSet rs, StatementContext ctx) throws SQLException {
         return new LocalizedIngredientType()

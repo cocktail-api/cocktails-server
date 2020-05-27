@@ -1,4 +1,4 @@
-package de.slevermann.cocktails.mappers;
+package de.slevermann.cocktails.mapper.db;
 
 import de.slevermann.cocktails.models.SearchResult;
 import org.jdbi.v3.core.mapper.RowMapper;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 @Mapper
-public class SearchResultMapper implements RowMapper<SearchResult> {
+public class SearchResultRowMapper implements RowMapper<SearchResult> {
     @Override
     public SearchResult map(ResultSet rs, StatementContext ctx) throws SQLException {
         return new SearchResult()
