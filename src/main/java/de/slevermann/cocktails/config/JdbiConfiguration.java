@@ -1,8 +1,8 @@
 package de.slevermann.cocktails.config;
 
-import de.slevermann.cocktails.daos.IngredientDao;
-import de.slevermann.cocktails.daos.IngredientTypeDao;
-import de.slevermann.cocktails.daos.UserDao;
+import de.slevermann.cocktails.dao.IngredientDao;
+import de.slevermann.cocktails.dao.IngredientTypeDao;
+import de.slevermann.cocktails.dao.UserDao;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.enums.EnumStrategy;
 import org.jdbi.v3.core.enums.Enums;

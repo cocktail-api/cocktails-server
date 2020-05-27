@@ -1,11 +1,11 @@
 package de.slevermann.cocktails.mapper;
 
-import de.slevermann.cocktails.dbmodels.DbCreateIngredient;
-import de.slevermann.cocktails.dbmodels.DbIngredient;
-import de.slevermann.cocktails.dbmodels.DbUserInfo;
-import de.slevermann.cocktails.models.CreateIngredient;
-import de.slevermann.cocktails.models.Ingredient;
-import de.slevermann.cocktails.models.TranslatedString;
+import de.slevermann.cocktails.model.db.DbCreateIngredient;
+import de.slevermann.cocktails.model.db.DbIngredient;
+import de.slevermann.cocktails.model.db.DbUserInfo;
+import de.slevermann.cocktails.model.CreateIngredient;
+import de.slevermann.cocktails.model.Ingredient;
+import de.slevermann.cocktails.model.TranslatedString;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;

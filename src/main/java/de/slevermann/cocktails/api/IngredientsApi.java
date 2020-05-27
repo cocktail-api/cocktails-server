@@ -5,11 +5,11 @@
  */
 package de.slevermann.cocktails.api;
 
-import de.slevermann.cocktails.models.CreateIngredient;
-import de.slevermann.cocktails.models.Ingredient;
-import de.slevermann.cocktails.models.IngredientType;
-import de.slevermann.cocktails.models.LocalizedIngredient;
-import de.slevermann.cocktails.models.LocalizedIngredientType;
+import de.slevermann.cocktails.model.CreateIngredient;
+import de.slevermann.cocktails.model.Ingredient;
+import de.slevermann.cocktails.model.IngredientType;
+import de.slevermann.cocktails.model.LocalizedIngredient;
+import de.slevermann.cocktails.model.LocalizedIngredientType;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T22:43:36.363649+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T22:58:48.812615+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 

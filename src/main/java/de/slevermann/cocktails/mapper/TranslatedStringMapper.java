@@ -1,6 +1,6 @@
 package de.slevermann.cocktails.mapper;
 
-import de.slevermann.cocktails.models.TranslatedString;
+import de.slevermann.cocktails.model.TranslatedString;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
