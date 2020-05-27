@@ -3,6 +3,7 @@ package de.slevermann.cocktails.models;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import de.slevermann.cocktails.models.LocalizedIngredientType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.UUID;
@@ -15,19 +16,13 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient in a single language")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-26T13:26:24.736404+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T16:44:14.258224+02:00[Europe/Berlin]")
 public class LocalizedIngredient   {
   @JsonProperty("id")
   private UUID id = null;
 
-  @JsonProperty("typeId")
-  private UUID typeId = null;
-
-  @JsonProperty("typeLanguage")
-  private String typeLanguage = null;
-
   @JsonProperty("type")
-  private String type = null;
+  private LocalizedIngredientType type = null;
 
   @JsonProperty("language")
   private String language = null;
@@ -59,48 +54,7 @@ public class LocalizedIngredient   {
     this.id = id;
   }
 
-  public LocalizedIngredient typeId(UUID typeId) {
-    this.typeId = typeId;
-    return this;
-  }
-
-  /**
-   * Get typeId
-   * @return typeId
-  **/
-  @ApiModelProperty(example = "d61c2b3a-09e3-4305-8f2b-24079ab52e8d", required = true, value = "")
-      @NotNull
-
-    @Valid
-    public UUID getTypeId() {
-    return typeId;
-  }
-
-  public void setTypeId(UUID typeId) {
-    this.typeId = typeId;
-  }
-
-  public LocalizedIngredient typeLanguage(String typeLanguage) {
-    this.typeLanguage = typeLanguage;
-    return this;
-  }
-
-  /**
-   * Get typeLanguage
-   * @return typeLanguage
-  **/
-  @ApiModelProperty(example = "de", required = true, value = "")
-      @NotNull
-
-    public String getTypeLanguage() {
-    return typeLanguage;
-  }
-
-  public void setTypeLanguage(String typeLanguage) {
-    this.typeLanguage = typeLanguage;
-  }
-
-  public LocalizedIngredient type(String type) {
+  public LocalizedIngredient type(LocalizedIngredientType type) {
     this.type = type;
     return this;
   }
@@ -109,14 +63,15 @@ public class LocalizedIngredient   {
    * Get type
    * @return type
   **/
-  @ApiModelProperty(example = "Alkohol", required = true, value = "")
+  @ApiModelProperty(required = true, value = "")
       @NotNull
 
-    public String getType() {
+    @Valid
+    public LocalizedIngredientType getType() {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(LocalizedIngredientType type) {
     this.type = type;
   }
 
@@ -191,8 +146,6 @@ public class LocalizedIngredient   {
     }
     LocalizedIngredient localizedIngredient = (LocalizedIngredient) o;
     return Objects.equals(this.id, localizedIngredient.id) &&
-        Objects.equals(this.typeId, localizedIngredient.typeId) &&
-        Objects.equals(this.typeLanguage, localizedIngredient.typeLanguage) &&
         Objects.equals(this.type, localizedIngredient.type) &&
         Objects.equals(this.language, localizedIngredient.language) &&
         Objects.equals(this.name, localizedIngredient.name) &&
@@ -201,7 +154,7 @@ public class LocalizedIngredient   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, typeId, typeLanguage, type, language, name, description);
+    return Objects.hash(id, type, language, name, description);
   }
 
   @Override
@@ -210,8 +163,6 @@ public class LocalizedIngredient   {
     sb.append("class LocalizedIngredient {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    typeId: ").append(toIndentedString(typeId)).append("\n");
-    sb.append("    typeLanguage: ").append(toIndentedString(typeLanguage)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    language: ").append(toIndentedString(language)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
