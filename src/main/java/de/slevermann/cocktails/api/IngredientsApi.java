@@ -10,6 +10,7 @@ import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.IngredientType;
 import de.slevermann.cocktails.models.LocalizedIngredient;
 import de.slevermann.cocktails.models.LocalizedIngredientType;
+import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-22T17:44:31.985434+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-26T13:26:24.736404+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -72,7 +73,7 @@ public interface IngredientsApi {
         @ApiResponse(code = 404, message = "Ingredient not found") })
     @RequestMapping(value = "/ingredients/{id}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteIngredient(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
+    ResponseEntity<Void> deleteIngredient(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
 
 
     @ApiOperation(value = "Get a single ingredient by its ID", nickname = "getIngredientById", notes = "", response = Ingredient.class, tags={ "ingredients", })
@@ -82,7 +83,7 @@ public interface IngredientsApi {
     @RequestMapping(value = "/ingredients/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Ingredient> getIngredientById(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
+    ResponseEntity<Ingredient> getIngredientById(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
 
 
     @ApiOperation(value = "Get an ingredient type by its ID", nickname = "getIngredientTypeById", notes = "", response = IngredientType.class, tags={ "ingredients", })
@@ -92,7 +93,7 @@ public interface IngredientsApi {
     @RequestMapping(value = "/ingredients/types/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<IngredientType> getIngredientTypeById(@ApiParam(value = "",required=true) @PathVariable("id") Long id);
+    ResponseEntity<IngredientType> getIngredientTypeById(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
 
 
     @ApiOperation(value = "Get a list of ingredient types on the server", nickname = "getIngredientTypes", notes = "", response = LocalizedIngredientType.class, responseContainer = "List", tags={ "ingredients", })
@@ -127,6 +128,6 @@ public interface IngredientsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Ingredient> updateIngredient(@ApiParam(value = "The ingredient data to update with" ,required=true )  @Valid @RequestBody CreateIngredient body,@ApiParam(value = "",required=true) @PathVariable("id") Long id);
+    ResponseEntity<Ingredient> updateIngredient(@ApiParam(value = "The ingredient data to update with" ,required=true )  @Valid @RequestBody CreateIngredient body,@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
 
 }

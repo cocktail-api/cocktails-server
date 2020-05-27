@@ -7,19 +7,20 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
 @Builder
 public class DbIngredientType {
 
-    private Long id;
+    private UUID uuid;
 
     private Map<String, String> names;
 
     public IngredientType toIngredientType() {
         return new IngredientType()
-                .id(id)
+                .id(uuid)
                 .names(names.entrySet().stream()
                         .map(e -> new TranslatedString()
                                 .language(e.getKey())

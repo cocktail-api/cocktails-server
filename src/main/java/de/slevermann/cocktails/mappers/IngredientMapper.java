@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Mapper
 public class IngredientMapper implements RowMapper<DbIngredient> {
@@ -26,9 +27,9 @@ public class IngredientMapper implements RowMapper<DbIngredient> {
     @Override
     public DbIngredient map(ResultSet rs, StatementContext ctx) throws SQLException {
         return DbIngredient.builder()
-                .id(rs.getLong("id"))
+                .uuid(UUID.fromString(rs.getString("uuid")))
                 .type(DbIngredientType.builder()
-                        .id(rs.getLong("type_id"))
+                        .uuid(UUID.fromString(rs.getString("type_uuid")))
                         .names(hStoreColumnMapper.map(rs, "type_name", ctx)).build())
                 .names(hStoreColumnMapper.map(rs, "name", ctx))
                 .descriptions(hStoreColumnMapper.map(rs, "description", ctx)).build();

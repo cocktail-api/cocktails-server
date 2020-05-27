@@ -2,6 +2,7 @@ package de.slevermann.cocktails.services;
 
 import de.slevermann.cocktails.daos.IngredientDao;
 import de.slevermann.cocktails.dbmodels.DbCreateIngredient;
+import de.slevermann.cocktails.dbmodels.DbIngredient;
 import de.slevermann.cocktails.models.CreateIngredient;
 import de.slevermann.cocktails.models.Ingredient;
 import de.slevermann.cocktails.models.LocalizedIngredient;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -30,7 +32,7 @@ public class IngredientService {
         return ingredientDao.getAll(locales.nextElement().getLanguage());
     }
 
-    public Ingredient getById(Long id) {
+    public Ingredient getById(UUID id) {
         Ingredient ingredient = ingredientDao.getById(id).toIngredient();
         if (ingredient == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -39,26 +41,18 @@ public class IngredientService {
     }
 
     public Ingredient createIngredient(CreateIngredient ingredient) {
-        Long insertedId = ingredientDao.create(new DbCreateIngredient(ingredient));
-
-        if (insertedId != null) {
-            Ingredient result = ingredientDao.getById(insertedId).toIngredient();
-            if (result != null) {
-                return result;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error when inserting entity");
+        return ingredientDao.create(new DbCreateIngredient(ingredient)).toIngredient();
     }
 
-    public Ingredient updateIngredient(CreateIngredient ingredient, Long id) {
-        long rowsAffected = ingredientDao.update(id, new DbCreateIngredient(ingredient));
-        if (rowsAffected == 0) {
+    public Ingredient updateIngredient(CreateIngredient ingredient, UUID id) {
+        DbIngredient updated = ingredientDao.update(id, new DbCreateIngredient(ingredient));
+        if (updated == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return ingredientDao.getById(id).toIngredient();
+        return updated.toIngredient();
     }
 
-    public void deleteIngredient(Long id) {
+    public void deleteIngredient(UUID id) {
         long rowsAffected = ingredientDao.delete(id);
         if (rowsAffected == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

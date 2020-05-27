@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,10 +16,10 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "A result of a search for cocktails and ingredients")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-22T17:44:31.985434+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-26T13:26:24.736404+02:00[Europe/Berlin]")
 public class SearchResult   {
   @JsonProperty("id")
-  private Long id = null;
+  private UUID id = null;
 
   @JsonProperty("name")
   private String name = null;
@@ -59,7 +60,7 @@ public class SearchResult   {
   @JsonProperty("type")
   private TypeEnum type = null;
 
-  public SearchResult id(Long id) {
+  public SearchResult id(UUID id) {
     this.id = id;
     return this;
   }
@@ -68,14 +69,15 @@ public class SearchResult   {
    * The ID of the resource that was found
    * @return id
   **/
-  @ApiModelProperty(required = true, value = "The ID of the resource that was found")
+  @ApiModelProperty(example = "d61c2b3a-09e3-4305-8f2b-24079ab52e8d", required = true, value = "The ID of the resource that was found")
       @NotNull
 
-    public Long getId() {
+    @Valid
+    public UUID getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 

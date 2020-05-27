@@ -13,6 +13,7 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
+import java.util.UUID;
 
 @UseClasspathSqlLocator
 public interface IngredientDao {
@@ -21,18 +22,19 @@ public interface IngredientDao {
     List<LocalizedIngredient> getAll(@Bind("preferred_locale") String preferredLocale);
 
     @SqlQuery
-    DbIngredient getById(@Bind("id") Long id);
+    DbIngredient getById(@Bind("uuid") UUID uuid);
 
     @SqlQuery
     List<SearchResult> search(@Bind("query") String query, @Bind("preferred_locale") String preferredLocale);
 
     @SqlUpdate
     @GetGeneratedKeys
-    Long create(@BindBean DbCreateIngredient dbCreateIngredient);
+    DbIngredient create(@BindBean DbCreateIngredient dbCreateIngredient);
 
     @SqlUpdate
-    int update(@Bind("id") Long id, @BindBean DbCreateIngredient ingredient);
+    @GetGeneratedKeys
+    DbIngredient update(@Bind("uuid") UUID id, @BindBean DbCreateIngredient ingredient);
 
     @SqlUpdate
-    int delete(@Bind("id") Long id);
+    int delete(@Bind("uuid") UUID id);
 }

@@ -1,4 +1,4 @@
-SELECT id,
+SELECT uuid,
        name
 FROM ingredient_type
-WHERE id = :id;
+WHERE uuid = :uuid;

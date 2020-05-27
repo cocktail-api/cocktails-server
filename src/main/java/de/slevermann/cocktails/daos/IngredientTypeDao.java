@@ -8,6 +8,7 @@ import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 
 import java.util.List;
+import java.util.UUID;
 
 @UseClasspathSqlLocator
 public interface IngredientTypeDao {
@@ -16,5 +17,5 @@ public interface IngredientTypeDao {
     List<LocalizedIngredientType> getAll(@Bind("preferred_locale") String preferredLocale);
 
     @SqlQuery
-    DbIngredientType getById(@Bind("id") Long id);
+    DbIngredientType getById(@Bind("uuid") UUID uuid);
 }

@@ -5,7 +5,7 @@
  */
 package de.slevermann.cocktails.api;
 
-import de.slevermann.cocktails.models.SearchResult;
+import de.slevermann.cocktails.models.UserInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-26T13:26:24.736404+02:00[Europe/Berlin]")
-@Api(value = "search", description = "the search API")
-public interface SearchApi {
+@Api(value = "users", description = "the users API")
+public interface UsersApi {
 
-    Logger log = LoggerFactory.getLogger(SearchApi.class);
+    Logger log = LoggerFactory.getLogger(UsersApi.class);
 
     Optional<ObjectMapper> getObjectMapper();
 
@@ -41,12 +41,22 @@ public interface SearchApi {
 
     
 
-    @ApiOperation(value = "Search for ingredients and cocktails", nickname = "search", notes = "", response = SearchResult.class, responseContainer = "List", tags={ "ingredients","cocktails", })
+    @ApiOperation(value = "Get information about the currently logged in user", nickname = "getUserInfo", notes = "", response = UserInfo.class, tags={ "users", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = SearchResult.class, responseContainer = "List") })
-    @RequestMapping(value = "/search",
+        @ApiResponse(code = 200, message = "Success", response = UserInfo.class) })
+    @RequestMapping(value = "/users/info",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<SearchResult>> search(@NotNull @ApiParam(value = "The term to search for", required = true) @Valid @RequestParam(value = "q", required = true) String q);
+    ResponseEntity<UserInfo> getUserInfo();
+
+
+    @ApiOperation(value = "Set the current user's nickname", nickname = "setNick", notes = "", tags={ "users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 204, message = "Success"),
+        @ApiResponse(code = 409, message = "Name is taken") })
+    @RequestMapping(value = "/users/nick",
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
+    ResponseEntity<Void> setNick(@ApiParam(value = "" ,required=true )  @Valid @RequestBody String body);
 
 }

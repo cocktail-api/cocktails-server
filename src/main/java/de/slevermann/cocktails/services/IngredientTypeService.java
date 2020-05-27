@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -29,7 +30,7 @@ public class IngredientTypeService {
         return ingredientTypeDao.getAll(locales.nextElement().getLanguage());
     }
 
-    public IngredientType getById(Long id) {
+    public IngredientType getById(UUID id) {
         DbIngredientType type = ingredientTypeDao.getById(id);
         if (type == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

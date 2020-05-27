@@ -8,13 +8,14 @@ import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 public class DbCreateIngredient {
 
-    private Long typeId;
+    private UUID typeId;
 
     private Map<String, String> names;
 

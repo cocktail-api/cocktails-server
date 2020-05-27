@@ -6,14 +6,15 @@ import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @Mapper
 public class LocalizedIngredientMapper implements RowMapper<LocalizedIngredient> {
     @Override
     public LocalizedIngredient map(ResultSet rs, StatementContext ctx) throws SQLException {
         return new LocalizedIngredient()
-                .id(rs.getLong("id"))
-                .typeId(rs.getLong("type_id"))
+                .id(UUID.fromString(rs.getString("id")))
+                .typeId(UUID.fromString(rs.getString("type_id")))
                 .typeLanguage(rs.getString("type_language"))
                 .type(rs.getString("type_name"))
                 .language(rs.getString("language"))

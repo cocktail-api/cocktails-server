@@ -9,6 +9,7 @@ import org.jdbi.v3.postgres.HStoreColumnMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @Mapper
 public class IngredientTypeMapper implements RowMapper<DbIngredientType> {
@@ -22,7 +23,7 @@ public class IngredientTypeMapper implements RowMapper<DbIngredientType> {
     @Override
     public DbIngredientType map(ResultSet rs, StatementContext ctx) throws SQLException {
         return DbIngredientType.builder()
-                .id(rs.getLong("id"))
+                .uuid(UUID.fromString(rs.getString("uuid")))
                 .names(hStoreColumnMapper.map(rs, "name", ctx)).build();
     }
 }

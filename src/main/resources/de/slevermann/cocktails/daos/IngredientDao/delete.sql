@@ -1,3 +1,3 @@
 DELETE
 FROM ingredient
-WHERE id = :id;
+WHERE uuid = :uuid;

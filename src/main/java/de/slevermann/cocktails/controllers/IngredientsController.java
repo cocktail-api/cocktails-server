@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -49,18 +50,18 @@ public class IngredientsController implements IngredientsApi {
 
     @Override
     @PreAuthorize("hasAuthority('cocktail-admins')")
-    public ResponseEntity<Void> deleteIngredient(Long id) {
+    public ResponseEntity<Void> deleteIngredient(UUID id) {
         ingredientService.deleteIngredient(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Ingredient> getIngredientById(Long id) {
+    public ResponseEntity<Ingredient> getIngredientById(UUID id) {
         return ResponseEntity.ok(ingredientService.getById(id));
     }
 
     @Override
-    public ResponseEntity<IngredientType> getIngredientTypeById(Long id) {
+    public ResponseEntity<IngredientType> getIngredientTypeById(UUID id) {
         return ResponseEntity.ok(ingredientTypeService.getById(id));
     }
 
@@ -76,7 +77,7 @@ public class IngredientsController implements IngredientsApi {
 
     @Override
     @PreAuthorize("hasAnyAuthority('cocktail-admins', 'cocktail-curators')")
-    public ResponseEntity<Ingredient> updateIngredient(@Valid CreateIngredient body, Long id) {
+    public ResponseEntity<Ingredient> updateIngredient(@Valid CreateIngredient body, UUID id) {
         return ResponseEntity.ok(ingredientService.updateIngredient(body, id));
     }
 }

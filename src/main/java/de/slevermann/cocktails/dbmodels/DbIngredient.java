@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
 @Builder
 public class DbIngredient {
 
-    private Long id;
+    private UUID uuid;
 
     private DbIngredientType type;
 
@@ -22,7 +23,7 @@ public class DbIngredient {
 
     public Ingredient toIngredient() {
         return new Ingredient()
-                .id(id)
+                .id(uuid)
                 .type(type.toIngredientType())
                 .names(names.entrySet().stream()
                         .map(e -> new TranslatedString()

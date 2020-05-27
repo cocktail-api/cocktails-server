@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -14,13 +15,13 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient in a single language")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-22T17:44:31.985434+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-26T13:26:24.736404+02:00[Europe/Berlin]")
 public class LocalizedIngredient   {
   @JsonProperty("id")
-  private Long id = null;
+  private UUID id = null;
 
   @JsonProperty("typeId")
-  private Long typeId = null;
+  private UUID typeId = null;
 
   @JsonProperty("typeLanguage")
   private String typeLanguage = null;
@@ -37,7 +38,7 @@ public class LocalizedIngredient   {
   @JsonProperty("description")
   private String description = null;
 
-  public LocalizedIngredient id(Long id) {
+  public LocalizedIngredient id(UUID id) {
     this.id = id;
     return this;
   }
@@ -46,18 +47,19 @@ public class LocalizedIngredient   {
    * Get id
    * @return id
   **/
-  @ApiModelProperty(example = "12", required = true, value = "")
+  @ApiModelProperty(example = "d61c2b3a-09e3-4305-8f2b-24079ab52e8d", required = true, value = "")
       @NotNull
 
-    public Long getId() {
+    @Valid
+    public UUID getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 
-  public LocalizedIngredient typeId(Long typeId) {
+  public LocalizedIngredient typeId(UUID typeId) {
     this.typeId = typeId;
     return this;
   }
@@ -66,14 +68,15 @@ public class LocalizedIngredient   {
    * Get typeId
    * @return typeId
   **/
-  @ApiModelProperty(example = "10", required = true, value = "")
+  @ApiModelProperty(example = "d61c2b3a-09e3-4305-8f2b-24079ab52e8d", required = true, value = "")
       @NotNull
 
-    public Long getTypeId() {
+    @Valid
+    public UUID getTypeId() {
     return typeId;
   }
 
-  public void setTypeId(Long typeId) {
+  public void setTypeId(UUID typeId) {
     this.typeId = typeId;
   }
 

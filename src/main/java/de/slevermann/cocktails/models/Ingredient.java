@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -18,10 +19,10 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient, with all languages")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-22T17:44:31.985434+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-26T13:26:24.736404+02:00[Europe/Berlin]")
 public class Ingredient   {
   @JsonProperty("id")
-  private Long id = null;
+  private UUID id = null;
 
   @JsonProperty("type")
   private IngredientType type = null;
@@ -34,7 +35,7 @@ public class Ingredient   {
   @Valid
   private List<TranslatedString> descriptions = new ArrayList<>();
 
-  public Ingredient id(Long id) {
+  public Ingredient id(UUID id) {
     this.id = id;
     return this;
   }
@@ -43,14 +44,15 @@ public class Ingredient   {
    * Get id
    * @return id
   **/
-  @ApiModelProperty(example = "1337", required = true, value = "")
+  @ApiModelProperty(example = "d61c2b3a-09e3-4305-8f2b-24079ab52e8d", required = true, value = "")
       @NotNull
 
-    public Long getId() {
+    @Valid
+    public UUID getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 
