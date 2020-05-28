@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 
 @BootstrapWith(SpringBootTestContextBootstrapper.class)
-@ComponentScan("de.slevermann.cocktails.mappers")
+@ComponentScan("de.slevermann.cocktails.mapper.db")
 @ContextConfiguration(classes = JdbiConfiguration.class)
 @ExtendWith(SpringExtension.class)
 @ImportAutoConfiguration(classes = {

@@ -26,37 +26,4 @@ public abstract class DaoTestBase extends ContainerTestBase {
             h.execute("TRUNCATE TABLE ingredient_type CASCADE");
         });
     }
-
-    @AfterEach
-    public void afterEach() {
-        beforeEach();
-    }
-
-    protected void insertIngredientType(DbIngredientType type) {
-        jdbi.useHandle(h ->
-                h.createUpdate("INSERT INTO ingredient_type (id, name) VALUES (:id, :names)")
-                        .bindBean(type)
-                        .execute());
-    }
-
-    protected DbIngredientType loadIngredientType(String name) throws Exception {
-        return builder.build().readValue(getClass()
-                .getResource("/de/slevermann/cocktails/testdata/IngredientType/" + name), DbIngredientType.class);
-    }
-
-    protected Ingredient loadIngredient(String name) throws Exception {
-        return builder.build().readValue(getClass()
-                .getResource("/de/slevermann/cocktails/testdata/Ingredient/" + name), Ingredient.class);
-    }
-
-    protected void insertIngredient(Ingredient ingredient) {
-        jdbi.useHandle(h ->
-                h.createUpdate("INSERT INTO ingredient (id, ingredient_type_id, name, description)" +
-                        "VALUES (:id, :type_id, :name, :description)")
-                        .bind("id", ingredient.getId())
-                        .bind("type_id", ingredient.getType().getId())
-                        .bind("name", ingredient.getNames())
-                        .bind("description", ingredient.getDescriptions())
-                        .execute());
-    }
 }
