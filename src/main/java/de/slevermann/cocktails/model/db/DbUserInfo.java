@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.model.db;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 import java.util.UUID;
@@ -9,9 +10,9 @@ import java.util.UUID;
 @Builder
 public class DbUserInfo {
 
-    UUID uuid;
+    @NonNull UUID uuid;
 
-    String providerId;
+    @NonNull String providerId;
 
     String nick;
 }

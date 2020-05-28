@@ -1,6 +1,7 @@
 package de.slevermann.cocktails.model.db;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Builder
 public class DbIngredientType {
 
-    UUID uuid;
+    @NonNull UUID uuid;
 
-    Map<String, String> names;
+    @NonNull Map<String, String> names;
 }

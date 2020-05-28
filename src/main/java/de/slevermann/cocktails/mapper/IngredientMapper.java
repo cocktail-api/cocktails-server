@@ -5,10 +5,7 @@ import de.slevermann.cocktails.model.db.DbIngredient;
 import de.slevermann.cocktails.model.db.DbUserInfo;
 import de.slevermann.cocktails.model.CreateIngredient;
 import de.slevermann.cocktails.model.Ingredient;
-import de.slevermann.cocktails.model.TranslatedString;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 public class IngredientMapper {
@@ -29,16 +26,8 @@ public class IngredientMapper {
         Ingredient ingredient = new Ingredient()
                 .id(dbIngredient.getUuid())
                 .type(ingredientTypeMapper.dbIngredientTypetoIngredientType(dbIngredient.getType()))
-                .names(dbIngredient.getNames().entrySet().stream()
-                        .map(e -> new TranslatedString()
-                                .language(e.getKey())
-                                .translation(e.getValue()))
-                        .collect(Collectors.toList()))
-                .descriptions(dbIngredient.getDescriptions().entrySet().stream()
-                        .map(e -> new TranslatedString()
-                                .language(e.getKey())
-                                .translation(e.getValue()))
-                        .collect(Collectors.toList()))
+                .names(translatedStringMapper.mapToTranslatedStrings(dbIngredient.getNames()))
+                .descriptions(translatedStringMapper.mapToTranslatedStrings(dbIngredient.getDescriptions()))
                 ._public(dbIngredient.isPublic());
         DbUserInfo userInfo = dbIngredient.getUserInfo();
         if (userInfo != null) {
@@ -50,8 +39,8 @@ public class IngredientMapper {
     public DbCreateIngredient createIngredientToDbCreateIngredient(CreateIngredient ingredient) {
         return DbCreateIngredient.builder()
                 .typeId(ingredient.getTypeId())
-                .names(translatedStringMapper.translatedStringsToHashMap(ingredient.getNames()))
-                .descriptions(translatedStringMapper.translatedStringsToHashMap(ingredient.getDescriptions()))
+                .names(translatedStringMapper.translatedStringsToMap(ingredient.getNames()))
+                .descriptions(translatedStringMapper.translatedStringsToMap(ingredient.getDescriptions()))
                 .build();
     }
 }
