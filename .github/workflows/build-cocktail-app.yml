@@ -39,8 +39,8 @@ jobs:
       - name: Test
         run: ./mvnw --batch-mode -P no-docker verify
       - name: Upload coverage data to codecov.io
-        run:
-          - apk add bash curl
-          - curl -s https://codecov.io/bash > .codecov
-          - chmod +x .codecov
-          - ./.codecov
+        run: |
+          apk add bash curl
+          curl -s https://codecov.io/bash > .codecov
+          chmod +x .codecov
+          ./.codecov
