@@ -1,18 +1,14 @@
 package de.slevermann.cocktails.dao;
 
 
-import de.slevermann.cocktails.ContainerTestBase;
-import de.slevermann.cocktails.JdbiTest;
 import de.slevermann.cocktails.model.LocalizedIngredient;
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -23,14 +19,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@JdbiTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Rollback(false)
-public class IngredientDaoTest extends ContainerTestBase {
-
-    @Autowired
-    private Jdbi jdbi;
+public class IngredientDaoTest extends DaoTestBase {
 
     @Autowired
     private IngredientDao ingredientDao;
@@ -41,19 +32,14 @@ public class IngredientDaoTest extends ContainerTestBase {
 
     private UUID ingredientUuid;
 
-    @BeforeAll
-    public void beforeAll() {
-        jdbi.useHandle(h -> {
-            h.execute("TRUNCATE TABLE ingredient CASCADE");
-            h.execute("TRUNCATE TABLE ingredient_type CASCADE");
-            h.execute("TRUNCATE TABLE \"user\" CASCADE");
-            h.createUpdate("INSERT INTO ingredient_type (uuid, name) VALUES (:uuid, :names), (:uuid2, :names2)")
-                    .bind("uuid", TYPE_UUID_ONE)
-                    .bind("names", Map.of("de", "hallo", "en", "hello"))
-                    .bind("uuid2", TYPE_UUID_TWO)
-                    .bind("names2", Map.of("de", "auf wiedersehen"))
-                    .execute();
-        });
+    @Override
+    protected void customInit() {
+        jdbi.useHandle(h -> h.createUpdate("INSERT INTO ingredient_type (uuid, name) VALUES (:uuid, :names), (:uuid2, :names2)")
+                .bind("uuid", TYPE_UUID_ONE)
+                .bind("names", Map.of("de", "hallo", "en", "hello"))
+                .bind("uuid2", TYPE_UUID_TWO)
+                .bind("names2", Map.of("de", "auf wiedersehen"))
+                .execute());
     }
 
     @Test

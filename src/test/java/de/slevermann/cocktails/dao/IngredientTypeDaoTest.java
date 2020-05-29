@@ -1,14 +1,8 @@
 package de.slevermann.cocktails.dao;
 
-import de.slevermann.cocktails.ContainerTestBase;
-import de.slevermann.cocktails.JdbiTest;
 import de.slevermann.cocktails.model.LocalizedIngredientType;
 import de.slevermann.cocktails.model.db.DbIngredientType;
-import org.jdbi.v3.core.Jdbi;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -17,12 +11,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@JdbiTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class IngredientTypeDaoTest extends ContainerTestBase {
-
-    @Autowired
-    private Jdbi jdbi;
+public class IngredientTypeDaoTest extends DaoTestBase {
 
     @Autowired
     private IngredientTypeDao ingredientTypeDao;
@@ -30,30 +19,15 @@ public class IngredientTypeDaoTest extends ContainerTestBase {
     private static final UUID UUID_ONE = UUID.randomUUID();
     private static final UUID UUID_TWO = UUID.randomUUID();
 
-    @BeforeAll
-    public void beforeAll() {
-        jdbi.useHandle(h -> {
-            h.execute("TRUNCATE TABLE ingredient CASCADE");
-            h.execute("TRUNCATE TABLE ingredient_type CASCADE");
-            h.execute("TRUNCATE TABLE \"user\" CASCADE");
-            h.createUpdate("INSERT INTO ingredient_type (uuid, name) VALUES (:uuid, :names), (:uuid2, :names2)")
-                    .bind("uuid", UUID_ONE)
-                    .bind("names", Map.of("de", "hallo", "en", "hello"))
-                    .bind("uuid2", UUID_TWO)
-                    .bind("names2", Map.of("de", "auf wiedersehen"))
-                    .execute();
-        });
+    @Override
+    protected void customInit() {
+        jdbi.useHandle(h -> h.createUpdate("INSERT INTO ingredient_type (uuid, name) VALUES (:uuid, :names), (:uuid2, :names2)")
+                .bind("uuid", UUID_ONE)
+                .bind("names", Map.of("de", "hallo", "en", "hello"))
+                .bind("uuid2", UUID_TWO)
+                .bind("names2", Map.of("de", "auf wiedersehen"))
+                .execute());
     }
-
-    @AfterAll
-    public void afterAll() {
-        jdbi.useHandle(h -> {
-            h.execute("TRUNCATE TABLE ingredient CASCADE");
-            h.execute("TRUNCATE TABLE ingredient_type CASCADE");
-            h.execute("TRUNCATE TABLE \"user\" CASCADE");
-        });
-    }
-
 
     @Test
     public void testGetById() {
