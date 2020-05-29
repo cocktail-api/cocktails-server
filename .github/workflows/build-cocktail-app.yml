@@ -7,7 +7,7 @@ jobs:
       MAVEN_REPO_PATH: ".m2/repository"
       MAVEN_OPTS: "-Dmaven.repo.local=${MAVEN_REPO_PATH}"
     runs-on: ubuntu-latest
-    container: openjdk:14-alpine
+    container: openjdk:14-jdk-slim
     services:
       postgres:
         image: postgres:12.2-alpine
