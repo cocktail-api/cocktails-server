@@ -37,4 +37,6 @@ jobs:
       - name: Compile
         run: ./mvnw --batch-mode clean compile
       - name: Test
-        run: ./mvnw --batch-mode -P no-docker test
+        run: ./mvnw --batch-mode -P no-docker verify
+      - name: Upload coverage data to codecov.io
+        uses: codecov/codecov-action@v1
