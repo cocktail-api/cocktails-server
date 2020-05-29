@@ -3,7 +3,7 @@ package de.slevermann.cocktails.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.slevermann.cocktails.api.UsersApi;
 import de.slevermann.cocktails.mapper.UserInfoMapper;
-import de.slevermann.cocktails.model.UserInfo;
+import de.slevermann.cocktails.dto.UserInfo;
 import de.slevermann.cocktails.service.AuthenticationService;
 import de.slevermann.cocktails.service.UserService;
 import org.springframework.http.ResponseEntity;

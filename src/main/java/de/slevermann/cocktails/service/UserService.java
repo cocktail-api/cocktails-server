@@ -3,7 +3,7 @@ package de.slevermann.cocktails.service;
 import de.slevermann.cocktails.dao.UserDao;
 import de.slevermann.cocktails.model.db.DbUserInfo;
 import de.slevermann.cocktails.mapper.UserInfoMapper;
-import de.slevermann.cocktails.model.UserInfo;
+import de.slevermann.cocktails.dto.UserInfo;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

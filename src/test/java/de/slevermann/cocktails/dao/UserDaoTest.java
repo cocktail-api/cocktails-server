@@ -1,7 +1,6 @@
 package de.slevermann.cocktails.dao;
 
 import de.slevermann.cocktails.model.db.DbUserInfo;
-import org.jdbi.v3.core.Jdbi;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

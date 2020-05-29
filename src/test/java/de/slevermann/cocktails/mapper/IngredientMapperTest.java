@@ -1,8 +1,8 @@
 package de.slevermann.cocktails.mapper;
 
-import de.slevermann.cocktails.model.CreateIngredient;
-import de.slevermann.cocktails.model.Ingredient;
-import de.slevermann.cocktails.model.TranslatedString;
+import de.slevermann.cocktails.dto.CreateIngredient;
+import de.slevermann.cocktails.dto.Ingredient;
+import de.slevermann.cocktails.dto.TranslatedString;
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
 import de.slevermann.cocktails.model.db.DbIngredientType;

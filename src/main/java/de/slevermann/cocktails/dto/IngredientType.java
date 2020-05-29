@@ -1,47 +1,33 @@
-package de.slevermann.cocktails.model;
+package de.slevermann.cocktails.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import de.slevermann.cocktails.dto.TranslatedString;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * UserInfo
+ * An ingredient type, with all languages
  */
+@ApiModel(description = "An ingredient type, with all languages")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T15:02:10.914391+02:00[Europe/Berlin]")
-public class UserInfo   {
-  @JsonProperty("nick")
-  private String nick = null;
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T19:00:39.166734+02:00[Europe/Berlin]")
+public class IngredientType   {
   @JsonProperty("id")
   private UUID id = null;
 
-  public UserInfo nick(String nick) {
-    this.nick = nick;
-    return this;
-  }
+  @JsonProperty("names")
+  @Valid
+  private List<TranslatedString> names = new ArrayList<>();
 
-  /**
-   * Get nick
-   * @return nick
-  **/
-  @ApiModelProperty(example = "Jim", value = "")
-  
-    public String getNick() {
-    return nick;
-  }
-
-  public void setNick(String nick) {
-    this.nick = nick;
-  }
-
-  public UserInfo id(UUID id) {
+  public IngredientType id(UUID id) {
     this.id = id;
     return this;
   }
@@ -62,6 +48,31 @@ public class UserInfo   {
     this.id = id;
   }
 
+  public IngredientType names(List<TranslatedString> names) {
+    this.names = names;
+    return this;
+  }
+
+  public IngredientType addNamesItem(TranslatedString namesItem) {
+    this.names.add(namesItem);
+    return this;
+  }
+
+  /**
+   * Get names
+   * @return names
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+    @Valid
+    public List<TranslatedString> getNames() {
+    return names;
+  }
+
+  public void setNames(List<TranslatedString> names) {
+    this.names = names;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -71,23 +82,23 @@ public class UserInfo   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.nick, userInfo.nick) &&
-        Objects.equals(this.id, userInfo.id);
+    IngredientType ingredientType = (IngredientType) o;
+    return Objects.equals(this.id, ingredientType.id) &&
+        Objects.equals(this.names, ingredientType.names);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nick, id);
+    return Objects.hash(id, names);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserInfo {\n");
+    sb.append("class IngredientType {\n");
     
-    sb.append("    nick: ").append(toIndentedString(nick)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    names: ").append(toIndentedString(names)).append("\n");
     sb.append("}");
     return sb.toString();
   }

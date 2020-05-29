@@ -5,7 +5,7 @@
  */
 package de.slevermann.cocktails.api;
 
-import de.slevermann.cocktails.model.SearchResult;
+import de.slevermann.cocktails.dto.SearchResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T15:02:10.914391+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T19:00:39.166734+02:00[Europe/Berlin]")
 @Api(value = "search", description = "the search API")
 public interface SearchApi {
 

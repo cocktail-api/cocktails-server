@@ -2,7 +2,11 @@ package de.slevermann.cocktails.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.slevermann.cocktails.api.IngredientsApi;
-import de.slevermann.cocktails.model.*;
+import de.slevermann.cocktails.dto.CreateIngredient;
+import de.slevermann.cocktails.dto.Ingredient;
+import de.slevermann.cocktails.dto.IngredientType;
+import de.slevermann.cocktails.dto.LocalizedIngredient;
+import de.slevermann.cocktails.dto.LocalizedIngredientType;
 import de.slevermann.cocktails.service.IngredientService;
 import de.slevermann.cocktails.service.IngredientTypeService;
 import org.springframework.http.HttpStatus;

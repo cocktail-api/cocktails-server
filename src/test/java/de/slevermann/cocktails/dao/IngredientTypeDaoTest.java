@@ -1,6 +1,6 @@
 package de.slevermann.cocktails.dao;
 
-import de.slevermann.cocktails.model.LocalizedIngredientType;
+import de.slevermann.cocktails.dto.LocalizedIngredientType;
 import de.slevermann.cocktails.model.db.DbIngredientType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

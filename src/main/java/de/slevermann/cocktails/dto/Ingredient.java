@@ -1,11 +1,11 @@
-package de.slevermann.cocktails.model;
+package de.slevermann.cocktails.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import de.slevermann.cocktails.model.IngredientType;
-import de.slevermann.cocktails.model.TranslatedString;
-import de.slevermann.cocktails.model.UserInfo;
+import de.slevermann.cocktails.dto.IngredientType;
+import de.slevermann.cocktails.dto.TranslatedString;
+import de.slevermann.cocktails.dto.UserInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient, with all languages")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T15:02:10.914391+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T19:00:39.166734+02:00[Europe/Berlin]")
 public class Ingredient   {
   @JsonProperty("id")
   private UUID id = null;

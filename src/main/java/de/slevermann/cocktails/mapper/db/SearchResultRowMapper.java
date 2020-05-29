@@ -1,6 +1,6 @@
 package de.slevermann.cocktails.mapper.db;
 
-import de.slevermann.cocktails.model.SearchResult;
+import de.slevermann.cocktails.dto.SearchResult;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 

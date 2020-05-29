@@ -1,6 +1,6 @@
 package de.slevermann.cocktails.dao;
 
-import de.slevermann.cocktails.model.LocalizedIngredient;
+import de.slevermann.cocktails.dto.LocalizedIngredient;
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
 import de.slevermann.cocktails.model.db.DbUpdateIngredient;

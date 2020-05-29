@@ -1,7 +1,7 @@
 package de.slevermann.cocktails.dao;
 
 import de.slevermann.cocktails.model.db.DbIngredientType;
-import de.slevermann.cocktails.model.LocalizedIngredientType;
+import de.slevermann.cocktails.dto.LocalizedIngredientType;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;

@@ -2,8 +2,8 @@ package de.slevermann.cocktails.dao;
 
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
-import de.slevermann.cocktails.model.LocalizedIngredient;
-import de.slevermann.cocktails.model.SearchResult;
+import de.slevermann.cocktails.dto.LocalizedIngredient;
+import de.slevermann.cocktails.dto.SearchResult;
 import de.slevermann.cocktails.model.db.DbUpdateIngredient;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;

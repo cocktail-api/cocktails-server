@@ -1,7 +1,7 @@
 package de.slevermann.cocktails.mapper;
 
 import de.slevermann.cocktails.model.db.DbIngredientType;
-import de.slevermann.cocktails.model.IngredientType;
+import de.slevermann.cocktails.dto.IngredientType;
 import org.springframework.stereotype.Component;
 
 @Component

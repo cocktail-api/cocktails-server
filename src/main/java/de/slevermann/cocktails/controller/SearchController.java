@@ -2,7 +2,7 @@ package de.slevermann.cocktails.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.slevermann.cocktails.api.SearchApi;
-import de.slevermann.cocktails.model.SearchResult;
+import de.slevermann.cocktails.dto.SearchResult;
 import de.slevermann.cocktails.service.SearchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

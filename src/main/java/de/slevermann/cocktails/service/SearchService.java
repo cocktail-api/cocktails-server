@@ -1,7 +1,7 @@
 package de.slevermann.cocktails.service;
 
 import de.slevermann.cocktails.dao.IngredientDao;
-import de.slevermann.cocktails.model.SearchResult;
+import de.slevermann.cocktails.dto.SearchResult;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

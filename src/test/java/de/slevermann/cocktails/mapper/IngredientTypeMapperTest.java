@@ -1,6 +1,6 @@
 package de.slevermann.cocktails.mapper;
 
-import de.slevermann.cocktails.model.IngredientType;
+import de.slevermann.cocktails.dto.IngredientType;
 import de.slevermann.cocktails.model.db.DbIngredientType;
 import org.junit.jupiter.api.Test;
 

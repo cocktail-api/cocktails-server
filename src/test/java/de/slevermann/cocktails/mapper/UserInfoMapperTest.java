@@ -1,6 +1,6 @@
 package de.slevermann.cocktails.mapper;
 
-import de.slevermann.cocktails.model.UserInfo;
+import de.slevermann.cocktails.dto.UserInfo;
 import de.slevermann.cocktails.model.db.DbUserInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
