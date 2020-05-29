@@ -6,7 +6,9 @@ import de.slevermann.cocktails.dto.TranslatedString;
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
 import de.slevermann.cocktails.model.db.DbIngredientType;
+import de.slevermann.cocktails.model.db.DbUpdateIngredient;
 import de.slevermann.cocktails.model.db.DbUserInfo;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -103,5 +105,23 @@ public class IngredientMapperTest {
                 Arguments.of(true, null),
                 Arguments.of(false, UUID.randomUUID())
         );
+    }
+
+    @Test
+    public void testMapUpdateIngredient() {
+        UUID uuid = UUID.randomUUID();
+        CreateIngredient createIngredient = new CreateIngredient()
+                .descriptions(List.of(
+                        new TranslatedString().language("de").translation("Gruß"),
+                        new TranslatedString().language("en").translation("Greeting")))
+                .names(List.of(
+                        new TranslatedString().language("de").translation("Hallo"),
+                        new TranslatedString().language("en").translation("Hello")))
+                .typeId(uuid);
+
+        DbUpdateIngredient updateIngredient = ingredientMapper.createIngredientToDbUpdateIngredient(createIngredient);
+        assertEquals(2, updateIngredient.getDescriptions().size(), "Descriptions should be present");
+        assertEquals(2, updateIngredient.getNames().size(), "Names should be present");
+        assertEquals(uuid, updateIngredient.getTypeId(), "Type ID should be mapped");
     }
 }
