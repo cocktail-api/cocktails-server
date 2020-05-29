@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/cocktail-api/cocktails-server/branch/master/graph/badge.svg)](https://codecov.io/gh/cocktail-api/cocktails-server)
 # Cocktails app
 An app for storing cocktail recipes and ingredients
 
