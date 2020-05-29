@@ -4,6 +4,7 @@ import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
 import de.slevermann.cocktails.model.LocalizedIngredient;
 import de.slevermann.cocktails.model.SearchResult;
+import de.slevermann.cocktails.model.db.DbUpdateIngredient;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
@@ -32,8 +33,11 @@ public interface IngredientDao {
 
     @SqlUpdate
     @GetGeneratedKeys
-    DbIngredient update(@Bind("uuid") UUID id, @BindBean DbCreateIngredient ingredient);
+    DbIngredient update(@Bind("uuid") UUID id, @BindBean DbUpdateIngredient ingredient);
 
     @SqlUpdate
     int delete(@Bind("uuid") UUID id);
+
+    @SqlUpdate
+    int setPublicStatus(@Bind("uuid") UUID id, @Bind("public") boolean isPublic);
 }

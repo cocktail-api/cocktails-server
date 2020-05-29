@@ -2,10 +2,13 @@ package de.slevermann.cocktails.mapper;
 
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
+import de.slevermann.cocktails.model.db.DbUpdateIngredient;
 import de.slevermann.cocktails.model.db.DbUserInfo;
 import de.slevermann.cocktails.model.CreateIngredient;
 import de.slevermann.cocktails.model.Ingredient;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 public class IngredientMapper {
@@ -36,8 +39,18 @@ public class IngredientMapper {
         return ingredient;
     }
 
-    public DbCreateIngredient createIngredientToDbCreateIngredient(CreateIngredient ingredient) {
+    public DbCreateIngredient createIngredientToDbCreateIngredient(CreateIngredient ingredient, boolean isPublic, UUID owner) {
         return DbCreateIngredient.builder()
+                .typeId(ingredient.getTypeId())
+                .names(translatedStringMapper.translatedStringsToMap(ingredient.getNames()))
+                .descriptions(translatedStringMapper.translatedStringsToMap(ingredient.getDescriptions()))
+                .isPublic(isPublic)
+                .owner(owner)
+                .build();
+    }
+
+    public DbUpdateIngredient createIngredientToDbUpdateIngredient(CreateIngredient ingredient) {
+        return DbUpdateIngredient.builder()
                 .typeId(ingredient.getTypeId())
                 .names(translatedStringMapper.translatedStringsToMap(ingredient.getNames()))
                 .descriptions(translatedStringMapper.translatedStringsToMap(ingredient.getDescriptions()))

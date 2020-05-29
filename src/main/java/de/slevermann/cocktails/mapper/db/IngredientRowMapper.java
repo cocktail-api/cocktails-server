@@ -34,7 +34,8 @@ public class IngredientRowMapper implements RowMapper<DbIngredient> {
         if (ownerUuid != null) {
             builder.userInfo(DbUserInfo.builder()
                     .uuid(UUID.fromString(ownerUuid))
-                    .nick(rs.getString("owner_nick")).build());
+                    .nick(rs.getString("owner_nick"))
+                    .providerId(rs.getString("owner_provider_id")).build());
         }
         return builder.build();
     }

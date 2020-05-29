@@ -5,6 +5,7 @@ import de.slevermann.cocktails.api.IngredientsApi;
 import de.slevermann.cocktails.model.*;
 import de.slevermann.cocktails.service.IngredientService;
 import de.slevermann.cocktails.service.IngredientTypeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,12 @@ public class IngredientController implements IngredientsApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('cocktail-admins')")
+    public ResponseEntity<Ingredient> adminCreateIngredient(@Valid CreateIngredient body) {
+        return ResponseEntity.ok(ingredientService.createAdminIngredient(body));
+    }
+
+    @Override
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Ingredient> createIngredient(@Valid CreateIngredient body) {
         return ResponseEntity.ok(ingredientService.createIngredient(body));
@@ -61,6 +68,12 @@ public class IngredientController implements IngredientsApi {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('cocktail-admins', 'cocktail-curators')")
+    public ResponseEntity<List<LocalizedIngredient>> getIngredientQueue() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @Override
     public ResponseEntity<IngredientType> getIngredientTypeById(UUID id) {
         return ResponseEntity.ok(ingredientTypeService.getById(id));
     }
@@ -73,6 +86,19 @@ public class IngredientController implements IngredientsApi {
     @Override
     public ResponseEntity<List<LocalizedIngredient>> getIngredients() {
         return ResponseEntity.ok(ingredientService.getAll(request.getLocales()));
+    }
+
+    @Override
+    @PreAuthorize("hasAnyAuthority('cocktail-admins', 'cocktail-curators')")
+    public ResponseEntity<Void> setIngredientPublicStatus(@Valid Boolean body, UUID id) {
+        ingredientService.setPublicStatus(id, body);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> submitIngredient(UUID id) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override

@@ -6,7 +6,6 @@ import de.slevermann.cocktails.mapper.IngredientMapper;
 import de.slevermann.cocktails.model.CreateIngredient;
 import de.slevermann.cocktails.model.Ingredient;
 import de.slevermann.cocktails.model.LocalizedIngredient;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Service
 @Transactional
 @Validated
@@ -26,9 +27,12 @@ public class IngredientService {
 
     private final IngredientMapper ingredientMapper;
 
-    public IngredientService(IngredientDao ingredientDao, IngredientMapper ingredientMapper) {
+    private final AuthenticationService authenticationService;
+
+    public IngredientService(IngredientDao ingredientDao, IngredientMapper ingredientMapper, AuthenticationService authenticationService) {
         this.ingredientDao = ingredientDao;
         this.ingredientMapper = ingredientMapper;
+        this.authenticationService = authenticationService;
     }
 
     public List<LocalizedIngredient> getAll(Enumeration<Locale> locales) {
@@ -38,28 +42,41 @@ public class IngredientService {
     public Ingredient getById(UUID id) {
         DbIngredient dbIngredient = ingredientDao.getById(id);
         if (dbIngredient == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(NOT_FOUND);
         }
         return ingredientMapper.dbIngredientToIngredient(dbIngredient);
     }
 
     public Ingredient createIngredient(CreateIngredient ingredient) {
+        UUID uuid = authenticationService.getUserDetails().getUuid();
         return ingredientMapper.dbIngredientToIngredient(ingredientDao
-                .create(ingredientMapper.createIngredientToDbCreateIngredient(ingredient)));
+                .create(ingredientMapper.createIngredientToDbCreateIngredient(ingredient, false, uuid)));
+    }
+
+    public Ingredient createAdminIngredient(CreateIngredient ingredient) {
+        return ingredientMapper.dbIngredientToIngredient(ingredientDao
+                .create(ingredientMapper.createIngredientToDbCreateIngredient(ingredient, true, null)));
     }
 
     public Ingredient updateIngredient(CreateIngredient ingredient, UUID id) {
-        DbIngredient updated = ingredientDao.update(id, ingredientMapper.createIngredientToDbCreateIngredient(ingredient));
+        DbIngredient updated = ingredientDao.update(id, ingredientMapper.createIngredientToDbUpdateIngredient(ingredient));
         if (updated == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(NOT_FOUND);
         }
         return ingredientMapper.dbIngredientToIngredient(updated);
     }
 
     public void deleteIngredient(UUID id) {
-        long rowsAffected = ingredientDao.delete(id);
+        int rowsAffected = ingredientDao.delete(id);
         if (rowsAffected == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(NOT_FOUND);
+        }
+    }
+
+    public void setPublicStatus(UUID id, boolean publicStatus) {
+        int rowsAffected = ingredientDao.setPublicStatus(id, publicStatus);
+        if (rowsAffected == 0) {
+            throw new ResponseStatusException(NOT_FOUND);
         }
     }
 }

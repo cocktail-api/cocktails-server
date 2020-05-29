@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T22:58:48.812615+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T15:02:10.914391+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -45,6 +45,19 @@ public interface IngredientsApi {
     Optional<HttpServletRequest> getRequest();
 
     
+
+    @ApiOperation(value = "Create an ingredient that is directly public for use by everyone", nickname = "adminCreateIngredient", notes = "", response = Ingredient.class, authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
+            })    }, tags={ "ingredients","admin", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Retrieve the created ingredient", response = Ingredient.class) })
+    @RequestMapping(value = "/ingredients/admin/create",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
+    ResponseEntity<Ingredient> adminCreateIngredient(@ApiParam(value = "The ingredient to create" ,required=true )  @Valid @RequestBody CreateIngredient body);
+
 
     @ApiOperation(value = "Create a new ingredient in the database", nickname = "createIngredient", notes = "", response = Ingredient.class, authorizations = {
         @Authorization(value = "oauth2", scopes = { 
@@ -82,6 +95,18 @@ public interface IngredientsApi {
     ResponseEntity<Ingredient> getIngredientById(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
 
 
+    @ApiOperation(value = "Get the moderation queue for ingredients", nickname = "getIngredientQueue", notes = "", response = LocalizedIngredient.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
+            })    }, tags={ "ingredients","admin", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success", response = LocalizedIngredient.class, responseContainer = "List") })
+    @RequestMapping(value = "/ingredients/admin/queue/",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<LocalizedIngredient>> getIngredientQueue();
+
+
     @ApiOperation(value = "Get an ingredient type by its ID", nickname = "getIngredientTypeById", notes = "", response = IngredientType.class, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = IngredientType.class),
@@ -108,6 +133,31 @@ public interface IngredientsApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<LocalizedIngredient>> getIngredients();
+
+
+    @ApiOperation(value = "Make an ingredient public (or revoke its public status)", nickname = "setIngredientPublicStatus", notes = "", authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
+            })    }, tags={ "ingredients","admin", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 204, message = "Status set successfully"),
+        @ApiResponse(code = 404, message = "Ingredient not found") })
+    @RequestMapping(value = "/ingredients/admin/publish/{id}",
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
+    ResponseEntity<Void> setIngredientPublicStatus(@ApiParam(value = "Whether or not to make the ingredient public" ,required=true )  @Valid @RequestBody Boolean body,@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
+
+
+    @ApiOperation(value = "Submit an ingredient to moderation in order to make it public", nickname = "submitIngredient", notes = "", authorizations = {
+        @Authorization(value = "oauth2", scopes = { 
+            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
+            })    }, tags={ "ingredients", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 204, message = "Success"),
+        @ApiResponse(code = 404, message = "Ingredient not found") })
+    @RequestMapping(value = "/ingredients/submit/{id}",
+        method = RequestMethod.GET)
+    ResponseEntity<Void> submitIngredient(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
 
 
     @ApiOperation(value = "Update the ingredient with the specified ID", nickname = "updateIngredient", notes = "", response = Ingredient.class, authorizations = {

@@ -1,15 +1,17 @@
 package de.slevermann.cocktails.dao;
 
-
 import de.slevermann.cocktails.model.LocalizedIngredient;
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
-import org.jdbi.v3.core.Jdbi;
+import de.slevermann.cocktails.model.db.DbUpdateIngredient;
+import de.slevermann.cocktails.model.db.DbUserInfo;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
@@ -25,6 +27,9 @@ public class IngredientDaoTest extends DaoTestBase {
 
     @Autowired
     private IngredientDao ingredientDao;
+
+    @Autowired
+    private UserDao userDao;
 
     private static final UUID TYPE_UUID_ONE = UUID.randomUUID();
 
@@ -44,10 +49,11 @@ public class IngredientDaoTest extends DaoTestBase {
 
     @Test
     @Order(1)
-    public void testCreate() {
+    public void testCreatePublic() {
         DbCreateIngredient dbCreateIngredient = DbCreateIngredient.builder()
                 .descriptions(Map.of("de", "eine zutat", "en", "an ingredient"))
                 .names(Map.of("de", "zutat", "en", "ingredient"))
+                .isPublic(true)
                 .typeId(TYPE_UUID_ONE).build();
 
         DbIngredient ingredient = ingredientDao.create(dbCreateIngredient);
@@ -91,6 +97,7 @@ public class IngredientDaoTest extends DaoTestBase {
         DbCreateIngredient secondIngredient = DbCreateIngredient.builder()
                 .descriptions(Map.of("de", "eine zutat"))
                 .names(Map.of("de", "zutat"))
+                .isPublic(true)
                 .typeId(TYPE_UUID_TWO).build();
 
         ingredientDao.create(secondIngredient);
@@ -114,12 +121,12 @@ public class IngredientDaoTest extends DaoTestBase {
     @Order(5)
     @Rollback
     public void testUpdate() {
-        DbCreateIngredient dbCreateIngredient = DbCreateIngredient.builder()
+        DbUpdateIngredient dbUpdateIngredient = DbUpdateIngredient.builder()
                 .descriptions(Map.of("de", "update", "en", "an updated ingredient"))
                 .names(Map.of("de", "ein update", "en", "updated ingredient"))
                 .typeId(TYPE_UUID_TWO).build();
 
-        DbIngredient updatedIngredient = ingredientDao.update(ingredientUuid, dbCreateIngredient);
+        DbIngredient updatedIngredient = ingredientDao.update(ingredientUuid, dbUpdateIngredient);
         assertNotNull(updatedIngredient, "Updated ingredient should be returned");
         assertEquals("update", updatedIngredient.getDescriptions().get("de"),
                 "German description should be updated");
@@ -143,17 +150,105 @@ public class IngredientDaoTest extends DaoTestBase {
         assertEquals(TYPE_UUID_TWO, updatedFromDb.getType().getUuid());
     }
 
-    // TODO: Tests for search, tests for invalid updates, tests for owner and public fields
+    // TODO: Tests for search
+
+    @ValueSource(booleans = {true, false})
+    @Order(6)
+    @ParameterizedTest
+    @Rollback
+    public void testCreateOwned(boolean isPublic) {
+        DbUserInfo createdUser = userDao.create("providerId");
+
+        DbCreateIngredient ownedIngredient = DbCreateIngredient.builder()
+                .descriptions(Map.of("de", "eine zutat"))
+                .names(Map.of("de", "zutat"))
+                .isPublic(isPublic)
+                .owner(createdUser.getUuid())
+                .typeId(TYPE_UUID_TWO).build();
+
+        DbIngredient inserted = ingredientDao.create(ownedIngredient);
+
+        assertEquals(createdUser, inserted.getUserInfo(), "Owner should match");
+        assertEquals(isPublic, inserted.isPublic(), "Public status should match");
+    }
+
+    @Order(7)
+    @Test
+    @Rollback
+    public void testSetPublicStatus() {
+        DbUserInfo createdUser = userDao.create("providerId");
+
+        DbCreateIngredient ownedIngredient = DbCreateIngredient.builder()
+                .descriptions(Map.of("de", "eine zutat"))
+                .names(Map.of("de", "zutat"))
+                .isPublic(true)
+                .owner(createdUser.getUuid())
+                .typeId(TYPE_UUID_TWO).build();
+
+        DbIngredient inserted = ingredientDao.create(ownedIngredient);
+
+        UUID uuid = inserted.getUuid();
+
+        assertTrue(inserted.isPublic(), "Ingredient should be public initially");
+
+        ingredientDao.setPublicStatus(uuid, false);
+
+        DbIngredient byId = ingredientDao.getById(uuid);
+
+        assertFalse(byId.isPublic(), "Ingredient should be non-public after changing status");
+
+        ingredientDao.setPublicStatus(uuid, true);
+
+        byId = ingredientDao.getById(uuid);
+
+        assertTrue(byId.isPublic(), "Ingredient should be public again after resetting status");
+    }
+
+    @Order(8)
+    @Test
+    @Rollback
+    public void testUnpublishUnowned() {
+        DbCreateIngredient ingredient = DbCreateIngredient.builder()
+                .descriptions(Map.of("de", "eine zutat"))
+                .names(Map.of("de", "zutat"))
+                .isPublic(true)
+                .owner(null)
+                .typeId(TYPE_UUID_TWO).build();
+
+        DbIngredient fromDb = ingredientDao.create(ingredient);
+
+        UnableToExecuteStatementException ex = assertThrows(UnableToExecuteStatementException.class, () ->
+                        ingredientDao.setPublicStatus(fromDb.getUuid(), false),
+                "Trying to unpublish an unowned ingredient should throw an error");
+
+        assertTrue(ex.getMessage().contains("ingredient_owner_check"));
+    }
+
+    @Test
+    public void testCreateNonPublicWithoutOwner() {
+        DbCreateIngredient ingredient = DbCreateIngredient.builder()
+                .descriptions(Map.of("de", "eine zutat"))
+                .names(Map.of("de", "zutat"))
+                .isPublic(false)
+                .owner(null)
+                .typeId(TYPE_UUID_TWO).build();
+
+        UnableToExecuteStatementException ex = assertThrows(UnableToExecuteStatementException.class, () -> ingredientDao.create(ingredient),
+                "Creating a non-public ingredient with no owner should throw an error");
+        assertTrue(ex.getMessage().contains("ingredient_owner_check"));
+    }
 
     @Test
     public void testCreateMismatch() {
         DbCreateIngredient secondIngredient = DbCreateIngredient.builder()
                 .descriptions(Map.of("de", "eine zutat"))
                 .names(Map.of("de", "zutat", "en", "ingredient"))
+                .isPublic(true)
                 .typeId(TYPE_UUID_TWO).build();
 
-        assertThrows(UnableToExecuteStatementException.class, () -> ingredientDao.create(secondIngredient),
+        UnableToExecuteStatementException ex = assertThrows(UnableToExecuteStatementException.class, () -> ingredientDao.create(secondIngredient),
                 "A mismatch in languages between descriptions and names should throw an error");
+        assertTrue(ex.getMessage().contains("ingredient_consistency_check"), "The correct error should be thrown");
     }
 
     @Test
@@ -161,9 +256,18 @@ public class IngredientDaoTest extends DaoTestBase {
         DbCreateIngredient secondIngredient = DbCreateIngredient.builder()
                 .descriptions(Map.of())
                 .names(Map.of())
+                .isPublic(true)
                 .typeId(TYPE_UUID_TWO).build();
 
-        assertThrows(UnableToExecuteStatementException.class, () -> ingredientDao.create(secondIngredient),
+        UnableToExecuteStatementException ex = assertThrows(UnableToExecuteStatementException.class, () -> ingredientDao.create(secondIngredient),
                 "Empty names and descriptions should throw an error");
+        assertTrue(ex.getMessage().contains("ingredient_non_empty_check"), "The correct error should be thrown");
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testSetStatusNonExisting(boolean status) {
+        assertEquals(0, ingredientDao.setPublicStatus(UUID.randomUUID(), status),
+                "Setting status on non-existing entry should not do anything");
     }
 }

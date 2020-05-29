@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * UserInfo
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-27T22:58:48.812615+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T15:02:10.914391+02:00[Europe/Berlin]")
 public class UserInfo   {
   @JsonProperty("nick")
   private String nick = null;
