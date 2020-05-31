@@ -23,7 +23,7 @@ public interface UserDao {
     DbUserInfo create(@Bind("providerId") String providerId);
 
     @SqlUpdate
-    void updateNick(@Bind("uuid") UUID uuid, @Bind("newNick") String newNick);
+    int updateNick(@Bind("uuid") UUID uuid, @Bind("newNick") String newNick);
 
     @SqlQuery
     boolean nickExists(@Bind("nick") String nick);

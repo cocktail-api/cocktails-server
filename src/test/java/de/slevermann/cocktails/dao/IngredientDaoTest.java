@@ -150,10 +150,22 @@ public class IngredientDaoTest extends DaoTestBase {
         assertEquals(TYPE_UUID_TWO, updatedFromDb.getType().getUuid());
     }
 
+    @Test
+    @Order(6)
+    public void testUpdateNotFound() {
+        DbUpdateIngredient dbUpdateIngredient = DbUpdateIngredient.builder()
+                .descriptions(Map.of("de", "update", "en", "an updated ingredient"))
+                .names(Map.of("de", "ein update", "en", "updated ingredient"))
+                .typeId(TYPE_UUID_TWO).build();
+
+        assertNull(ingredientDao.update(UUID.randomUUID(), dbUpdateIngredient),
+                "Dao should return null when ingredient wasn't found");
+    }
+
     // TODO: Tests for search
 
     @ValueSource(booleans = {true, false})
-    @Order(6)
+    @Order(7)
     @ParameterizedTest
     @Rollback
     public void testCreateOwned(boolean isPublic) {
@@ -172,7 +184,7 @@ public class IngredientDaoTest extends DaoTestBase {
         assertEquals(isPublic, inserted.isPublic(), "Public status should match");
     }
 
-    @Order(7)
+    @Order(8)
     @Test
     @Rollback
     public void testSetPublicStatus() {
@@ -204,7 +216,7 @@ public class IngredientDaoTest extends DaoTestBase {
         assertTrue(byId.isPublic(), "Ingredient should be public again after resetting status");
     }
 
-    @Order(8)
+    @Order(9)
     @Test
     @Rollback
     public void testUnpublishUnowned() {

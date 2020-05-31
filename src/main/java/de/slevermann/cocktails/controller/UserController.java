@@ -6,6 +6,7 @@ import de.slevermann.cocktails.mapper.UserInfoMapper;
 import de.slevermann.cocktails.dto.UserInfo;
 import de.slevermann.cocktails.service.AuthenticationService;
 import de.slevermann.cocktails.service.UserService;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,7 +53,7 @@ public class UserController implements UsersApi {
 
     @Override
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> setNick(@Valid String body) {
+    public ResponseEntity<Void> setNick(@Pattern(regexp = "^[\\p{L}0-9]+(\\.[\\p{L}0-9]+)*$") @Size(min = 1, max = 30) String body) {
         userService.updateNick(body, authenticationService.getUserDetails().getUuid());
         return ResponseEntity.ok().build();
     }

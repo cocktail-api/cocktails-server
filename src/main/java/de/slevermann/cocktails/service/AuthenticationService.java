@@ -12,12 +12,15 @@ public class AuthenticationService {
 
     private final UserDao userDao;
 
-    public AuthenticationService(UserDao userDao) {
+    private final SecurityContextService securityContextService;
+
+    public AuthenticationService(UserDao userDao, SecurityContextService securityContextService) {
         this.userDao = userDao;
+        this.securityContextService = securityContextService;
     }
 
     public JwtAuthenticationToken getJwt() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = securityContextService.getSecurityContext().getAuthentication();
         if (authentication instanceof JwtAuthenticationToken) {
             return (JwtAuthenticationToken) authentication;
         } else {
@@ -27,6 +30,10 @@ public class AuthenticationService {
 
     public DbUserInfo getUserDetails() {
         JwtAuthenticationToken jwt = getJwt();
+
+        if (jwt == null) {
+            return null;
+        }
 
         String providerId = (String) jwt.getTokenAttributes().get("uid");
 
