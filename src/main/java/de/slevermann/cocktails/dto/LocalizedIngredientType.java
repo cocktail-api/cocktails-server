@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient type in a single language")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T19:00:39.166734+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-04T17:53:46.915060+02:00[Europe/Berlin]")
 public class LocalizedIngredientType   {
   @JsonProperty("id")
   private UUID id = null;

@@ -5,6 +5,7 @@
  */
 package de.slevermann.cocktails.api;
 
+import de.slevermann.cocktails.dto.ErrorModel;
 import java.util.UUID;
 import de.slevermann.cocktails.dto.UserInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +31,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T19:00:39.166734+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-04T17:53:46.915060+02:00[Europe/Berlin]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
@@ -69,8 +70,9 @@ public interface UsersApi {
             })    }, tags={ "users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 204, message = "Success"),
-        @ApiResponse(code = 409, message = "Name is taken") })
+        @ApiResponse(code = 409, message = "Name is taken", response = ErrorModel.class) })
     @RequestMapping(value = "/users/nick",
+        produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Void> setNick(@ApiParam(value = "" ,required=true )  @Valid @RequestBody String body);

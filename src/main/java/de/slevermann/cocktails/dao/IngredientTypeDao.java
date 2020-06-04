@@ -17,4 +17,7 @@ public interface IngredientTypeDao {
 
     @SqlQuery
     DbIngredientType getById(@Bind("uuid") UUID uuid);
+
+    @SqlQuery
+    boolean exists(@Bind("uuid") UUID uuid);
 }

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(OrderAnnotation.class)
 @Rollback(false)
-public class UserDaoTest extends DaoTestBase {
+public class UserDaoIT extends DaoTestBase {
 
     @Autowired
     private UserDao userDao;

@@ -14,12 +14,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.*;
 
 @RestController
 @RequestMapping("/api")
@@ -50,13 +55,19 @@ public class IngredientController implements IngredientsApi {
     @Override
     @PreAuthorize("hasAuthority('cocktail-admins')")
     public ResponseEntity<Ingredient> adminCreateIngredient(@Valid CreateIngredient body) {
-        return ResponseEntity.ok(ingredientService.createAdminIngredient(body));
+        Ingredient ingredient = ingredientService.createAdminIngredient(body);
+        URI location = fromMethodCall(on(IngredientController.class).getIngredientById(null))
+                .build(ingredient.getId());
+        return ResponseEntity.created(location).body(ingredient);
     }
 
     @Override
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Ingredient> createIngredient(@Valid CreateIngredient body) {
-        return ResponseEntity.ok(ingredientService.createIngredient(body));
+        Ingredient ingredient = ingredientService.createIngredient(body);
+        URI location = fromMethodCall(on(IngredientController.class).getIngredientById(null))
+                .build(ingredient.getId());
+        return ResponseEntity.created(location).body(ingredient);
     }
 
     @Override
@@ -74,7 +85,7 @@ public class IngredientController implements IngredientsApi {
     @Override
     @PreAuthorize("hasAnyAuthority('cocktail-admins', 'cocktail-curators')")
     public ResponseEntity<List<LocalizedIngredient>> getIngredientQueue() {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
@@ -96,13 +107,13 @@ public class IngredientController implements IngredientsApi {
     @PreAuthorize("hasAnyAuthority('cocktail-admins', 'cocktail-curators')")
     public ResponseEntity<Void> setIngredientPublicStatus(@Valid Boolean body, UUID id) {
         ingredientService.setPublicStatus(id, body);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> submitIngredient(UUID id) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
     }
 
     @Override

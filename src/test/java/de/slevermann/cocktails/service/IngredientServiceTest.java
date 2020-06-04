@@ -1,9 +1,14 @@
 package de.slevermann.cocktails.service;
 
+import de.slevermann.cocktails.config.LanguageConfiguration;
 import de.slevermann.cocktails.dao.IngredientDao;
+import de.slevermann.cocktails.dao.IngredientTypeDao;
 import de.slevermann.cocktails.dto.CreateIngredient;
 import de.slevermann.cocktails.dto.LocalizedIngredient;
 import de.slevermann.cocktails.dto.LocalizedIngredientType;
+import de.slevermann.cocktails.dto.TranslatedString;
+import de.slevermann.cocktails.exception.BadTranslationException;
+import de.slevermann.cocktails.exception.MissingIngredientTypeException;
 import de.slevermann.cocktails.mapper.IngredientMapper;
 import de.slevermann.cocktails.mapper.IngredientTypeMapper;
 import de.slevermann.cocktails.mapper.TranslatedStringMapper;
@@ -46,13 +51,30 @@ public class IngredientServiceTest {
 
     private static final CreateIngredient CREATE_INGREDIENT = new CreateIngredient()
             .typeId(UUID.randomUUID())
+            .names(List.of(new TranslatedString().language("de").translation("hallo")))
+            .descriptions(List.of(new TranslatedString().language("de").translation("hallo welt")));
+
+    private static final CreateIngredient CREATE_MISMATCH = new CreateIngredient()
+            .typeId(UUID.randomUUID())
+            .names(List.of(new TranslatedString().language("en").translation("hello")))
+            .descriptions(List.of(new TranslatedString().language("de").translation("hallo welt")));
+
+    private static final CreateIngredient CREATE_EMPTY = new CreateIngredient()
+            .typeId(UUID.randomUUID())
             .names(List.of())
             .descriptions(List.of());
-    public static final LocalizedIngredientType LOCALIZED_TYPE = new LocalizedIngredientType()
+
+    private static final CreateIngredient CREATE_INVALID = new CreateIngredient()
+            .typeId(UUID.randomUUID())
+            .names(List.of(new TranslatedString().language("badlanguage").translation("foo")))
+            .descriptions(List.of(new TranslatedString().language("badlanguage").translation("bar")));
+
+    private static final LocalizedIngredientType LOCALIZED_TYPE = new LocalizedIngredientType()
             .type("typ")
             .language("de")
             .id(UUID.randomUUID());
-    public static final LocalizedIngredient LOCALIZED_INGREDIENT = new LocalizedIngredient()
+
+    private static final LocalizedIngredient LOCALIZED_INGREDIENT = new LocalizedIngredient()
             .language("de")
             .name("name")
             .description("beschreibung")
@@ -60,6 +82,8 @@ public class IngredientServiceTest {
             .type(LOCALIZED_TYPE);
 
     private final IngredientDao ingredientDao = mock(IngredientDao.class);
+
+    private final IngredientTypeDao ingredientTypeDao = mock(IngredientTypeDao.class);
 
     private final TranslatedStringMapper translatedStringMapper = new TranslatedStringMapper();
 
@@ -69,7 +93,9 @@ public class IngredientServiceTest {
 
     private final AuthenticationService authenticationService = mock(AuthenticationService.class);
 
-    private final IngredientService ingredientService = new IngredientService(ingredientDao, ingredientMapper, authenticationService);
+    private final LanguageConfiguration languageConfiguration = new LanguageConfiguration();
+
+    private final IngredientService ingredientService = new IngredientService(ingredientDao, ingredientTypeDao, ingredientMapper, authenticationService, languageConfiguration);
 
     private static Stream<Arguments> getIngredients() {
         return Stream.of(
@@ -139,6 +165,7 @@ public class IngredientServiceTest {
     @Test
     public void testUpdateIngredient() {
         when(ingredientDao.update(any(), any())).thenReturn(INGREDIENT_ONE);
+        when(ingredientTypeDao.exists(any())).thenReturn(true);
 
         assertNotNull(ingredientService.updateIngredient(CREATE_INGREDIENT, UUID.randomUUID()),
                 "Updated ingredient returned should not be null");
@@ -149,11 +176,48 @@ public class IngredientServiceTest {
     @Test
     public void testUpdateIngredientNotFound() {
         when(ingredientDao.update(any(), any())).thenReturn(null);
+        when(ingredientTypeDao.exists(any())).thenReturn(true);
 
         ResponseStatusException ex = assertThrows(ResponseStatusException.class,
                 () -> ingredientService.updateIngredient(CREATE_INGREDIENT, UUID.randomUUID()),
                 "Service should throw an exception when ingredient to update isn't found");
         assertEquals(NOT_FOUND, ex.getStatus(), "Response status should be 404");
+    }
+
+    @Test
+    public void testUpdateIngredientMismatch() {
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.updateIngredient(CREATE_MISMATCH, UUID.randomUUID()),
+                "A translation mismatch should throw an exception");
+    }
+
+    @Test
+    public void testUpdateIngredientEmpty() {
+        when(ingredientDao.update(any(), any())).thenReturn(INGREDIENT_ONE);
+        when(ingredientTypeDao.exists(any())).thenReturn(true);
+        assertNotNull(ingredientService.updateIngredient(CREATE_EMPTY, UUID.randomUUID()),
+                "Updated ingredient returned should not be null");
+
+        verify(ingredientMapper, times(1)).dbIngredientToIngredient(any());
+    }
+
+    @Test
+    public void testUpdateInvalidLanguage() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.updateIngredient(CREATE_INVALID, UUID.randomUUID()),
+                "An invalid language should throw an exception");
+    }
+
+    @Test
+    public void testUpdateTypeNotFound() {
+        when(ingredientDao.update(any(), any())).thenReturn(INGREDIENT_ONE);
+        when(ingredientTypeDao.exists(any())).thenReturn(false);
+
+        assertThrows(MissingIngredientTypeException.class,
+                () -> ingredientService.updateIngredient(CREATE_INGREDIENT, UUID.randomUUID()),
+                "Missing ingredient type should throw an exception");
     }
 
     @Test
@@ -163,15 +227,107 @@ public class IngredientServiceTest {
                 .uuid(UUID.randomUUID())
                 .providerId("providerId")
                 .nick("john.doe").build());
+        when(ingredientTypeDao.exists(any())).thenReturn(true);
 
         ingredientService.createIngredient(CREATE_INGREDIENT);
     }
 
     @Test
+    public void testCreateMismatch() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+        when(authenticationService.getUserDetails()).thenReturn(DbUserInfo.builder()
+                .uuid(UUID.randomUUID())
+                .providerId("providerId")
+                .nick("john.doe").build());
+
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.createIngredient(CREATE_MISMATCH),
+                "A translation mismatch should throw an exception");
+    }
+
+    @Test
+    public void testCreateEmpty() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+        when(authenticationService.getUserDetails()).thenReturn(DbUserInfo.builder()
+                .uuid(UUID.randomUUID())
+                .providerId("providerId")
+                .nick("john.doe").build());
+
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.createIngredient(CREATE_EMPTY),
+                "An empty translation should throw an exception");
+    }
+
+    @Test
+    public void testCreateInvalidLanguage() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+        when(authenticationService.getUserDetails()).thenReturn(DbUserInfo.builder()
+                .uuid(UUID.randomUUID())
+                .providerId("providerId")
+                .nick("john.doe").build());
+
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.createIngredient(CREATE_INVALID),
+                "An invalid language should throw an exception");
+    }
+
+    @Test
+    public void testCreateTypeNotFound() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+        when(ingredientTypeDao.exists(any())).thenReturn(false);
+        when(authenticationService.getUserDetails()).thenReturn(DbUserInfo.builder()
+                .uuid(UUID.randomUUID())
+                .providerId("providerId")
+                .nick("john.doe").build());
+
+        assertThrows(MissingIngredientTypeException.class,
+                () -> ingredientService.createIngredient(CREATE_INGREDIENT),
+                "Missing ingredient type should throw an exception");
+    }
+
+    @Test
     public void testCreateAdminIngredient() {
         when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+        when(ingredientTypeDao.exists(any())).thenReturn(true);
 
         ingredientService.createAdminIngredient(CREATE_INGREDIENT);
+    }
+
+    @Test
+    public void testCreateAdminMismatch() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.createAdminIngredient(CREATE_MISMATCH),
+                "A translation mismatch should throw an exception");
+    }
+
+    @Test
+    public void testCreateAdminEmpty() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.createAdminIngredient(CREATE_EMPTY),
+                "An empty should throw an exception");
+    }
+
+    @Test
+    public void testCreateAdminInvalidLanguage() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+
+        assertThrows(BadTranslationException.class,
+                () -> ingredientService.createAdminIngredient(CREATE_INVALID),
+                "An invalid language should throw an exception");
+    }
+
+    @Test
+    public void testCreateAdminTypeNotFound() {
+        when(ingredientDao.create(any())).thenReturn(INGREDIENT_ONE);
+        when(ingredientTypeDao.exists(any())).thenReturn(false);
+
+        assertThrows(MissingIngredientTypeException.class,
+                () -> ingredientService.createAdminIngredient(CREATE_INGREDIENT),
+                "Missing ingredient type should throw an exception");
     }
 
     @ParameterizedTest

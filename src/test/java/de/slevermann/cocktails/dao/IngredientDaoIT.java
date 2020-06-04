@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Rollback(false)
-public class IngredientDaoTest extends DaoTestBase {
+public class IngredientDaoIT extends DaoTestBase {
 
     @Autowired
     private IngredientDao ingredientDao;

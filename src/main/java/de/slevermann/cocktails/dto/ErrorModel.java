@@ -5,61 +5,60 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * UserInfo
+ * ErrorModel
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-04T17:53:46.915060+02:00[Europe/Berlin]")
-public class UserInfo   {
-  @JsonProperty("nick")
-  private String nick = null;
+public class ErrorModel   {
+  @JsonProperty("status")
+  private Integer status = null;
 
-  @JsonProperty("id")
-  private UUID id = null;
+  @JsonProperty("message")
+  private String message = null;
 
-  public UserInfo nick(String nick) {
-    this.nick = nick;
+  public ErrorModel status(Integer status) {
+    this.status = status;
     return this;
   }
 
   /**
-   * Get nick
-   * @return nick
+   * The HTTP status code of the error
+   * @return status
   **/
-  @ApiModelProperty(example = "Jim", value = "")
-  
-    public String getNick() {
-    return nick;
-  }
-
-  public void setNick(String nick) {
-    this.nick = nick;
-  }
-
-  public UserInfo id(UUID id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(example = "d61c2b3a-09e3-4305-8f2b-24079ab52e8d", required = true, value = "")
+  @ApiModelProperty(required = true, value = "The HTTP status code of the error")
       @NotNull
 
-    @Valid
-    public UUID getId() {
-    return id;
+    public Integer getStatus() {
+    return status;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+
+  public ErrorModel message(String message) {
+    this.message = message;
+    return this;
+  }
+
+  /**
+   * A further description of the error
+   * @return message
+  **/
+  @ApiModelProperty(required = true, value = "A further description of the error")
+      @NotNull
+
+    public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
   }
 
 
@@ -71,23 +70,23 @@ public class UserInfo   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.nick, userInfo.nick) &&
-        Objects.equals(this.id, userInfo.id);
+    ErrorModel errorModel = (ErrorModel) o;
+    return Objects.equals(this.status, errorModel.status) &&
+        Objects.equals(this.message, errorModel.message);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nick, id);
+    return Objects.hash(status, message);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserInfo {\n");
+    sb.append("class ErrorModel {\n");
     
-    sb.append("    nick: ").append(toIndentedString(nick)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("}");
     return sb.toString();
   }

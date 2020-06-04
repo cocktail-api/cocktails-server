@@ -11,7 +11,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IngredientTypeDaoTest extends DaoTestBase {
+public class IngredientTypeDaoIT extends DaoTestBase {
 
     @Autowired
     private IngredientTypeDao ingredientTypeDao;
@@ -40,6 +40,13 @@ public class IngredientTypeDaoTest extends DaoTestBase {
     }
 
     @Test
+    public void testGetByIdNotFound() {
+        DbIngredientType dbIngredientType = ingredientTypeDao.getById(UUID.randomUUID());
+
+        assertNull(dbIngredientType, "Get by ID should return null for unknown ID");
+    }
+
+    @Test
     public void testGetAll() {
         List<LocalizedIngredientType> dbIngredientTypes = ingredientTypeDao.getAll("en");
 
@@ -54,5 +61,11 @@ public class IngredientTypeDaoTest extends DaoTestBase {
                         "German message should be chosen when english is not available");
             }
         }
+    }
+
+    @Test
+    public void testExists() {
+        assertTrue(ingredientTypeDao.exists(UUID_ONE), "Inserted ingredient should exist");
+        assertFalse(ingredientTypeDao.exists(UUID.randomUUID()), "Random UUID should not exist");
     }
 }

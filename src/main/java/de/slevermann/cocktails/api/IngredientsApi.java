@@ -6,6 +6,7 @@
 package de.slevermann.cocktails.api;
 
 import de.slevermann.cocktails.dto.CreateIngredient;
+import de.slevermann.cocktails.dto.ErrorModel;
 import de.slevermann.cocktails.dto.Ingredient;
 import de.slevermann.cocktails.dto.IngredientType;
 import de.slevermann.cocktails.dto.LocalizedIngredient;
@@ -34,7 +35,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-29T19:00:39.166734+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-04T17:53:46.915060+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -51,7 +52,8 @@ public interface IngredientsApi {
             @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
             })    }, tags={ "ingredients","admin", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Retrieve the created ingredient", response = Ingredient.class) })
+        @ApiResponse(code = 201, message = "Retrieve the created ingredient", response = Ingredient.class),
+        @ApiResponse(code = 422, message = "The ingredient was somehow malformed", response = ErrorModel.class) })
     @RequestMapping(value = "/ingredients/admin/create",
         produces = { "application/json" }, 
         consumes = { "application/json" },
@@ -64,8 +66,8 @@ public interface IngredientsApi {
             @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
             })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Retrieve the created ingredient", response = Ingredient.class),
-        @ApiResponse(code = 400, message = "Invalid ingredient data") })
+        @ApiResponse(code = 201, message = "Retrieve the created ingredient", response = Ingredient.class),
+        @ApiResponse(code = 422, message = "The ingredient was somehow malformed", response = ErrorModel.class) })
     @RequestMapping(value = "/ingredients",
         produces = { "application/json" }, 
         consumes = { "application/json" },
@@ -166,7 +168,7 @@ public interface IngredientsApi {
             })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Updated successfully", response = Ingredient.class),
-        @ApiResponse(code = 400, message = "Invalid ingredient data"),
+        @ApiResponse(code = 422, message = "The ingredient was somehow malformed", response = ErrorModel.class),
         @ApiResponse(code = 404, message = "Ingredient not found") })
     @RequestMapping(value = "/ingredients/{id}",
         produces = { "application/json" }, 
