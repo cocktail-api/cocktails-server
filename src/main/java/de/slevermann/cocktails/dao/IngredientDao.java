@@ -39,5 +39,5 @@ public interface IngredientDao {
     int delete(@Bind("uuid") UUID id);
 
     @SqlUpdate
-    int setPublicStatus(@Bind("uuid") UUID id, @Bind("public") boolean isPublic);
+    int setPublicStatus(@Bind("uuid") UUID id, @Bind("published") boolean published);
 }

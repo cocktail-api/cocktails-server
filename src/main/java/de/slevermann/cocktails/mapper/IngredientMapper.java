@@ -31,7 +31,7 @@ public class IngredientMapper {
                 .type(ingredientTypeMapper.dbIngredientTypetoIngredientType(dbIngredient.getType()))
                 .names(translatedStringMapper.mapToTranslatedStrings(dbIngredient.getNames()))
                 .descriptions(translatedStringMapper.mapToTranslatedStrings(dbIngredient.getDescriptions()))
-                ._public(dbIngredient.isPublic());
+                .published(dbIngredient.isPublished());
         DbUserInfo userInfo = dbIngredient.getUserInfo();
         if (userInfo != null) {
             ingredient.owner(userInfoMapper.dbUserInfoToUserInfo(userInfo));
@@ -39,12 +39,12 @@ public class IngredientMapper {
         return ingredient;
     }
 
-    public DbCreateIngredient createIngredientToDbCreateIngredient(CreateIngredient ingredient, boolean isPublic, UUID owner) {
+    public DbCreateIngredient createIngredientToDbCreateIngredient(CreateIngredient ingredient, boolean published, UUID owner) {
         return DbCreateIngredient.builder()
                 .typeId(ingredient.getTypeId())
                 .names(translatedStringMapper.translatedStringsToMap(ingredient.getNames()))
                 .descriptions(translatedStringMapper.translatedStringsToMap(ingredient.getDescriptions()))
-                .isPublic(isPublic)
+                .published(published)
                 .owner(owner)
                 .build();
     }

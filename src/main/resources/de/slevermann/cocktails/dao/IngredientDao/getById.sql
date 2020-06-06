@@ -3,7 +3,7 @@ SELECT i.uuid        AS uuid,
        it.name       AS type_name,
        i.name        AS name,
        i.description AS description,
-       i.public      AS public,
+       i.published      AS published,
        u.uuid        AS owner_uuid,
        u.nick        AS owner_nick,
        u.provider_id AS owner_provider_id

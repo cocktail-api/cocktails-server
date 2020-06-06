@@ -1,3 +1,3 @@
 UPDATE ingredient
-SET public = :public
+SET published = :published
 WHERE uuid = :uuid;

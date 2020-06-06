@@ -17,18 +17,7 @@ public class DbCreateIngredient {
 
     @NonNull Map<String, String> descriptions;
 
-    boolean isPublic;
+    boolean published;
 
     UUID owner;
-
-    /*
-     * Needed for JDBI: https://github.com/jdbi/jdbi/issues/1707
-     */
-    public boolean isIsPublic() {
-        return isPublic;
-    }
-
-    public boolean isPublic() {
-        return isPublic;
-    }
 }

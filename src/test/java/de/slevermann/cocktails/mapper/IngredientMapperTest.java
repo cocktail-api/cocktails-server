@@ -37,7 +37,7 @@ public class IngredientMapperTest {
         DbIngredient dbIngredient = DbIngredient.builder()
                 .descriptions(Map.of("de", "Gruß", "en", "Greeting"))
                 .names(Map.of("de", "hallo", "en", "hello"))
-                .isPublic(publicStatus)
+                .published(publicStatus)
                 .type(DbIngredientType.builder()
                         .uuid(UUID.randomUUID())
                         .names(Map.of("de", "hallo", "en", "hello")).build())
@@ -51,7 +51,7 @@ public class IngredientMapperTest {
 
         assertEquals(2, ingredient.getDescriptions().size(), "Descriptions should be present");
         assertEquals(2, ingredient.getNames().size(), "Names should be present");
-        assertEquals(dbIngredient.isPublic(), ingredient.isPublic(), "Public status should be mapped");
+        assertEquals(dbIngredient.isPublished(), ingredient.isPublished(), "Public status should be mapped");
         assertEquals(uuid, ingredient.getId(), "ID should be mapped");
         assertNotNull(ingredient.getOwner(), "User info should be mapped");
     }
@@ -63,7 +63,7 @@ public class IngredientMapperTest {
         DbIngredient dbIngredient = DbIngredient.builder()
                 .descriptions(Map.of("de", "Gruß", "en", "Greeting"))
                 .names(Map.of("de", "hallo", "en", "hello"))
-                .isPublic(publicStatus)
+                .published(publicStatus)
                 .type(DbIngredientType.builder()
                         .uuid(UUID.randomUUID())
                         .names(Map.of("de", "hallo", "en", "hello")).build())
@@ -73,7 +73,7 @@ public class IngredientMapperTest {
 
         assertEquals(2, ingredient.getDescriptions().size(), "Descriptions should be present");
         assertEquals(2, ingredient.getNames().size(), "Names should be present");
-        assertEquals(dbIngredient.isPublic(), ingredient.isPublic(), "Public status should be mapped");
+        assertEquals(dbIngredient.isPublished(), ingredient.isPublished(), "Public status should be mapped");
         assertEquals(uuid, ingredient.getId(), "ID should be mapped");
         assertNull(ingredient.getOwner(), "User info should be absent");
     }
@@ -97,7 +97,7 @@ public class IngredientMapperTest {
         assertEquals(2, dbCreateIngredient.getNames().size(), "Names should be present");
         assertEquals(uuid, dbCreateIngredient.getTypeId(), "Type ID should be mapped");
         assertEquals(owner, dbCreateIngredient.getOwner(), "Owner UUID should match");
-        assertEquals(isPublic, dbCreateIngredient.isPublic(), "Public status should match");
+        assertEquals(isPublic, dbCreateIngredient.isPublished(), "Public status should match");
     }
 
     private static Stream<Arguments> createParamsProvider() {

@@ -19,7 +19,7 @@ public class DbIngredient {
 
     @NonNull Map<String, String> descriptions;
 
-    boolean isPublic;
+    boolean published;
 
     DbUserInfo userInfo;
 }

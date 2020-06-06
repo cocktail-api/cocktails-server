@@ -29,7 +29,7 @@ public class IngredientRowMapper implements RowMapper<DbIngredient> {
                         .names(hStoreColumnMapper.map(rs, "type_name", ctx)).build())
                 .names(hStoreColumnMapper.map(rs, "name", ctx))
                 .descriptions(hStoreColumnMapper.map(rs, "description", ctx))
-                .isPublic(rs.getBoolean("public"));
+                .published(rs.getBoolean("published"));
         String ownerUuid = rs.getString("owner_uuid");
         if (ownerUuid != null) {
             builder.userInfo(DbUserInfo.builder()

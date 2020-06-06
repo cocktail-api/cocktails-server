@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "An ingredient, with all languages")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-04T17:53:46.915060+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-06T10:48:38.119443+02:00[Europe/Berlin]")
 public class Ingredient   {
   @JsonProperty("id")
   private UUID id = null;
@@ -39,8 +39,8 @@ public class Ingredient   {
   @JsonProperty("owner")
   private UserInfo owner = null;
 
-  @JsonProperty("public")
-  private Boolean _public = null;
+  @JsonProperty("published")
+  private Boolean published = null;
 
   public Ingredient id(UUID id) {
     this.id = id;
@@ -154,24 +154,24 @@ public class Ingredient   {
     this.owner = owner;
   }
 
-  public Ingredient _public(Boolean _public) {
-    this._public = _public;
+  public Ingredient published(Boolean published) {
+    this.published = published;
     return this;
   }
 
   /**
-   * Get _public
-   * @return _public
+   * Get published
+   * @return published
   **/
   @ApiModelProperty(required = true, value = "")
       @NotNull
 
-    public Boolean isPublic() {
-    return _public;
+    public Boolean isPublished() {
+    return published;
   }
 
-  public void setPublic(Boolean _public) {
-    this._public = _public;
+  public void setPublished(Boolean published) {
+    this.published = published;
   }
 
 
@@ -189,12 +189,12 @@ public class Ingredient   {
         Objects.equals(this.names, ingredient.names) &&
         Objects.equals(this.descriptions, ingredient.descriptions) &&
         Objects.equals(this.owner, ingredient.owner) &&
-        Objects.equals(this._public, ingredient._public);
+        Objects.equals(this.published, ingredient.published);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, type, names, descriptions, owner, _public);
+    return Objects.hash(id, type, names, descriptions, owner, published);
   }
 
   @Override
@@ -207,7 +207,7 @@ public class Ingredient   {
     sb.append("    names: ").append(toIndentedString(names)).append("\n");
     sb.append("    descriptions: ").append(toIndentedString(descriptions)).append("\n");
     sb.append("    owner: ").append(toIndentedString(owner)).append("\n");
-    sb.append("    _public: ").append(toIndentedString(_public)).append("\n");
+    sb.append("    published: ").append(toIndentedString(published)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -46,7 +46,7 @@ public class IngredientServiceTest {
             .uuid(UUID.randomUUID())
             .names(Map.of())
             .descriptions(Map.of())
-            .isPublic(true)
+            .published(true)
             .type(TYPE_ONE).build();
 
     private static final CreateIngredient CREATE_INGREDIENT = new CreateIngredient()
