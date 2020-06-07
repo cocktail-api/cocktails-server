@@ -40,4 +40,16 @@ public interface IngredientDao {
 
     @SqlUpdate
     int setPublicStatus(@Bind("uuid") UUID id, @Bind("published") boolean published);
+
+    @SqlQuery
+    List<LocalizedIngredient> getModerationQueue(@Bind("preferred_locale") String preferredLocale);
+
+    @SqlUpdate
+    void submit(@Bind("uuid") UUID id);
+
+    @SqlUpdate
+    void promote(@Bind("uuid") UUID id);
+
+    @SqlUpdate
+    void reject(@Bind("uuid") UUID id);
 }

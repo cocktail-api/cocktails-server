@@ -9,16 +9,19 @@ import de.slevermann.cocktails.dto.LocalizedIngredientType;
 import de.slevermann.cocktails.dto.TranslatedString;
 import de.slevermann.cocktails.exception.BadTranslationException;
 import de.slevermann.cocktails.exception.MissingIngredientTypeException;
+import de.slevermann.cocktails.exception.ModerationException;
 import de.slevermann.cocktails.mapper.IngredientMapper;
 import de.slevermann.cocktails.mapper.IngredientTypeMapper;
 import de.slevermann.cocktails.mapper.TranslatedStringMapper;
 import de.slevermann.cocktails.mapper.UserInfoMapper;
 import de.slevermann.cocktails.model.db.DbIngredient;
 import de.slevermann.cocktails.model.db.DbIngredientType;
+import de.slevermann.cocktails.model.db.DbModeration;
 import de.slevermann.cocktails.model.db.DbUserInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -80,6 +83,19 @@ public class IngredientServiceTest {
             .description("beschreibung")
             .id(UUID.randomUUID())
             .type(LOCALIZED_TYPE);
+
+    private static final DbUserInfo OWNER = DbUserInfo.builder()
+            .nick("john.doe")
+            .providerId("providerId")
+            .uuid(UUID.randomUUID()).build();
+
+    private static final DbIngredient OWNED_INGREDIENT = DbIngredient.builder()
+            .uuid(UUID.randomUUID())
+            .names(Map.of())
+            .descriptions(Map.of())
+            .published(false)
+            .userInfo(OWNER)
+            .type(TYPE_ONE).build();
 
     private final IngredientDao ingredientDao = mock(IngredientDao.class);
 
@@ -337,5 +353,71 @@ public class IngredientServiceTest {
                 .thenReturn(ingredients);
 
         assertEquals(ingredients, ingredientService.getAll(Collections.enumeration(List.of(new Locale("de")))));
+    }
+
+    @Test
+    public void testSubmit() {
+        when(ingredientDao.getById(any())).thenReturn(OWNED_INGREDIENT);
+        when(authenticationService.getUserDetails()).thenReturn(OWNER);
+
+        ingredientService.submit(OWNED_INGREDIENT.getUuid());
+    }
+
+    @Test
+    public void testSubmitNotFound() {
+        when(ingredientDao.getById(any())).thenReturn(null);
+        when(authenticationService.getUserDetails()).thenReturn(OWNER);
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> ingredientService.submit(OWNED_INGREDIENT.getUuid()),
+                "Ingredient not found should throw an error");
+        assertEquals(NOT_FOUND, ex.getStatus(), "Status should be 404");
+    }
+
+    @Test
+    public void testSubmitWrongUser() {
+        when(ingredientDao.getById(any())).thenReturn(OWNED_INGREDIENT);
+        when(authenticationService.getUserDetails()).thenReturn(DbUserInfo.builder()
+                .uuid(UUID.randomUUID())
+                .providerId("providerId").build());
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> ingredientService.submit(OWNED_INGREDIENT.getUuid()),
+                "Ingredient not found should throw an error");
+        assertEquals(NOT_FOUND, ex.getStatus(), "Status should be 404");
+    }
+
+    @ParameterizedTest
+    @EnumSource(DbModeration.class)
+    public void testSubmitModerated(DbModeration moderation) {
+        DbIngredient moderatedIngredient = DbIngredient.builder()
+                .uuid(UUID.randomUUID())
+                .names(Map.of())
+                .descriptions(Map.of())
+                .published(false)
+                .userInfo(OWNER)
+                .type(TYPE_ONE)
+                .moderation(moderation).build();
+        when(ingredientDao.getById(any())).thenReturn(moderatedIngredient);
+        when(authenticationService.getUserDetails()).thenReturn(OWNER);
+
+        assertThrows(ModerationException.class, () -> ingredientService.submit(OWNED_INGREDIENT.getUuid()),
+                "Submitting a moderated ingredient should throw an error");
+    }
+
+    @Test
+    public void testSubmitPublished() {
+        DbIngredient publicIngredient = DbIngredient.builder()
+                .uuid(UUID.randomUUID())
+                .names(Map.of())
+                .descriptions(Map.of())
+                .published(true)
+                .userInfo(OWNER)
+                .type(TYPE_ONE).build();
+        when(ingredientDao.getById(any())).thenReturn(publicIngredient);
+        when(authenticationService.getUserDetails()).thenReturn(OWNER);
+
+        assertThrows(ModerationException.class, () -> ingredientService.submit(OWNED_INGREDIENT.getUuid()),
+                "Submitting a published ingredient should throw an error");
     }
 }

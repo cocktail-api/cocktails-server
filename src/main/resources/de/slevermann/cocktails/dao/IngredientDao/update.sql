@@ -11,5 +11,5 @@ RETURNING uuid AS uuid,
     published as published,
     owner as owner_uuid,
     (SELECT nick FROM "user" WHERE "user".uuid = owner) AS owner_nick,
-    (SELECT provider_id FROM "user" WHERE "user".uuid = owner) AS owner_provider_id;
-
+    (SELECT provider_id FROM "user" WHERE "user".uuid = owner) AS owner_provider_id,
+    moderation as moderation;

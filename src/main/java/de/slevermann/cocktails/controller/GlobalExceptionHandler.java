@@ -3,6 +3,7 @@ package de.slevermann.cocktails.controller;
 import de.slevermann.cocktails.dto.ErrorModel;
 import de.slevermann.cocktails.exception.BadTranslationException;
 import de.slevermann.cocktails.exception.MissingIngredientTypeException;
+import de.slevermann.cocktails.exception.ModerationException;
 import org.jdbi.v3.core.JdbiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,13 +44,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleInternal(UNPROCESSABLE_ENTITY, ex.getMessage());
     }
 
+    @ExceptionHandler(ModerationException.class)
+    public ResponseEntity<ErrorModel> handleModerationException(ModerationException ex, WebRequest request) {
+        return handleInternal(BAD_REQUEST, ex.getMessage());
+    }
+
     private ResponseEntity<ErrorModel> handleInternal(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(new ErrorModel()
                 .status(status.value())
                 .message(message));
-    }
-
-    private ResponseEntity<ErrorModel> handleInternal(HttpStatus status) {
-        return handleInternal(status, null);
     }
 }

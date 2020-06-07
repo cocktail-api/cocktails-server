@@ -5,6 +5,7 @@ import de.slevermann.cocktails.dao.IngredientDao;
 import de.slevermann.cocktails.dao.IngredientTypeDao;
 import de.slevermann.cocktails.exception.BadTranslationException;
 import de.slevermann.cocktails.exception.MissingIngredientTypeException;
+import de.slevermann.cocktails.exception.ModerationException;
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
 import de.slevermann.cocktails.mapper.IngredientMapper;
@@ -12,6 +13,7 @@ import de.slevermann.cocktails.dto.CreateIngredient;
 import de.slevermann.cocktails.dto.Ingredient;
 import de.slevermann.cocktails.dto.LocalizedIngredient;
 import de.slevermann.cocktails.model.db.DbUpdateIngredient;
+import de.slevermann.cocktails.model.db.DbUserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -107,6 +109,21 @@ public class IngredientService {
         if (rowsAffected == 0) {
             throw new ResponseStatusException(NOT_FOUND);
         }
+    }
+
+    public void submit(UUID id) {
+        DbIngredient ingredient = ingredientDao.getById(id);
+        DbUserInfo userInfo = authenticationService.getUserDetails();
+
+        if (ingredient == null || !userInfo.equals(ingredient.getUserInfo())) {
+            throw new ResponseStatusException(NOT_FOUND);
+        }
+
+        if (ingredient.getModeration() != null || ingredient.isPublished()) {
+            throw new ModerationException(String.format("Ingredient %s is already published or awaiting moderation", id));
+        }
+
+        ingredientDao.submit(id);
     }
 
     private void verifyType(UUID uuid) {

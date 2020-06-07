@@ -6,8 +6,9 @@
 package de.slevermann.cocktails.api;
 
 import de.slevermann.cocktails.dto.ErrorModel;
+import de.slevermann.cocktails.dto.LocalizedIngredient;
+import de.slevermann.cocktails.dto.Moderation;
 import java.util.UUID;
-import de.slevermann.cocktails.dto.UserInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -32,10 +33,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T18:28:08.273184+02:00[Europe/Berlin]")
-@Api(value = "users", description = "the users API")
-public interface UsersApi {
+@Api(value = "moderation", description = "the moderation API")
+public interface ModerationApi {
 
-    Logger log = LoggerFactory.getLogger(UsersApi.class);
+    Logger log = LoggerFactory.getLogger(ModerationApi.class);
 
     Optional<ObjectMapper> getObjectMapper();
 
@@ -43,38 +44,30 @@ public interface UsersApi {
 
     
 
-    @ApiOperation(value = "Get a user's profile information", nickname = "getProfile", notes = "", response = UserInfo.class, tags={ "users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = UserInfo.class) })
-    @RequestMapping(value = "/users/info/{id}",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<UserInfo> getProfile(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
-
-
-    @ApiOperation(value = "Get information about the currently logged in user", nickname = "getUserInfo", notes = "", response = UserInfo.class, authorizations = {
+    @ApiOperation(value = "Get the moderation queue for ingredients", nickname = "getIngredientQueue", notes = "", response = LocalizedIngredient.class, responseContainer = "List", authorizations = {
         @Authorization(value = "oauth2", scopes = { 
             @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
-            })    }, tags={ "users", })
+            })    }, tags={ "ingredients","moderation", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = UserInfo.class) })
-    @RequestMapping(value = "/users/info",
+        @ApiResponse(code = 200, message = "Success", response = LocalizedIngredient.class, responseContainer = "List") })
+    @RequestMapping(value = "/moderation/ingredients/queue/",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<UserInfo> getUserInfo();
+    ResponseEntity<List<LocalizedIngredient>> getIngredientQueue();
 
 
-    @ApiOperation(value = "Set the current user's nickname", nickname = "setNick", notes = "", authorizations = {
+    @ApiOperation(value = "Handle the moderation status of an ingredient", nickname = "moderateIngredient", notes = "", authorizations = {
         @Authorization(value = "oauth2", scopes = { 
             @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
-            })    }, tags={ "users", })
+            })    }, tags={ "ingredients","moderation", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 204, message = "Success"),
-        @ApiResponse(code = 409, message = "Name is taken", response = ErrorModel.class) })
-    @RequestMapping(value = "/users/nick",
+        @ApiResponse(code = 204, message = "Status set successfully"),
+        @ApiResponse(code = 400, message = "Invalid moderation status", response = ErrorModel.class),
+        @ApiResponse(code = 404, message = "Ingredient not found") })
+    @RequestMapping(value = "/moderation/ingredients/{id}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> setNick(@ApiParam(value = "" ,required=true )  @Valid @RequestBody String body);
+    ResponseEntity<Void> moderateIngredient(@ApiParam(value = "",required=true) @PathVariable("id") UUID id,@ApiParam(value = ""  )  @Valid @RequestBody Moderation body);
 
 }

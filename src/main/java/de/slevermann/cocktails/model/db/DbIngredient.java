@@ -22,4 +22,6 @@ public class DbIngredient {
     boolean published;
 
     DbUserInfo userInfo;
+
+    DbModeration moderation;
 }

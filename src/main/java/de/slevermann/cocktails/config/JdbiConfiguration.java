@@ -3,10 +3,13 @@ package de.slevermann.cocktails.config;
 import de.slevermann.cocktails.dao.IngredientDao;
 import de.slevermann.cocktails.dao.IngredientTypeDao;
 import de.slevermann.cocktails.dao.UserDao;
+import de.slevermann.cocktails.model.db.DbModeration;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.enums.EnumStrategy;
 import org.jdbi.v3.core.enums.Enums;
+import org.jdbi.v3.core.generic.GenericType;
 import org.jdbi.v3.core.mapper.ColumnMapper;
+import org.jdbi.v3.core.mapper.EnumMapper;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.spi.JdbiPlugin;
 import org.jdbi.v3.postgres.HStoreColumnMapper;
@@ -38,16 +41,24 @@ public class JdbiConfiguration {
     }
 
     @Bean
+    public ColumnMapper<DbModeration> moderationMapper() {
+        return EnumMapper.byName(DbModeration.class);
+    }
+
+    @Bean
     public Jdbi jdbi(DataSource ds,
                      List<JdbiPlugin> jdbiPlugins,
                      List<RowMapper<?>> rowMappers,
-                     List<ColumnMapper<?>> columnMappers) {
+                     HStoreColumnMapper hStoreColumnMapper,
+                     ColumnMapper<DbModeration> moderationColumnMapper) {
         TransactionAwareDataSourceProxy proxy = new TransactionAwareDataSourceProxy(ds);
         Jdbi jdbi = Jdbi.create(proxy);
         jdbiPlugins.forEach(jdbi::installPlugin);
         rowMappers.forEach(jdbi::registerRowMapper);
-        columnMappers.forEach(jdbi::registerColumnMapper);
         jdbi.getConfig().get(Enums.class).setEnumStrategy(EnumStrategy.BY_NAME);
+        jdbi.registerColumnMapper(hStoreColumnMapper);
+        jdbi.registerColumnMapper(new GenericType<>() {
+        }, moderationColumnMapper);
         return jdbi;
     }
 

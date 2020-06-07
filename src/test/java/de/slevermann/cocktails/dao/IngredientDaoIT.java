@@ -3,6 +3,7 @@ package de.slevermann.cocktails.dao;
 import de.slevermann.cocktails.dto.LocalizedIngredient;
 import de.slevermann.cocktails.model.db.DbCreateIngredient;
 import de.slevermann.cocktails.model.db.DbIngredient;
+import de.slevermann.cocktails.model.db.DbModeration;
 import de.slevermann.cocktails.model.db.DbUpdateIngredient;
 import de.slevermann.cocktails.model.db.DbUserInfo;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
@@ -36,6 +37,8 @@ public class IngredientDaoIT extends DaoTestBase {
     private static final UUID TYPE_UUID_TWO = UUID.randomUUID();
 
     private UUID ingredientUuid;
+
+    private UUID submissionUuid;
 
     @Override
     protected void customInit() {
@@ -93,6 +96,7 @@ public class IngredientDaoIT extends DaoTestBase {
 
     @Test
     @Order(4)
+    @Rollback
     public void testGetAll() {
         DbCreateIngredient secondIngredient = DbCreateIngredient.builder()
                 .descriptions(Map.of("de", "eine zutat"))
@@ -234,6 +238,75 @@ public class IngredientDaoIT extends DaoTestBase {
                 "Trying to unpublish an unowned ingredient should throw an error");
 
         assertTrue(ex.getMessage().contains("ingredient_owner_check"));
+    }
+
+    @Order(10)
+    @Test
+    public void testSubmit() {
+        DbUserInfo dbUserInfo = userDao.create("someProvider");
+        DbCreateIngredient dbCreateIngredient = DbCreateIngredient.builder()
+                .descriptions(Map.of("en", "an ingredient"))
+                .names(Map.of("en", "ingredient"))
+                .published(false)
+                .owner(dbUserInfo.getUuid())
+                .typeId(TYPE_UUID_ONE).build();
+
+
+        DbIngredient ingredient = ingredientDao.create(dbCreateIngredient);
+
+        assertNull(ingredient.getModeration(), "Moderation should be null for newly created ingredient");
+
+        ingredientDao.submit(ingredient.getUuid());
+
+        ingredient = ingredientDao.getById(ingredient.getUuid());
+
+        assertEquals(DbModeration.WAITING, ingredient.getModeration(), "Ingredient status should be waiting after submission");
+        submissionUuid = ingredient.getUuid();
+    }
+
+    @Order(11)
+    @Test
+    public void testGetModerationQueue() {
+        assertEquals(2, ingredientDao.getAll("de").size(), "Total ingredient count should be two");
+        assertEquals(1, ingredientDao.getModerationQueue("de").size(), "Size of moderation queue should be one");
+    }
+
+    @Order(12)
+    @Test
+    @Rollback
+    public void testPromote() {
+        ingredientDao.promote(submissionUuid);
+
+        assertEquals(0, ingredientDao.getModerationQueue("de").size(), "Moderation queue should be empty after promotion");
+        assertTrue(ingredientDao.getById(submissionUuid).isPublished(), "Ingredient should be published after promotion");
+    }
+
+    @Order(13)
+    @Test
+    @Rollback
+    public void testReject() {
+        ingredientDao.reject(submissionUuid);
+
+        assertEquals(0, ingredientDao.getModerationQueue("de").size(), "Moderation queue should be empty after rejection");
+        assertFalse(ingredientDao.getById(submissionUuid).isPublished(), "Ingredient should not be published after promotion");
+    }
+
+    @Order(14)
+    @Test
+    @Rollback
+    public void testSubmitPublished() {
+        UnableToExecuteStatementException ex = assertThrows(UnableToExecuteStatementException.class, () -> ingredientDao.submit(ingredientUuid),
+                "Submitting a published ingredient should throw an error");
+        assertTrue(ex.getMessage().contains("moderation_check"));
+    }
+
+    @Order(15)
+    @Test
+    @Rollback
+    public void testRejectPublished() {
+        UnableToExecuteStatementException ex = assertThrows(UnableToExecuteStatementException.class, () -> ingredientDao.reject(ingredientUuid),
+                "Rejecting a published ingredient should throw an error");
+        assertTrue(ex.getMessage().contains("moderation_check"));
     }
 
     @Test

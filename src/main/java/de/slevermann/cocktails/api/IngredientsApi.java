@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-06T10:48:38.119443+02:00[Europe/Berlin]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T18:28:08.273184+02:00[Europe/Berlin]")
 @Api(value = "ingredients", description = "the ingredients API")
 public interface IngredientsApi {
 
@@ -97,18 +97,6 @@ public interface IngredientsApi {
     ResponseEntity<Ingredient> getIngredientById(@ApiParam(value = "",required=true) @PathVariable("id") UUID id);
 
 
-    @ApiOperation(value = "Get the moderation queue for ingredients", nickname = "getIngredientQueue", notes = "", response = LocalizedIngredient.class, responseContainer = "List", authorizations = {
-        @Authorization(value = "oauth2", scopes = { 
-            @AuthorizationScope(scope = "openid", description = "Default OpenID scope")
-            })    }, tags={ "ingredients","admin", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Success", response = LocalizedIngredient.class, responseContainer = "List") })
-    @RequestMapping(value = "/ingredients/admin/queue/",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<LocalizedIngredient>> getIngredientQueue();
-
-
     @ApiOperation(value = "Get an ingredient type by its ID", nickname = "getIngredientTypeById", notes = "", response = IngredientType.class, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Success", response = IngredientType.class),
@@ -156,6 +144,7 @@ public interface IngredientsApi {
             })    }, tags={ "ingredients", })
     @ApiResponses(value = { 
         @ApiResponse(code = 204, message = "Success"),
+        @ApiResponse(code = 400, message = "Ingredient was already submitted"),
         @ApiResponse(code = 404, message = "Ingredient not found") })
     @RequestMapping(value = "/ingredients/submit/{id}",
         method = RequestMethod.GET)

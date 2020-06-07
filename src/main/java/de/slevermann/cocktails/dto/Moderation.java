@@ -3,63 +3,70 @@ package de.slevermann.cocktails.dto;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * UserInfo
+ * Moderation
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-06-07T18:28:08.273184+02:00[Europe/Berlin]")
-public class UserInfo   {
-  @JsonProperty("nick")
-  private String nick = null;
+public class Moderation   {
+  /**
+   * Gets or Sets action
+   */
+  public enum ActionEnum {
+    ACCEPT("ACCEPT"),
+    
+    REJECT("REJECT");
 
-  @JsonProperty("id")
-  private UUID id = null;
+    private String value;
 
-  public UserInfo nick(String nick) {
-    this.nick = nick;
+    ActionEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static ActionEnum fromValue(String text) {
+      for (ActionEnum b : ActionEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+  @JsonProperty("action")
+  private ActionEnum action = null;
+
+  public Moderation action(ActionEnum action) {
+    this.action = action;
     return this;
   }
 
   /**
-   * Get nick
-   * @return nick
+   * Get action
+   * @return action
   **/
-  @ApiModelProperty(example = "Jim", value = "")
-  
-    public String getNick() {
-    return nick;
-  }
-
-  public void setNick(String nick) {
-    this.nick = nick;
-  }
-
-  public UserInfo id(UUID id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(example = "d61c2b3a-09e3-4305-8f2b-24079ab52e8d", required = true, value = "")
+  @ApiModelProperty(required = true, value = "")
       @NotNull
 
-    @Valid
-    public UUID getId() {
-    return id;
+    public ActionEnum getAction() {
+    return action;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public void setAction(ActionEnum action) {
+    this.action = action;
   }
 
 
@@ -71,23 +78,21 @@ public class UserInfo   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.nick, userInfo.nick) &&
-        Objects.equals(this.id, userInfo.id);
+    Moderation moderation = (Moderation) o;
+    return Objects.equals(this.action, moderation.action);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nick, id);
+    return Objects.hash(action);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserInfo {\n");
+    sb.append("class Moderation {\n");
     
-    sb.append("    nick: ").append(toIndentedString(nick)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    action: ").append(toIndentedString(action)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -83,12 +83,6 @@ public class IngredientController implements IngredientsApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('cocktail-admins', 'cocktail-curators')")
-    public ResponseEntity<List<LocalizedIngredient>> getIngredientQueue() {
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
-    }
-
-    @Override
     public ResponseEntity<IngredientType> getIngredientTypeById(UUID id) {
         return ResponseEntity.ok(ingredientTypeService.getById(id));
     }
@@ -113,7 +107,8 @@ public class IngredientController implements IngredientsApi {
     @Override
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> submitIngredient(UUID id) {
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
+        ingredientService.submit(id);
+        return ResponseEntity.status(NO_CONTENT).build();
     }
 
     @Override
