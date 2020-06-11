@@ -28,7 +28,7 @@ public class IngredientTypeServiceTest {
 
     private final IngredientTypeDao ingredientTypeDao = mock(IngredientTypeDao.class);
 
-    public IngredientTypeService ingredientTypeService = new IngredientTypeService(
+    private final IngredientTypeService ingredientTypeService = new IngredientTypeService(
             ingredientTypeDao, new IngredientTypeMapper(new TranslatedStringMapper())
     );
 
